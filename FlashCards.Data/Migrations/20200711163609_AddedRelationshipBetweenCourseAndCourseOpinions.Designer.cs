@@ -4,14 +4,16 @@ using FlashCards.Data.DataModel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace FlashCards.Data.Migrations
 {
     [DbContext(typeof(FlashcardsDataModel))]
-    partial class FlashcardsDataModelModelSnapshot : ModelSnapshot
+    [Migration("20200711163609_AddedRelationshipBetweenCourseAndCourseOpinions")]
+    partial class AddedRelationshipBetweenCourseAndCourseOpinions
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -249,17 +251,7 @@ namespace FlashCards.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("AccountId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CourseId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("AccountId");
-
-                    b.HasIndex("CourseId");
 
                     b.ToTable("UserCourses");
                 });
@@ -283,12 +275,7 @@ namespace FlashCards.Data.Migrations
                     b.Property<bool>("MarkedAsHard")
                         .HasColumnType("BIT");
 
-                    b.Property<int>("UserLessonId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UserLessonId");
 
                     b.ToTable("UserFlashcards");
                 });
@@ -306,12 +293,7 @@ namespace FlashCards.Data.Migrations
                     b.Property<byte>("ProgressPercentage")
                         .HasColumnType("TINYINT");
 
-                    b.Property<int>("UserCourseId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UserCourseId");
 
                     b.ToTable("UserLessons");
                 });
@@ -366,39 +348,6 @@ namespace FlashCards.Data.Migrations
                     b.HasOne("FlashCards.Data.Models.Account", "Account")
                         .WithOne("User")
                         .HasForeignKey("FlashCards.Data.Models.User", "AccountId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("FlashCards.Data.Models.UserCourse", b =>
-                {
-                    b.HasOne("FlashCards.Data.Models.Account", "Account")
-                        .WithMany("CoursesEnrolled")
-                        .HasForeignKey("AccountId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("FlashCards.Data.Models.Course", "Course")
-                        .WithMany("UserCourses")
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("FlashCards.Data.Models.UserFlashcard", b =>
-                {
-                    b.HasOne("FlashCards.Data.Models.UserLesson", "UserLesson")
-                        .WithMany("Flashcards")
-                        .HasForeignKey("UserLessonId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("FlashCards.Data.Models.UserLesson", b =>
-                {
-                    b.HasOne("FlashCards.Data.Models.UserCourse", "UserCourse")
-                        .WithMany("Lessons")
-                        .HasForeignKey("UserCourseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

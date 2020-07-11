@@ -14,6 +14,9 @@ namespace FlashCards.Data.Models
 
         public bool MarkedAsHard { get; set; }
 
-        //public int UserLessonId { get; set; }
+
+        public int UserLessonId { get; set; }
+
+        public UserLesson UserLesson { get; set; }
     }
 }

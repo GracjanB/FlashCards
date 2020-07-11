@@ -21,6 +21,15 @@ namespace FlashCards.Data.ModelsConfiguration
             builder.Property(x => x.DisplayName)
                 .HasColumnType("NVARCHAR")
                 .HasMaxLength(32);
+
+            builder.HasOne(x => x.User)
+                .WithOne(x => x.Account);
+
+            builder.HasMany(x => x.CreatedCourses)
+                .WithOne(x => x.AccountCreated);
+
+            builder.HasMany(x => x.CoursesEnrolled)
+                .WithOne(x => x.Account);
         }
     }
 }

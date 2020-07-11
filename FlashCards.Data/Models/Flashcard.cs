@@ -19,5 +19,10 @@
         public string LanguageLevel { get; set; }
 
         public string Category { get; set; }
+
+
+        public int LessonId { get; set; }
+
+        public Lesson Lesson { get; set; }
     }
 }

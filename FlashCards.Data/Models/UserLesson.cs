@@ -11,8 +11,11 @@ namespace FlashCards.Data.Models
 
         public DateTime LastTrainingDate { get; set; }
 
-        //public int UserCourseId { get; set; }
 
-        //public ICollection<UserFlashcard> Flashcards { get; set; }
+        public int UserCourseId { get; set; }
+
+        public UserCourse UserCourse { get; set; }
+
+        public ICollection<UserFlashcard> Flashcards { get; set; }
     }
 }

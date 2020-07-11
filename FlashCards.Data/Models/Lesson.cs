@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace FlashCards.Data.Models
 {
@@ -13,5 +15,12 @@ namespace FlashCards.Data.Models
         public DateTime DateCreated { get; set; }
 
         public DateTime DateModified { get; set; }
+
+
+        public int CourseId { get; set; }
+
+        public Course Course { get; set; }
+
+        public ICollection<Flashcard> Flashcards { get; set; }
     }
 }

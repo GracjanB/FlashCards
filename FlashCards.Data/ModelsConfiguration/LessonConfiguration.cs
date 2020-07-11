@@ -26,6 +26,9 @@ namespace FlashCards.Data.ModelsConfiguration
             builder.Property(x => x.DateModified)
                 .HasColumnType("DATETIME2")
                 .IsRequired();
+
+            builder.HasMany(x => x.Flashcards)
+                .WithOne(x => x.Lesson);
         }
     }
 }

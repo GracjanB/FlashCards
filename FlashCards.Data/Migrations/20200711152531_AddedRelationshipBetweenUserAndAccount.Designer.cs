@@ -4,14 +4,16 @@ using FlashCards.Data.DataModel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace FlashCards.Data.Migrations
 {
     [DbContext(typeof(FlashcardsDataModel))]
-    partial class FlashcardsDataModelModelSnapshot : ModelSnapshot
+    [Migration("20200711152531_AddedRelationshipBetweenUserAndAccount")]
+    partial class AddedRelationshipBetweenUserAndAccount
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -50,9 +52,6 @@ namespace FlashCards.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("AccountCreatedId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("DATETIME2");
 
@@ -70,8 +69,6 @@ namespace FlashCards.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AccountCreatedId");
-
                     b.ToTable("Courses");
                 });
 
@@ -85,13 +82,7 @@ namespace FlashCards.Data.Migrations
                     b.Property<int>("AmountOfEnrolled")
                         .HasColumnType("INT");
 
-                    b.Property<int>("CourseId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("CourseId")
-                        .IsUnique();
 
                     b.ToTable("CourseInfos");
                 });
@@ -102,9 +93,6 @@ namespace FlashCards.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("CourseId")
-                        .HasColumnType("int");
 
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("DATETIME2");
@@ -120,8 +108,6 @@ namespace FlashCards.Data.Migrations
                         .HasColumnType("TINYINT");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CourseId");
 
                     b.ToTable("CourseOpinions");
                 });
@@ -140,9 +126,6 @@ namespace FlashCards.Data.Migrations
                     b.Property<string>("LanguageLevel")
                         .HasColumnType("NVARCHAR")
                         .HasMaxLength(4);
-
-                    b.Property<int>("LessonId")
-                        .HasColumnType("int");
 
                     b.Property<string>("Phrase")
                         .IsRequired()
@@ -172,8 +155,6 @@ namespace FlashCards.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("LessonId");
-
                     b.ToTable("Flashcards");
                 });
 
@@ -189,9 +170,6 @@ namespace FlashCards.Data.Migrations
                         .HasColumnType("NVARCHAR")
                         .HasMaxLength(64);
 
-                    b.Property<int>("CourseId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("DATETIME2");
 
@@ -203,8 +181,6 @@ namespace FlashCards.Data.Migrations
                         .HasMaxLength(1024);
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CourseId");
 
                     b.ToTable("Lessons");
                 });
@@ -249,17 +225,7 @@ namespace FlashCards.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("AccountId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CourseId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("AccountId");
-
-                    b.HasIndex("CourseId");
 
                     b.ToTable("UserCourses");
                 });
@@ -283,12 +249,7 @@ namespace FlashCards.Data.Migrations
                     b.Property<bool>("MarkedAsHard")
                         .HasColumnType("BIT");
 
-                    b.Property<int>("UserLessonId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UserLessonId");
 
                     b.ToTable("UserFlashcards");
                 });
@@ -306,59 +267,9 @@ namespace FlashCards.Data.Migrations
                     b.Property<byte>("ProgressPercentage")
                         .HasColumnType("TINYINT");
 
-                    b.Property<int>("UserCourseId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("UserCourseId");
-
                     b.ToTable("UserLessons");
-                });
-
-            modelBuilder.Entity("FlashCards.Data.Models.Course", b =>
-                {
-                    b.HasOne("FlashCards.Data.Models.Account", "AccountCreated")
-                        .WithMany("CreatedCourses")
-                        .HasForeignKey("AccountCreatedId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("FlashCards.Data.Models.CourseInfo", b =>
-                {
-                    b.HasOne("FlashCards.Data.Models.Course", "Course")
-                        .WithOne("CourseInfo")
-                        .HasForeignKey("FlashCards.Data.Models.CourseInfo", "CourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("FlashCards.Data.Models.CourseOpinion", b =>
-                {
-                    b.HasOne("FlashCards.Data.Models.Course", "Course")
-                        .WithMany("Opinions")
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("FlashCards.Data.Models.Flashcard", b =>
-                {
-                    b.HasOne("FlashCards.Data.Models.Lesson", "Lesson")
-                        .WithMany("Flashcards")
-                        .HasForeignKey("LessonId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("FlashCards.Data.Models.Lesson", b =>
-                {
-                    b.HasOne("FlashCards.Data.Models.Course", "Course")
-                        .WithMany("Lessons")
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("FlashCards.Data.Models.User", b =>
@@ -366,39 +277,6 @@ namespace FlashCards.Data.Migrations
                     b.HasOne("FlashCards.Data.Models.Account", "Account")
                         .WithOne("User")
                         .HasForeignKey("FlashCards.Data.Models.User", "AccountId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("FlashCards.Data.Models.UserCourse", b =>
-                {
-                    b.HasOne("FlashCards.Data.Models.Account", "Account")
-                        .WithMany("CoursesEnrolled")
-                        .HasForeignKey("AccountId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("FlashCards.Data.Models.Course", "Course")
-                        .WithMany("UserCourses")
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("FlashCards.Data.Models.UserFlashcard", b =>
-                {
-                    b.HasOne("FlashCards.Data.Models.UserLesson", "UserLesson")
-                        .WithMany("Flashcards")
-                        .HasForeignKey("UserLessonId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("FlashCards.Data.Models.UserLesson", b =>
-                {
-                    b.HasOne("FlashCards.Data.Models.UserCourse", "UserCourse")
-                        .WithMany("Lessons")
-                        .HasForeignKey("UserCourseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

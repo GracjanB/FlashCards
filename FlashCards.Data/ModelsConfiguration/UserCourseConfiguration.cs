@@ -9,6 +9,9 @@ namespace FlashCards.Data.ModelsConfiguration
         public void Configure(EntityTypeBuilder<UserCourse> builder)
         {
             builder.HasKey(x => x.Id);
+
+            builder.HasMany(x => x.Lessons)
+                .WithOne(x => x.UserCourse);
         }
     }
 }

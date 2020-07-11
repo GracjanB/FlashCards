@@ -15,6 +15,9 @@ namespace FlashCards.Data.ModelsConfiguration
 
             builder.Property(x => x.LastTrainingDate)
                 .HasColumnType("DATETIME2");
+
+            builder.HasMany(x => x.Flashcards)
+                .WithOne(x => x.UserLesson);
         }
     }
 }
