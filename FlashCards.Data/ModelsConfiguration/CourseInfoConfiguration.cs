@@ -9,6 +9,9 @@ namespace FlashCards.Data.ModelsConfiguration
         public void Configure(EntityTypeBuilder<CourseInfo> builder)
         {
             builder.HasKey(x => x.Id);
+
+            builder.Property(x => x.AmountOfEnrolled)
+                .HasColumnType("INT");
         }
     }
 }
