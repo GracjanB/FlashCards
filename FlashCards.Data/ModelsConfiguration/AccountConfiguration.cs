@@ -18,7 +18,7 @@ namespace FlashCards.Data.ModelsConfiguration
                 .HasColumnType("NVARCHAR")
                 .HasMaxLength(64);
 
-            builder.Property(x => x.LastName)
+            builder.Property(x => x.DisplayName)
                 .HasColumnType("NVARCHAR")
                 .HasMaxLength(32);
         }

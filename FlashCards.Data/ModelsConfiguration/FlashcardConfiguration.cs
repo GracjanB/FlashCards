@@ -29,7 +29,8 @@ namespace FlashCards.Data.ModelsConfiguration
 
             builder.Property(x => x.TranslatedPhrase)
                 .HasColumnType("NVARCHAR")
-                .HasMaxLength(64);
+                .HasMaxLength(64)
+                .IsRequired();
 
             builder.Property(x => x.TranslatedPhraseSampleSentence)
                 .HasColumnType("NVARCHAR")
