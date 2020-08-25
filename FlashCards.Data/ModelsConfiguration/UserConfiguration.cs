@@ -10,19 +10,9 @@ namespace FlashCards.Data.ModelsConfiguration
         {
             builder.HasKey(x => x.Id);
 
-            builder.Property(x => x.Username)
-                .HasColumnType("NVARCHAR")
-                .HasMaxLength(64)
-                .IsRequired();
-
             builder.Property(x => x.Email)
                 .HasColumnType("NVARCHAR")
                 .HasMaxLength(128)
-                .IsRequired();
-
-            builder.Property(x => x.Password)
-                .HasColumnType("NVARCHAR")
-                .HasMaxLength(256)
                 .IsRequired();
         }
     }

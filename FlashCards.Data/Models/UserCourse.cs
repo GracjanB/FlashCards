@@ -9,7 +9,7 @@ namespace FlashCards.Data.Models
 
         public int AccountId { get; set; }
 
-        public Account Account { get; set; }
+        public UserInfo Account { get; set; }
 
         public int CourseId { get; set; }
 

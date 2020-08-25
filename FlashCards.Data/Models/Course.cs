@@ -19,7 +19,7 @@ namespace FlashCards.Data.Models
 
         public int AccountCreatedId { get; set; }
 
-        public Account AccountCreated { get; set; }
+        public UserInfo AccountCreated { get; set; }
 
         public CourseInfo CourseInfo { get; set; }
 

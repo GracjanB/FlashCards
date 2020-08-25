@@ -8,7 +8,7 @@ namespace FlashCards.Data.DataModel
     {
         public FlashcardsDataModel(DbContextOptions<FlashcardsDataModel> options) : base(options) { }
 
-        public DbSet<Account> Accounts { get; set; }
+        public DbSet<UserInfo> UserInfos { get; set; }
 
         public DbSet<User> Users { get; set; }
 
@@ -30,7 +30,7 @@ namespace FlashCards.Data.DataModel
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfiguration(new AccountConfiguration());
+            modelBuilder.ApplyConfiguration(new UserInfoConfiguration());
             modelBuilder.ApplyConfiguration(new UserConfiguration());
             modelBuilder.ApplyConfiguration(new CourseConfiguration());
             modelBuilder.ApplyConfiguration(new CourseInfoConfiguration());

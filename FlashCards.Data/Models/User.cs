@@ -4,14 +4,14 @@
     {
         public int Id { get; set; }
 
-        public string Username { get; set; }
-
         public string Email { get; set; }
 
-        public string Password { get; set; }
+        public byte[] PasswordHash { get; set; }
 
-        public int AccountId { get; set; }
+        public byte[] PasswordSalt { get; set; }
 
-        public Account Account { get; set; }
+        public int UserInfoId { get; set; }
+
+        public UserInfo UserInfo { get; set; }
     }
 }

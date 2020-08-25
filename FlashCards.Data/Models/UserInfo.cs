@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace FlashCards.Data.Models
 {
-    public class Account
+    public class UserInfo
     {
         public int Id { get; set; }
 
@@ -11,6 +12,14 @@ namespace FlashCards.Data.Models
         public string LastName { get; set; }
 
         public string DisplayName { get; set; }
+
+        public string PhotoUrl { get; set; }
+
+        public string City { get; set; }
+
+        public string Country { get; set; }
+
+        public DateTime DateCreated { get; set; }
 
 
         public User User { get; set; }

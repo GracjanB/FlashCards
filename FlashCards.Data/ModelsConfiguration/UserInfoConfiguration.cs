@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace FlashCards.Data.ModelsConfiguration
 {
-    public class AccountConfiguration : IEntityTypeConfiguration<Account>
+    public class UserInfoConfiguration : IEntityTypeConfiguration<UserInfo>
     {
-        public void Configure(EntityTypeBuilder<Account> builder)
+        public void Configure(EntityTypeBuilder<UserInfo> builder)
         {
             builder.HasKey(x => x.Id);
 
@@ -22,8 +22,16 @@ namespace FlashCards.Data.ModelsConfiguration
                 .HasColumnType("NVARCHAR")
                 .HasMaxLength(32);
 
+            builder.Property(x => x.City)
+                .HasColumnType("NVARCHAR")
+                .HasMaxLength(64);
+
+            builder.Property(x => x.Country)
+                .HasColumnType("NVARCHAR")
+                .HasMaxLength(64);
+
             builder.HasOne(x => x.User)
-                .WithOne(x => x.Account);
+                .WithOne(x => x.UserInfo);
 
             builder.HasMany(x => x.CreatedCourses)
                 .WithOne(x => x.AccountCreated);
