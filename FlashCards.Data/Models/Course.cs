@@ -26,7 +26,5 @@ namespace FlashCards.Data.Models
         public ICollection<Lesson> Lessons { get; set; }
 
         public ICollection<CourseOpinion> Opinions { get; set; }
-
-        public ICollection<UserCourse> UserCourses { get; set; }
     }
 }

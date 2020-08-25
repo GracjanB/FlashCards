@@ -22,11 +22,11 @@ namespace FlashCards.Data.DataModel
 
         public DbSet<Flashcard> Flashcards { get; set; }
 
-        public DbSet<UserCourse> UserCourses { get; set; }
+        public DbSet<SubscribedCourse> SubscribedCourses { get; set; }
 
-        public DbSet<UserLesson> UserLessons { get; set; }
+        public DbSet<SubscribedLesson> SubscribedLessons { get; set; }
 
-        public DbSet<UserFlashcard> UserFlashcards { get; set; }
+        public DbSet<SubscribedFlashcards> SubscribedFlashcards { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -37,9 +37,9 @@ namespace FlashCards.Data.DataModel
             modelBuilder.ApplyConfiguration(new CourseOpinionConfiguration());
             modelBuilder.ApplyConfiguration(new LessonConfiguration());
             modelBuilder.ApplyConfiguration(new FlashcardConfiguration());
-            modelBuilder.ApplyConfiguration(new UserCourseConfiguration());
-            modelBuilder.ApplyConfiguration(new UserLessonConfiguration());
-            modelBuilder.ApplyConfiguration(new UserFlashcardConfiguration());
+            modelBuilder.ApplyConfiguration(new SubscribedCourseConfiguration());
+            modelBuilder.ApplyConfiguration(new SubscribedLessonConfiguration());
+            modelBuilder.ApplyConfiguration(new SubscribedFlashcardCofiguration());
         }
     }
 }

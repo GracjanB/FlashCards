@@ -35,9 +35,6 @@ namespace FlashCards.Data.ModelsConfiguration
 
             builder.HasMany(x => x.Opinions)
                 .WithOne(x => x.Course);
-
-            builder.HasMany(x => x.UserCourses)
-                .WithOne(x => x.Course);
         }
     }
 }

@@ -26,6 +26,6 @@ namespace FlashCards.Data.Models
 
         public ICollection<Course> CreatedCourses { get; set; }
 
-        public ICollection<UserCourse> CoursesEnrolled { get; set; }
+        public ICollection<SubscribedCourse> SubscribedCourses { get; set; }
     }
 }

@@ -36,8 +36,9 @@ namespace FlashCards.Data.ModelsConfiguration
             builder.HasMany(x => x.CreatedCourses)
                 .WithOne(x => x.AccountCreated);
 
-            builder.HasMany(x => x.CoursesEnrolled)
-                .WithOne(x => x.Account);
+            builder.HasMany(x => x.SubscribedCourses)
+                .WithOne(x => x.Account)
+                .HasForeignKey(x => x.AccountId);
         }
     }
 }
