@@ -1,5 +1,5 @@
-﻿using FlashCards.Models.DTOs.ToClient;
-using FlashCards.Models.DTOs.ToServer;
+﻿using FlashCards.Data.Models;
+using FlashCards.Models.DTOs.ToClient;
 
 namespace FlashCards.Services.Abstracts
 {
@@ -9,7 +9,7 @@ namespace FlashCards.Services.Abstracts
 
         bool Logout(int userId);
 
-        bool Register(UserForRegister userForRegister);
+        bool Register(User user, string password);
 
         bool AuthorizeUser(int userId, string token);
     }

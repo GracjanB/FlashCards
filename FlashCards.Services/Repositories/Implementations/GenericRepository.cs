@@ -8,20 +8,20 @@ using System.Linq.Expressions;
 
 namespace FlashCards.Services.UnitOfWork.Implementations
 {
-    public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
+    public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : class
     {
         private FlashcardsDataModel _context;
         private DbSet<TEntity> _dbSet;
 
-        public Repository(FlashcardsDataModel context)
+        public GenericRepository(FlashcardsDataModel context)
         {
             _context = context;
             _dbSet = _context.Set<TEntity>();
         }
 
-        public virtual IEnumerable<TEntity> Get(Expression<Func<TEntity, bool>> predicate)
+        public virtual TEntity Get(Expression<Func<TEntity, bool>> predicate)
         {
-            return _dbSet.Where(predicate).AsEnumerable();
+            return _dbSet.FirstOrDefault(predicate);
         }
 
         public virtual IEnumerable<TEntity> GetAll()

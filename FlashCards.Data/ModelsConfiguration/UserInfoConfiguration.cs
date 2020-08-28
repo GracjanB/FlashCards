@@ -23,12 +23,10 @@ namespace FlashCards.Data.ModelsConfiguration
                 .HasMaxLength(32);
 
             builder.Property(x => x.City)
-                .HasColumnType("NVARCHAR")
-                .HasMaxLength(64);
+                .HasColumnType("NVARCHAR(64)");
 
             builder.Property(x => x.Country)
-                .HasColumnType("NVARCHAR")
-                .HasMaxLength(64);
+                .HasColumnType("NVARCHAR(64)");
 
             builder.HasOne(x => x.User)
                 .WithOne(x => x.UserInfo);

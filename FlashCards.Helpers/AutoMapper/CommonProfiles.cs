@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using FlashCards.Data.Models;
+using FlashCards.Models.DTOs.ToServer;
 
 namespace FlashCards.Helpers.AutoMapper
 {
@@ -6,7 +8,8 @@ namespace FlashCards.Helpers.AutoMapper
     {
         public CommonProfiles()
         {
-            
+            CreateMap<UserForRegister, User>();
+            CreateMap<UserForRegister, UserInfo>();
         }
     }
 }

@@ -4,11 +4,11 @@ using System.Linq.Expressions;
 
 namespace FlashCards.Services.UnitOfWork.Abstracts
 {
-    public interface IRepository<TEntity> where TEntity : class
+    public interface IGenericRepository<TEntity> where TEntity : class
     {
         IEnumerable<TEntity> GetAll();
 
-        IEnumerable<TEntity> Get(Expression<Func<TEntity, bool>> predicate);
+        TEntity Get(Expression<Func<TEntity, bool>> predicate);
 
         void Add(TEntity entity);
 

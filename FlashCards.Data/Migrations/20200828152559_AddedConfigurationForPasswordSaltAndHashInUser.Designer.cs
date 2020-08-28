@@ -4,14 +4,16 @@ using FlashCards.Data.DataModel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace FlashCards.Data.Migrations
 {
     [DbContext(typeof(FlashcardsDataModel))]
-    partial class FlashcardsDataModelModelSnapshot : ModelSnapshot
+    [Migration("20200828152559_AddedConfigurationForPasswordSaltAndHashInUser")]
+    partial class AddedConfigurationForPasswordSaltAndHashInUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -283,11 +285,13 @@ namespace FlashCards.Data.Migrations
 
                     b.Property<byte[]>("PasswordHash")
                         .IsRequired()
-                        .HasColumnType("BINARY(512)");
+                        .HasColumnType("BINARY")
+                        .HasMaxLength(512);
 
                     b.Property<byte[]>("PasswordSalt")
                         .IsRequired()
-                        .HasColumnType("BINARY(512)");
+                        .HasColumnType("BINARY")
+                        .HasMaxLength(512);
 
                     b.Property<int>("UserInfoId")
                         .HasColumnType("int");
@@ -308,10 +312,12 @@ namespace FlashCards.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("City")
-                        .HasColumnType("NVARCHAR(64)");
+                        .HasColumnType("NVARCHAR")
+                        .HasMaxLength(64);
 
                     b.Property<string>("Country")
-                        .HasColumnType("NVARCHAR(64)");
+                        .HasColumnType("NVARCHAR")
+                        .HasMaxLength(64);
 
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
