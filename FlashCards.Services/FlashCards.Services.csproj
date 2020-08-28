@@ -6,11 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\FlashCards.Data\FlashCards.Data.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Abstracts\" />
-    <Folder Include="Implementations\" />
+    <ProjectReference Include="..\FlashCards.Models\FlashCards.Models.csproj" />
   </ItemGroup>
 
 </Project>
