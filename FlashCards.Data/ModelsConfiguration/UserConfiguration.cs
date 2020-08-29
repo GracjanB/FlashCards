@@ -12,8 +12,7 @@ namespace FlashCards.Data.ModelsConfiguration
             builder.HasKey(x => x.Id);
 
             builder.Property(x => x.Email)
-                .HasColumnType("NVARCHAR")
-                .HasMaxLength(128)
+                .HasColumnType("NVARCHAR(128)")
                 .IsRequired();
 
             builder.Property(x => x.PasswordHash)

@@ -32,7 +32,7 @@ namespace FlashCards.WebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddAutoMapper(typeof(CommonProfiles), typeof(UserForDetailProfile));
-            services.AddDbContext<FlashcardsDataModel>(x => x.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<FlashcardsDataModel>(x => x.UseSqlServer(Configuration.GetConnectionString("AzureConnection")));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

@@ -11,16 +11,13 @@ namespace FlashCards.Data.ModelsConfiguration
             builder.HasKey(x => x.Id);
 
             builder.Property(x => x.FirstName)
-                .HasColumnType("NVARCHAR")
-                .HasMaxLength(64);
+                .HasColumnType("NVARCHAR(64)");
 
             builder.Property(x => x.LastName)
-                .HasColumnType("NVARCHAR")
-                .HasMaxLength(64);
+                .HasColumnType("NVARCHAR(64)");
 
             builder.Property(x => x.DisplayName)
-                .HasColumnType("NVARCHAR")
-                .HasMaxLength(32);
+                .HasColumnType("NVARCHAR(32)");
 
             builder.Property(x => x.City)
                 .HasColumnType("NVARCHAR(64)");
