@@ -10,6 +10,7 @@ using FlashCards.Services.Abstracts;
 using FlashCards.Services.UnitOfWork.Abstracts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace FlashCards.WebAPI.Controllers
 {
@@ -19,14 +20,18 @@ namespace FlashCards.WebAPI.Controllers
     {
         private readonly IAuthService _authService;
         private readonly IMapper _mapper;
+        private readonly ILogger<AuthController> _logger;
 
-        public AuthController(IAuthService authService, IMapper mapper)
+        public AuthController(IAuthService authService, IMapper mapper, ILogger<AuthController> logger)
         {
             _authService = authService ??
                 throw new ArgumentNullException(nameof(authService));
 
             _mapper = mapper ??
                 throw new ArgumentNullException(nameof(mapper));
+
+            _logger = logger ??
+                throw new ArgumentNullException(nameof(logger));
         }
 
         [HttpPost("register")]
