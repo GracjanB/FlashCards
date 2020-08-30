@@ -1,17 +1,17 @@
-﻿using AutoMapper;
-using FlashCards.Data.Models;
-using FlashCards.Models.DTOs.ToClient;
-using FlashCards.Models.DTOs.ToServer;
-using FlashCards.Services.Abstracts;
-using FlashCards.Services.Repositories.Abstracts;
-using FlashCards.Services.UnitOfWork.Abstracts;
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
-using System;
+﻿using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using FlashCards.Data.Models;
+using FlashCards.Models.DTOs.ToClient;
+using FlashCards.Services.Abstracts;
+using FlashCards.Services.Repositories.Abstracts;
+using FlashCards.Services.UnitOfWork.Abstracts;
+using AutoMapper;
+using System.Collections.Generic;
 
 namespace FlashCards.Services.Implementations
 {
@@ -39,7 +39,8 @@ namespace FlashCards.Services.Implementations
         public TokenDTO Login(string email, string password)
         {
             var userFromRepo = _userRepository.GetDetail(email);
-            if (userFromRepo == null || VerifyPasswordHash(password, userFromRepo.PasswordHash, userFromRepo.PasswordSalt))
+
+            if (userFromRepo == null || !VerifyPasswordHash(password, userFromRepo.PasswordHash, userFromRepo.PasswordSalt))
                 return null;
 
             var tokenDTO = new TokenDTO
@@ -49,11 +50,6 @@ namespace FlashCards.Services.Implementations
             };
 
             return tokenDTO;
-        }
-
-        public bool Logout(int userId)
-        {
-            throw new NotImplementedException();
         }
 
         public bool Register(User user, string password)
@@ -67,9 +63,16 @@ namespace FlashCards.Services.Implementations
             return true;
         }
 
-        public bool AuthorizeUser(int userId, string token)
+        public bool VerifyPassword(string password, byte[] passwordHash, byte[] passwordSalt)
         {
-            throw new NotImplementedException();
+            return VerifyPasswordHash(password, passwordHash, passwordSalt);
+        }
+
+        public void CreateNewPassword(string newPassword, ref User user)
+        {
+            CreatePasswordHash(newPassword, out byte[] passwordHash, out byte[] passwordSalt);
+            user.PasswordHash = passwordHash;
+            user.PasswordSalt = passwordSalt;
         }
 
         private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)

@@ -3,6 +3,8 @@ using AutoMapper;
 using FlashCards.Data.Models;
 using FlashCards.Models.DTOs.ToServer;
 using FlashCards.Services.Abstracts;
+using FlashCards.Services.Repositories.Abstracts;
+using FlashCards.Services.UnitOfWork.Abstracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 

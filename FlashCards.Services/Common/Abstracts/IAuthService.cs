@@ -7,10 +7,10 @@ namespace FlashCards.Services.Abstracts
     {
         TokenDTO Login(string email, string password);
 
-        bool Logout(int userId);
-
         bool Register(User user, string password);
 
-        bool AuthorizeUser(int userId, string token);
+        void CreateNewPassword(string newPassword, ref User user);
+
+        bool VerifyPassword(string password, byte[] passwordHash, byte[] passwordSalt);
     }
 }

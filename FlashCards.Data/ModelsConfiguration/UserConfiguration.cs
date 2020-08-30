@@ -16,11 +16,11 @@ namespace FlashCards.Data.ModelsConfiguration
                 .IsRequired();
 
             builder.Property(x => x.PasswordHash)
-                .HasColumnType("BINARY(512)")
+                .HasColumnType("BINARY(64)")
                 .IsRequired();
 
             builder.Property(x => x.PasswordSalt)
-                .HasColumnType("BINARY(512)")
+                .HasColumnType("BINARY(128)")
                 .IsRequired();
         }
     }
