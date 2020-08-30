@@ -13,9 +13,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.SwaggerUI;
 using System;
+using System.IO;
 using System.Reflection;
 using System.Text;
 
@@ -33,11 +35,27 @@ namespace FlashCards.WebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddAutoMapper(typeof(CommonProfiles), typeof(UserForDetailProfile));
-            //services.AddDbContext<FlashcardsDataModel>(x => x.UseSqlServer(Configuration.GetConnectionString("AzureConnection")));
             services.AddDbContext<FlashcardsDataModel>(config =>
             {
                 config.UseSqlServer(Configuration.GetConnectionString("AzureConnection"));
                 config.EnableSensitiveDataLogging();
+            });
+            services.AddSwaggerGen(x =>
+            {
+                x.SwaggerDoc("v1", new OpenApiInfo 
+                { 
+                    Title = "FlashCards API", 
+                    Version = "v1",
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Gracjan Bryt",
+                        Email = "gracjanb97@gmail.com"
+                    }
+                });
+
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                x.IncludeXmlComments(xmlPath);
             });
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IAuthService, AuthService>();
@@ -61,6 +79,13 @@ namespace FlashCards.WebAPI
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseSwagger();
+            app.UseSwaggerUI(x =>
+            {
+                x.SwaggerEndpoint("/swagger/v1/swagger.json", "FlashCards API");
+                x.DefaultModelRendering(ModelRendering.Model);
+            });
 
             app.UseHttpsRedirection();
 

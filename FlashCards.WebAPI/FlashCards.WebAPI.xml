@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>FlashCards.WebAPI</name>
+    </assembly>
+    <members>
+        <member name="M:FlashCards.WebAPI.Controllers.AuthController.Register(FlashCards.Models.DTOs.ToServer.UserForRegister)">
+            <summary>
+            Creates new account
+            </summary>
+            <remarks>
+            Sample request:
+            
+                POST /api/auth/login
+                    {
+                        "email": "sample@sample.com",
+                        "password": "samplepassword",
+                        "displayName": "sampleName",
+                        "firstName": "someFirstName",
+                        "lastName": "someLastName",
+                        "city": "someCity",
+                        "country": "someCountry"
+                    }
+                    
+            </remarks>
+            <param name="userForRegister"></param>
+            <returns>Status</returns>
+            <response code="200">If registration was successful</response>
+            <response code="400">When incoming data was invalid. Returns model state information</response>
+            <response code="500">When occured error during registration</response>
+            POST: api/auth/register
+        </member>
+        <member name="M:FlashCards.WebAPI.Controllers.AuthController.Login(FlashCards.Models.DTOs.ToServer.UserForLogin)">
+            <summary>
+            Login user
+            </summary>
+            <remarks>
+            Sample request:
+            
+                POST /api/auth/login
+                {
+                    "email": "sample@sample.com",
+                    "password": "samplepassword"
+                }
+                
+            </remarks>
+            <param name="userForLogin"></param>
+            <returns>Access token and detailed information about user</returns>
+            <response code="200">Returns access token and detailed information about user</response>
+            <response code="400">When incoming data was invalid. Returns model state information</response>
+            <response code="401">When email or password was invalid</response>
+            POST: api/auth/login
+        </member>
+    </members>
+</doc>
