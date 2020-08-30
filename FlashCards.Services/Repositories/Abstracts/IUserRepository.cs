@@ -1,5 +1,6 @@
 ﻿using FlashCards.Data.Models;
 using FlashCards.Services.UnitOfWork.Abstracts;
+using System.Collections.Generic;
 
 namespace FlashCards.Services.Repositories.Abstracts
 {
@@ -10,5 +11,7 @@ namespace FlashCards.Services.Repositories.Abstracts
         User GetDetail(int id);
 
         User GetDetail(string email);
+
+        List<User> GetAllUsers();
     }
 }

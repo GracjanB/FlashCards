@@ -5,6 +5,7 @@ using FlashCards.Services.UnitOfWork.Implementations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace FlashCards.Services.Repositories.Implementations
@@ -20,12 +21,17 @@ namespace FlashCards.Services.Repositories.Implementations
 
         public User GetDetail(int id)
         {
-            throw new NotImplementedException();
+            return _context.Users.Include(x => x.UserInfo).FirstOrDefault(x => x.Id == id);
         }
 
         public User GetDetail(string email)
         {
             return _context.Users.Include(x => x.UserInfo).FirstOrDefault(x => x.Email == email);
+        }
+
+        public List<User> GetAllUsers()
+        {
+            return _context.Users.Include(x => x.UserInfo).ToList();
         }
 
         public bool UserExists(string email)

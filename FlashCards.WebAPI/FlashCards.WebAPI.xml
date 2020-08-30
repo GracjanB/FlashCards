@@ -51,6 +51,24 @@
             <response code="401">When email or password was invalid</response>
             POST: api/auth/login
         </member>
+        <member name="M:FlashCards.WebAPI.Controllers.UsersController.GetUser(System.Int32)">
+            <summary>
+            Get detail user information
+            </summary>
+            <param name="id">User ID</param>
+            <returns>User detail information</returns>
+            <response code="200">Detail information about user</response>
+            <response code="400">When given user id doesn't exist in database</response>
+            GET: /api/users/{id}
+        </member>
+        <member name="M:FlashCards.WebAPI.Controllers.UsersController.GetUsers">
+            <summary>
+            List of users
+            </summary>
+            <returns>List of users</returns>
+            <response code="200">List of users or empty list</response>
+            GET: /api/users
+        </member>
         <member name="M:FlashCards.WebAPI.Controllers.UsersController.ChangePassword(System.Int32,FlashCards.Models.DTOs.ToServer.UserForPasswordChange)">
             <summary>
             Change user password

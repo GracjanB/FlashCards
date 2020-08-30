@@ -34,10 +34,42 @@ namespace FlashCards.WebAPI.Controllers
             _authService = authService;
         }
 
+        /// <summary>
+        /// Get detail user information
+        /// </summary>
+        /// <param name="id">User ID</param>
+        /// <returns>User detail information</returns>
+        /// <response code="200">Detail information about user</response>
+        /// <response code="400">When given user id doesn't exist in database</response>
+        /// GET: /api/users/{id}
+        [HttpGet("{id}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        [Produces("application/json")]
+        public IActionResult GetUser(int id)
+        {
+            var userFromRepo = _userRepository.GetDetail(id);
+
+            if (userFromRepo == null)
+                return BadRequest("User cannot be found.");
+
+            var userToReturn = _mapper.Map<UserForDetail>(userFromRepo);
+
+            return Ok(userToReturn);
+        }
+
+        /// <summary>
+        /// List of users
+        /// </summary>
+        /// <returns>List of users</returns>
+        /// <response code="200">List of users or empty list</response>
+        /// GET: /api/users
         [HttpGet]
+        [ProducesResponseType(200)]
+        [Produces("application/json")]
         public IActionResult GetUsers()
         {
-            var users = _userRepository.GetAll();
+            var users = _userRepository.GetAllUsers();
             List<UserForDetail> usersToReturn = new List<UserForDetail>();
 
             foreach (var user in users)
