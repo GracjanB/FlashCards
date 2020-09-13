@@ -12,13 +12,17 @@ import { RegisterComponent } from './auth/register/register.component';
 import { AuthService } from './core/_services/auth.service';
 import { AlertifyService } from './core/_services/alertify.service';
 import {HttpClientModule} from '@angular/common/http';
+import { HomeComponent } from './home/home.component';
+import {RouterModule} from '@angular/router';
+import {appRoutes} from './routes';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
@@ -27,7 +31,8 @@ import {HttpClientModule} from '@angular/common/http';
     NgbModule,
     FormsModule,
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RouterModule.forRoot(appRoutes)
   ],
   providers: [
     AuthService,
