@@ -2,10 +2,10 @@ import {Component, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-main-navbar',
-  templateUrl: './main-navbar.component.html',
-  styleUrls: ['./main-navbar.component.css']
+  templateUrl: './navbar.component.html',
+  styleUrls: ['./navbar.component.css']
 })
-export class MainNavbarComponent implements OnInit{
+export class NavbarComponent implements OnInit{
   isCollapsed: boolean;
 
   constructor() {}
