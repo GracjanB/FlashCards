@@ -16,6 +16,10 @@ import { HomeComponent } from './home/home.component';
 import {RouterModule} from '@angular/router';
 import {appRoutes} from './routes';
 import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { CoursesComponent } from './courses/courses.component';
+import { AnalyticsComponent } from './analytics/analytics.component';
+import { CourseGenComponent } from './course-gen/course-gen.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +27,11 @@ import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
     NavbarComponent,
     LoginComponent,
     RegisterComponent,
-    HomeComponent
+    HomeComponent,
+    DashboardComponent,
+    CoursesComponent,
+    AnalyticsComponent,
+    CourseGenComponent
   ],
   imports: [
     BrowserModule,

@@ -6,18 +6,31 @@
   </button>
 
   <div class="collapse navbar-collapse" [ngbCollapse]="isCollapsed">
-    <ul class="navbar-nav mr-auto">
+    <ul *ngIf="userIsLoggedIn()" class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="['/dashboard']" routerLinkActive="$router_link-active$">
+          Dashboard
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="['/courses']" routerLinkActive="$router_link-active$">
+          Courses
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="['/analytics']" routerLinkActive="$router_link-active$">
+          Analytics
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="['/newCourseTool']" routerLinkActive="$router_link-active$">
+          Create course
+        </a>
+      </li>
+    </ul>
+    <ul *ngIf="!userIsLoggedIn()" class="navbar-nav mr-auto">
       <li class="nav-item active">
         <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Dashboard</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Courses</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Analytics</a>
       </li>
     </ul>
     <div *ngIf="!userIsLoggedIn()" class="nav-item">
