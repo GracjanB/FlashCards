@@ -15,6 +15,7 @@ import {HttpClientModule} from '@angular/common/http';
 import { HomeComponent } from './home/home.component';
 import {RouterModule} from '@angular/router';
 import {appRoutes} from './routes';
+import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import {appRoutes} from './routes';
     FormsModule,
     HttpClientModule,
     ReactiveFormsModule,
-    RouterModule.forRoot(appRoutes)
+    RouterModule.forRoot(appRoutes),
+    BsDropdownModule.forRoot()
   ],
   providers: [
     AuthService,

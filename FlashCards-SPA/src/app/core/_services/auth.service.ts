@@ -1,33 +1,44 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
-import { User } from '../_models/_dtos/userInfo';
 import { UserForLogin } from '../_models/_dtos/userForLogin';
 import { map } from 'rxjs/operators';
 import { UserForRegister } from '../_models/_dtos/userForRegister';
+import {JwtHelperService} from '@auth0/angular-jwt';
+import {UserInfo} from '../_models/_dtos/userInfo';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  currentUser: User;
   private baseUrl = environment.apiUrl;
+  jwtHelper: JwtHelperService;
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient) {
+    this.jwtHelper = new JwtHelperService();
+  }
 
   login(model: UserForLogin) {
-    return this.httpClient.post(this.baseUrl + 'login', model).pipe(
-      map((response: any) => {
-        const user = response;
-        if (user) {
-          localStorage.setItem('token', user.token);
-          this.currentUser = user.user;
-        }
+    return this.httpClient.post(this.baseUrl + 'auth/login', model).pipe(
+      map((userInfo: UserInfo) => {
+        localStorage.setItem('user', JSON.stringify(userInfo.user));
+        localStorage.setItem('token', userInfo.token);
       })
     );
   }
 
-  register(model: UserForRegister) {
-    return this.httpClient.post(this.baseUrl + 'register', model);
+  logout(): void {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
   }
+
+  register(model: UserForRegister) {
+    return this.httpClient.post(this.baseUrl + 'auth/register', model);
+  }
+
+  userIsLoggedIn(): boolean {
+    const token = localStorage.getItem('token');
+    return !this.jwtHelper.isTokenExpired(token);
+  }
+
 }

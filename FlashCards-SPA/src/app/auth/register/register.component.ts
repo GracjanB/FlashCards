@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserForRegister } from '../../core/_models/_dtos/userForRegister';
+import { AuthService } from '../../core/_services/auth.service';
+import {AlertifyService} from '../../core/_services/alertify.service';
 
 @Component({
   selector: 'app-register',
@@ -9,10 +11,10 @@ import { UserForRegister } from '../../core/_models/_dtos/userForRegister';
 })
 export class RegisterComponent implements OnInit {
   registerForm: FormGroup;
-  userForRegister: UserForRegister;
 
-
-  constructor(private formBuilder: FormBuilder) { }
+  constructor(private formBuilder: FormBuilder,
+              private authService: AuthService,
+              private alertifyService: AlertifyService) { }
 
   ngOnInit(): void {
     this.createRegisterForm();
@@ -44,8 +46,12 @@ export class RegisterComponent implements OnInit {
     const registerFormValues = this.registerForm.value;
     delete registerFormValues.confirmPassword;
 
-    this.userForRegister = new UserForRegister(registerFormValues);
-    console.log(this.userForRegister);
+    const userForRegister = new UserForRegister(registerFormValues);
+    this.authService.register(userForRegister).subscribe(next => {
+      this.alertifyService.showSuccessAlert('Successfully registered');
+    }, error => {
+      this.alertifyService.showErrorAlert('Failed to register');
+    });
   }
 
 }

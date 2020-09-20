@@ -1,0 +1,17 @@
+.dropdown-toggle {
+  cursor: pointer;
+}
+
+.dropdown-item {
+  cursor: pointer;
+}
+
+a:hover.dropdown-toggle {
+  text-decoration: none;
+}
+
+.dropdown-menu {
+  position: absolute;
+  margin-top: 3px;
+  margin-right: 50px;
+}
