@@ -9,31 +9,26 @@ using FlashCards.Data.Models;
 using FlashCards.Models.DTOs.ToClient;
 using FlashCards.Services.Abstracts;
 using FlashCards.Services.Repositories.Abstracts;
-using FlashCards.Services.UnitOfWork.Abstracts;
 using AutoMapper;
-using System.Collections.Generic;
 
 namespace FlashCards.Services.Implementations
 {
     public class AuthService : IAuthService
     {
         private readonly IUserRepository _userRepository;
-        private readonly IUnitOfWork _unitOfWork;
         private readonly IConfiguration _config;
         private readonly IMapper _mapper;
 
-        public AuthService(IUnitOfWork unitOfWork, IConfiguration config, IMapper mapper)
+        public AuthService(IUserRepository userRepository, IConfiguration config, IMapper mapper)
         {
-            _unitOfWork = unitOfWork ?? 
-                throw new ArgumentNullException(nameof(unitOfWork));
-
             _config = config ??
                 throw new ArgumentNullException(nameof(config));
 
             _mapper = mapper ??
                 throw new ArgumentNullException(nameof(mapper));
 
-            _userRepository = unitOfWork.GetUserRepository();
+            _userRepository = userRepository ??
+                throw new ArgumentNullException(nameof(userRepository));
         }
 
         public TokenDTO Login(string email, string password)
@@ -57,8 +52,7 @@ namespace FlashCards.Services.Implementations
             CreatePasswordHash(password, out byte[] passwordhash, out byte[] passwordSalt);
             user.PasswordHash = passwordhash;
             user.PasswordSalt = passwordSalt;
-            _userRepository.Add(user);
-            _unitOfWork.Save();
+            _userRepository.Create(user);
 
             return true;
         }

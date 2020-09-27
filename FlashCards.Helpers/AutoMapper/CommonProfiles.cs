@@ -10,6 +10,7 @@ namespace FlashCards.Helpers.AutoMapper
         {
             CreateMap<UserForRegister, User>();
             CreateMap<UserForRegister, UserInfo>();
+            CreateMap<CourseForCreate, Course>();
         }
     }
 }

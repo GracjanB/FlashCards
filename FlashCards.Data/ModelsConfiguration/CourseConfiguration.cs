@@ -27,6 +27,10 @@ namespace FlashCards.Data.ModelsConfiguration
                 .HasColumnType("DATETIME2")
                 .IsRequired();
 
+            builder.Property(x => x.CourseType)
+                .HasColumnType("TINYINT")
+                .IsRequired();
+
             builder.HasMany(x => x.Lessons)
                 .WithOne(x => x.Course);
 

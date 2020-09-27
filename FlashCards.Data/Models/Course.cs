@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FlashCards.Data.Enums;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -15,6 +16,8 @@ namespace FlashCards.Data.Models
         public DateTime DateCreated { get; set; }
 
         public DateTime DateModified { get; set; }
+
+        public CourseTypeEnum CourseType { get; set; }
 
 
         public int AccountCreatedId { get; set; }

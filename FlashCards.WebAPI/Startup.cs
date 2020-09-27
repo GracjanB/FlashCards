@@ -4,6 +4,8 @@ using FlashCards.Helpers.AutoMapper;
 using FlashCards.Helpers.AutoMapper.ExtendedProfiles;
 using FlashCards.Services.Abstracts;
 using FlashCards.Services.Implementations;
+using FlashCards.Services.Repositories.Abstracts;
+using FlashCards.Services.Repositories.Implementations;
 using FlashCards.Services.UnitOfWork.Abstracts;
 using FlashCards.Services.UnitOfWork.Implementations;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -37,7 +39,7 @@ namespace FlashCards.WebAPI
             services.AddAutoMapper(typeof(CommonProfiles), typeof(UserForDetailProfile));
             services.AddDbContext<FlashcardsDataModel>(config =>
             {
-                config.UseSqlServer(Configuration.GetConnectionString("AzureConnection"));
+                config.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
                 config.EnableSensitiveDataLogging();
             });
             services.AddSwaggerGen(x =>
@@ -57,8 +59,10 @@ namespace FlashCards.WebAPI
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 x.IncludeXmlComments(xmlPath);
             });
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<ICourseRepository, CourseRepository>();
+            services.AddScoped<ISubscribedCourseRepository, SubscribedCourseRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
@@ -86,6 +90,11 @@ namespace FlashCards.WebAPI
                 x.SwaggerEndpoint("/swagger/v1/swagger.json", "FlashCards API");
                 x.DefaultModelRendering(ModelRendering.Model);
             });
+
+            app.UseCors(x =>
+                x.AllowAnyOrigin()
+                 .AllowAnyMethod()
+                 .AllowAnyHeader());
 
             app.UseHttpsRedirection();
 

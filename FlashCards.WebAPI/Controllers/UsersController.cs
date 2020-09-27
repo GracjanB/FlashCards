@@ -13,6 +13,7 @@ using FlashCards.Services.UnitOfWork.Abstracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace FlashCards.WebAPI.Controllers
 {
@@ -21,17 +22,17 @@ namespace FlashCards.WebAPI.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly IUnitOfWork _unitOfWork;
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
         private readonly IAuthService _authService;
+        private readonly ILogger<UsersController> _logger;
 
-        public UsersController(IUnitOfWork unitOfWork, IMapper mapper, IAuthService authService)
+        public UsersController(IMapper mapper, IAuthService authService, IUserRepository userRepository, ILogger<UsersController> logger)
         {
-            _unitOfWork = unitOfWork;
-            _userRepository = _unitOfWork.GetUserRepository();
+            _userRepository = userRepository;
             _mapper = mapper;
             _authService = authService;
+            _logger = logger;
         }
 
         /// <summary>
@@ -67,7 +68,7 @@ namespace FlashCards.WebAPI.Controllers
         [HttpGet]
         [ProducesResponseType(200)]
         [Produces("application/json")]
-        public IActionResult GetUsers()
+        public async Task<IActionResult> GetUsers()
         {
             var users = _userRepository.GetAllUsers();
             List<UserForDetail> usersToReturn = new List<UserForDetail>();
@@ -101,19 +102,27 @@ namespace FlashCards.WebAPI.Controllers
         [ProducesResponseType(200)]
         [ProducesResponseType(401)]
         [Produces("application/json")]
-        public IActionResult ChangePassword(int id, UserForPasswordChange userForPasswordChange)
+        public async Task<IActionResult> ChangePassword(int id, UserForPasswordChange userForPasswordChange)
         {
             if (id != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
                 return Unauthorized("Bad access token");
 
-            var userFromRepo = _userRepository.Get(x => x.Id == id);
+            var userFromRepo = _userRepository.Get(id);
 
             if (!_authService.VerifyPassword(userForPasswordChange.OldPassword, userFromRepo.PasswordHash, userFromRepo.PasswordSalt))
                 return Unauthorized("Old password doesn't match");
 
             _authService.CreateNewPassword(userForPasswordChange.NewPassword, ref userFromRepo);
-            _userRepository.Update(userFromRepo);
-            _unitOfWork.Save();
+
+            try
+            {
+                await _userRepository.Update(userFromRepo);
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError("An error occured during change password", ex);
+                return StatusCode(500);
+            }
 
             return Ok("Password has been changed successfully");
         }
