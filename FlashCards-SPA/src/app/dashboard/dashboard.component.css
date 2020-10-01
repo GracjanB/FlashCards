@@ -5,3 +5,35 @@
 h1 {
   font-family: 'Kaushan Script', cursive;
 }
+
+.fa-color-logo {
+  color: #437EDE;
+}
+
+.display-name {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.list-header {
+  margin-top: 0;
+  margin-bottom: 5px;
+}
+
+.list-content {
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 0;
+}
+
+.user-link {
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.my-card-img {
+  width: 50%;
+  height: auto;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}

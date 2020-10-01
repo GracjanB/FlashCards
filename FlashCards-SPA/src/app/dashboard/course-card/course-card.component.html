@@ -1,0 +1,70 @@
+<div class="card" style="max-width: 800px;">
+  <div class="row no-gutters">
+    <div class="col-md-3">
+      <img src="assets/CourseDefaultLogo.png" class="card-img" alt="Course Logo">
+    </div>
+    <div class="col-md-9">
+      <div class="card-body">
+        <div class="container">
+          <div class="row">
+            <!-- Course Title -->
+            <div class="col-10">
+              <h2 class="card-title">
+                {{ course.name | titlecase }}
+              </h2>
+            </div>
+            <!-- Right Upper Corner Menu -->
+            <div class="col-2 text-right">
+              <div class="dropdown" dropdown [isAnimated]="true" [autoClose]="true">
+                <button class="btn btn-menu" type="button" dropdownToggle>
+                  <i class="fa fa-ellipsis-v fa-lg"></i>
+                </button>
+                <div class="dropdown-menu dropdown-menu-right" *dropdownMenu>
+                  <a class="dropdown-item">
+                    <i class="fa fa-book mr-2"></i>Szczegóły
+                  </a>
+                  <a class="dropdown-item">
+                    <i class="fa fa-book mr-2"></i>Zrezygnuj z kursu
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12 text-right">
+              <!-- Already Known Flashcards -->
+              <div>
+                <p>Poznane fiszki {{ course.knownFlashcards }}/{{ course.allFlashcards }}</p>
+              </div>
+              <!-- Progress Bar -->
+              <div class="progress">
+                <div class="progress-bar progress-bar-striped" role="progressbar"
+                     [ngStyle]="{'width': course.progress+'%'}"
+                     aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+            </div>
+          </div>
+          <div class="row justify-content-end mt-3 mr-1">
+            <!-- Start Lesson Button -->
+            <button type="button" class="btn btn-success mr-2" (click)="playNextFlashcards()">Poznaj następne</button>
+            <!-- Context menu with other kind of lessons -->
+            <div class="dropdown" [isAnimated]="true" [autoClose]="true" dropdown>
+              <button class="btn btn-primary dropdown-toggle" dropdownToggle>Inne</button>
+              <div class="dropdown-menu dropdown-menu-right mt-2" *dropdownMenu>
+                <a class="dropdown-item" (click)="playRepetition()">
+                  <i class="fa fa-book mr-2"></i>Powtórka
+                </a>
+                <a class="dropdown-item" (click)="playHardFlashcards()">
+                  <i class="fa fa-book mr-2"></i>Trudne fiszki
+                </a>
+                <a class="dropdown-item" (click)="playNextFlashcards()">
+                  <i class="fa fa-book mr-2"></i>Poznaj następne
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -20,6 +20,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { CoursesComponent } from './courses/courses.component';
 import { AnalyticsComponent } from './analytics/analytics.component';
 import { CourseGenComponent } from './course-gen/course-gen.component';
+import { CourseCardComponent } from './dashboard/course-card/course-card.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { CourseGenComponent } from './course-gen/course-gen.component';
     DashboardComponent,
     CoursesComponent,
     AnalyticsComponent,
-    CourseGenComponent
+    CourseGenComponent,
+    CourseCardComponent
   ],
   imports: [
     BrowserModule,

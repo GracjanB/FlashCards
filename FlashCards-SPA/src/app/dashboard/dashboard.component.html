@@ -1,5 +1,70 @@
 <div class="container mt-5">
-  <div class="text-center">
-    <h1 class="large-title">Dashboard will be soon!</h1>
+  <div class="row justify-content-lg-center">
+    <div class="col-12 text-center">
+      <h1>My Courses</h1>
+    </div>
+  </div>
+  <div class="row justify-content-lg-center">
+
+    <!-- User Card -->
+    <div class="col col-lg-3">
+      <div class="card">
+        <div class="card-img text-center">
+          <i class="fa fa-user-circle fa-5x mt-4 fa-color-logo"></i>
+        </div>
+        <div class="card-body">
+          <h2 class="card-title text-center display-name">{{ currentUser.displayName }}</h2>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <div class="text-center">
+              <h3 class="list-header">Poznane słowa</h3>
+              <p class="list-content">576</p>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="text-center">
+              <h3 class="list-header">Subskrybowane kursy</h3>
+              <p class="list-content">12</p>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="text-center">
+              <h3 class="list-header">Utworzone kursy</h3>
+              <p class="list-content">4</p>
+            </div>
+          </li>
+          <li class="list-group-item text-center">
+            <a class="card-link user-link">Pokaż profil</a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="card mt-5">
+        <div class="text-center">
+          <img class="card-img my-card-img" src="assets/AnalyticsTool.png" alt="Flashcard Tool Logo">
+        </div>
+        <div class="card-body">
+          <h2 class="text-center">Zobacz statystyki ze swoich lekcji!</h2>
+          <button class="btn btn-primary btn-block text-center">Sprawdź</button>
+        </div>
+      </div>
+
+      <div class="card mt-5">
+        <div class="text-center">
+          <img class="card-img my-card-img" src="assets/FlashcardsTool.png" alt="Flashcard Tool Logo">
+        </div>
+        <div class="card-body">
+          <h2 class="text-center">Utwórz swój własny kurs!</h2>
+          <button class="btn btn-primary btn-block text-center">Uruchom generator</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Courses List -->
+    <div class="col col-lg-9">
+      <app-course-card [course]="exampleCourse"></app-course-card>
+    </div>
+
   </div>
 </div>

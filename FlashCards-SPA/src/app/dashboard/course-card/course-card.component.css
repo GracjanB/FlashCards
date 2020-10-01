@@ -1,0 +1,16 @@
+.card-img {
+  border-radius: 50%;
+  margin: 20px 10px 10px;
+}
+
+.btn-menu {
+  background-color: transparent;
+}
+
+.btn:focus, .btn:active {
+  box-shadow: none !important;
+}
+
+.dropdown-item {
+  cursor: pointer;
+}
