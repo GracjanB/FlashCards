@@ -5,3 +5,12 @@
 h1 {
   font-family: 'Kaushan Script', cursive;
 }
+
+.row.first-row {
+  margin-top: 20px;
+}
+
+.row {
+  margin-left: 10px;
+  margin-bottom: 15px;
+}

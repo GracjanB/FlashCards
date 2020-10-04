@@ -6,6 +6,8 @@ import {DashboardComponent} from './dashboard/dashboard.component';
 import {CoursesComponent} from './courses/courses.component';
 import {CourseGenComponent} from './course-gen/course-gen.component';
 import {AnalyticsComponent} from './analytics/analytics.component';
+import {CourseDetailComponent} from './course-detail/course-detail.component';
+import {LessonDetailComponent} from './lesson-detail/lesson-detail.component';
 
 export const appRoutes: Routes = [
   { path: '', component: HomeComponent },
@@ -13,6 +15,8 @@ export const appRoutes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'dashboard', component: DashboardComponent },
   { path: 'courses', component: CoursesComponent },
+  { path: 'course-detail', component: CourseDetailComponent },
+  { path: 'lesson-detail', component: LessonDetailComponent },
   { path: 'newCourseTool', component: CourseGenComponent },
   { path: 'analytics', component: AnalyticsComponent },
   { path: '**', redirectTo: '', pathMatch: 'full'}

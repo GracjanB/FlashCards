@@ -20,7 +20,12 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { CoursesComponent } from './courses/courses.component';
 import { AnalyticsComponent } from './analytics/analytics.component';
 import { CourseGenComponent } from './course-gen/course-gen.component';
-import { CourseCardComponent } from './dashboard/course-card/course-card.component';
+import { SubCourseCardComponent } from './dashboard/sub-course-card/sub-course-card.component';
+import { CourseDetailComponent } from './course-detail/course-detail.component';
+import { CourseCardComponent } from './course-card/course-card.component';
+import { LessonCardComponent } from './lesson-card/lesson-card.component';
+import { LessonDetailComponent } from './lesson-detail/lesson-detail.component';
+import {TabsModule} from 'ngx-bootstrap/tabs';
 
 @NgModule({
   declarations: [
@@ -33,7 +38,11 @@ import { CourseCardComponent } from './dashboard/course-card/course-card.compone
     CoursesComponent,
     AnalyticsComponent,
     CourseGenComponent,
-    CourseCardComponent
+    SubCourseCardComponent,
+    CourseDetailComponent,
+    CourseCardComponent,
+    LessonCardComponent,
+    LessonDetailComponent
   ],
   imports: [
     BrowserModule,
@@ -44,7 +53,8 @@ import { CourseCardComponent } from './dashboard/course-card/course-card.compone
     HttpClientModule,
     ReactiveFormsModule,
     RouterModule.forRoot(appRoutes),
-    BsDropdownModule.forRoot()
+    BsDropdownModule.forRoot(),
+    TabsModule
   ],
   providers: [
     AuthService,

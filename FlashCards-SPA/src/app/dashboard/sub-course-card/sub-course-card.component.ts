@@ -3,11 +3,11 @@ import {SubscribedCourse} from '../../core/_models/subscribedCourse';
 import {AlertifyService} from '../../core/_services/alertify.service';
 
 @Component({
-  selector: 'app-course-card',
-  templateUrl: './course-card.component.html',
-  styleUrls: ['./course-card.component.css']
+  selector: 'app-sub-course-card',
+  templateUrl: './sub-course-card.component.html',
+  styleUrls: ['./sub-course-card.component.css']
 })
-export class CourseCardComponent implements OnInit {
+export class SubCourseCardComponent implements OnInit {
   @Input() course: SubscribedCourse;
 
   constructor(private alertifyService: AlertifyService) { }
