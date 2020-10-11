@@ -10,6 +10,10 @@ namespace FlashCards.Data.ModelsConfiguration
         {
             builder.HasKey(x => x.Id);
 
+            builder.Property(x => x.Name)
+                .HasColumnType("NVARCHAR(64)")
+                .IsRequired();
+
             builder.Property(x => x.Description)
                 .HasColumnType("NTEXT")
                 .HasMaxLength(1024);

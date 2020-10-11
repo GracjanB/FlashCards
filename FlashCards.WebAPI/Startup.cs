@@ -36,7 +36,9 @@ namespace FlashCards.WebAPI
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAutoMapper(typeof(CommonProfiles), typeof(UserForDetailProfile));
+            // TODO: Get all classes from assembly
+            services.AddAutoMapper(typeof(CommonProfiles), typeof(UserForDetailProfile), typeof(CourseForCreateProfile), typeof(CourseForListProfile));
+
             services.AddDbContext<FlashcardsDataModel>(config =>
             {
                 config.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));

@@ -16,6 +16,6 @@ namespace FlashCards.Models.DTOs.ToServer
         public int CourseType { get; set; }
 
         [Required(ErrorMessage = "Field is required")]
-        public int UserId { get; set; }
+        public int AccountId { get; set; }
     }
 }

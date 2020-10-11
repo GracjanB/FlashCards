@@ -3,8 +3,10 @@ using FlashCards.Data.Enums;
 using FlashCards.Data.Models;
 using FlashCards.Models.DTOs.Common;
 using FlashCards.Models.DTOs.ToServer;
+using FlashCards.Models.Exceptions;
 using FlashCards.Services.Repositories.Abstracts;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,25 +16,58 @@ namespace FlashCards.Services.Repositories.Implementations
     public class CourseRepository : ICourseRepository
     {
         private readonly FlashcardsDataModel _context;
+        private readonly ILogger<CourseRepository> _logger;
 
-        public CourseRepository(FlashcardsDataModel context)
+        public CourseRepository(FlashcardsDataModel context, ILogger<CourseRepository> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
-        public async Task Create(Course course)
+        public async Task<bool> Create(Course course)
         {
-            course.CourseInfo = new CourseInfo() { Id = 0, AmountOfEnrolled = 0 };
-            course.DateCreated = DateTime.Now;
-            course.DateModified = DateTime.Now;
-            _context.Courses.Add(course);
-            await _context.SaveChangesAsync();
+            try
+            {
+                course.CourseInfo = new CourseInfo() { Id = 0, AmountOfEnrolled = 0 };
+                course.DateCreated = DateTime.Now;
+                course.DateModified = DateTime.Now;
+                _context.Courses.Add(course);
+                await _context.SaveChangesAsync();
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred during add new course");
+                return false;
+            }
+
+            return true;
         }
 
-        public async Task Update(Course course)
+        public async Task<bool> Update(CourseForUpdate course)
         {
-            _context.Courses.Update(course);
-            await _context.SaveChangesAsync();
+            var courseFromRepo = _context.Courses.FirstOrDefault(x => x.Id == course.Id);
+
+            if(courseFromRepo == null)
+            {
+                _logger.LogWarning($"Course with given id { course.Id } does not exists");
+                throw new CourseNotFoundException();
+            }
+
+            try
+            {
+                courseFromRepo.Name = course.Name;
+                courseFromRepo.Description = course.Description;
+                courseFromRepo.CourseType = (CourseTypeEnum)course.CourseType;
+
+                await _context.SaveChangesAsync();
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred during update course");
+                return false;
+            }
+
+            return true;
         }
 
         public async Task<PagedList<Course>> GetCourses(CourseParams courseParams)
@@ -47,9 +82,9 @@ namespace FlashCards.Services.Repositories.Implementations
             return await PagedList<Course>.CreateAsync(courses, courseParams.PageNumber, courseParams.PageSize);
         }
 
-        public async Task<Course> GetCourseForUpdate(int courseId, int accountId)
+        public async Task<bool> CanEdit(int courseId, int accountId)
         {
-            return await _context.Courses.FirstOrDefaultAsync(x => x.Id == courseId && x.AccountCreatedId == accountId);
+            return await _context.Courses.AnyAsync(x => x.Id == courseId && x.AccountCreatedId == accountId);
         }
     }
 }

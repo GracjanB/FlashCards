@@ -4,6 +4,7 @@ using FlashCards.Data.Models;
 using FlashCards.Helpers.Extensions;
 using FlashCards.Models.DTOs.ToClient;
 using FlashCards.Models.DTOs.ToServer;
+using FlashCards.Models.Exceptions;
 using FlashCards.Services.Repositories.Abstracts;
 using FlashCards.Services.UnitOfWork.Abstracts;
 using Microsoft.AspNetCore.Authorization;
@@ -42,41 +43,35 @@ namespace FlashCards.WebAPI.Controllers
                 return BadRequest(ModelState);
 
             var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
-            var user = _userRepository.GetDetail(courseForCreate.UserId);
+            var accountId = _userRepository.GetUserAccountId(userId);
 
-            if (courseForCreate.UserId != userId || user == null)
+            if (courseForCreate.AccountId != accountId)
                 return Unauthorized();
 
             var courseEntity = _mapper.Map<Course>(courseForCreate);
-            courseEntity.AccountCreatedId = user.UserInfoId;
 
-            try
-            {
-                await _courseRepository.Create(courseEntity);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError("An error occured during save new course", ex);
-                return StatusCode(500);
-            }
-            
-            return Ok();
+            if (await _courseRepository.Create(courseEntity))
+                return Ok();
+
+            return StatusCode(500, new ErrorResponse { ErrorMessage = "An error occurred during create new course. Try again later." });
         }
 
         [HttpGet]
         public async Task<IActionResult> GetCourses(CourseParams courseParams)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+            throw new NotImplementedException();
 
-            if (courseParams.UserId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
-                return Unauthorized();
+            //if (!ModelState.IsValid)
+            //    return BadRequest(ModelState);
 
-            var courses = await _courseRepository.GetCourses(courseParams);
-            var coursesForReturn = _mapper.Map<IEnumerable<CourseForList>>(courses);
-            Response.AddPagination(courses.CurrentPage, courses.PageSize, courses.TotalCount, courses.TotalPages);
+            //if (courseParams.UserId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+            //    return Unauthorized();
 
-            return Ok(coursesForReturn);
+            //var courses = await _courseRepository.GetCourses(courseParams);
+            //var coursesForReturn = _mapper.Map<IEnumerable<CourseForList>>(courses);
+            //Response.AddPagination(courses.CurrentPage, courses.PageSize, courses.TotalCount, courses.TotalPages);
+
+            //return Ok(coursesForReturn);
         }
 
         [HttpPut("{id}")]
@@ -85,30 +80,23 @@ namespace FlashCards.WebAPI.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            if (courseForUpdate.UserId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var accountId = _userRepository.GetUserAccountId(userId);
+
+            if (courseForUpdate.AccountId != accountId || !await _courseRepository.CanEdit(courseForUpdate.Id, courseForUpdate.AccountId))
                 return Unauthorized();
-
-            var accountId = _userRepository.GetUserAccountId(courseForUpdate.UserId);
-            var courseFromRepo = await _courseRepository.GetCourseForUpdate(id, accountId);
-
-            if (courseFromRepo == null)
-                return Unauthorized();
-
-            courseFromRepo.Name = courseForUpdate.Name;
-            courseFromRepo.Description = courseForUpdate.Description;
-            courseFromRepo.CourseType = (CourseTypeEnum)courseForUpdate.CourseType;
 
             try
             {
-                await _courseRepository.Update(courseFromRepo);
-            }
-            catch(Exception ex)
-            {
-                _logger.LogError("An error occured during updating course", ex);
-                return StatusCode(500);
-            }
+                if (await _courseRepository.Update(courseForUpdate))
+                    return Ok();
 
-            return Ok();
+                return StatusCode(500, new ErrorResponse { ErrorMessage = "An error occurred during update course. Try again later." });
+            }
+            catch (CourseNotFoundException)
+            {
+                return BadRequest(new ErrorResponse { ErrorMessage = "Course has not been found." });
+            }
         }
     }
 }

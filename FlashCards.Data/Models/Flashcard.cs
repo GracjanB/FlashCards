@@ -1,4 +1,7 @@
-﻿namespace FlashCards.Data.Models
+﻿using FlashCards.Data.Enums;
+using System;
+
+namespace FlashCards.Data.Models
 {
     public class Flashcard
     {
@@ -16,9 +19,15 @@
 
         public string TranslatedPhraseSampleSentence { get; set; }
 
-        public string LanguageLevel { get; set; }
+        public string TranslatedPhraseComment { get; set; }
+
+        public LanguageLevelEnum LanguageLevel { get; set; }
 
         public string Category { get; set; }
+
+        public DateTime DateCreated { get; set; }
+
+        public DateTime DateModified { get; set; }
 
 
         public int LessonId { get; set; }

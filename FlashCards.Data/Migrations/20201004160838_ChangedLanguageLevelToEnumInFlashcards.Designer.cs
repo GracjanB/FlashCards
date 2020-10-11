@@ -4,14 +4,16 @@ using FlashCards.Data.DataModel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace FlashCards.Data.Migrations
 {
     [DbContext(typeof(FlashcardsDataModel))]
-    partial class FlashcardsDataModelModelSnapshot : ModelSnapshot
+    [Migration("20201004160838_ChangedLanguageLevelToEnumInFlashcards")]
+    partial class ChangedLanguageLevelToEnumInFlashcards
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -115,12 +117,6 @@ namespace FlashCards.Data.Migrations
                     b.Property<string>("Category")
                         .HasColumnType("NVARCHAR")
                         .HasMaxLength(64);
-
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("DATETIME2");
-
-                    b.Property<DateTime>("DateModified")
-                        .HasColumnType("DATETIME2");
 
                     b.Property<byte>("LanguageLevel")
                         .ValueGeneratedOnAdd()

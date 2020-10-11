@@ -36,13 +36,24 @@ namespace FlashCards.Data.ModelsConfiguration
                 .HasColumnType("NVARCHAR")
                 .HasMaxLength(128);
 
+            builder.Property(x => x.TranslatedPhraseComment)
+                .HasColumnType("NVARCHAR(128)");
+
             builder.Property(x => x.LanguageLevel)
-                .HasColumnType("NVARCHAR")
-                .HasMaxLength(4);
+                .HasColumnType("TINYINT")
+                .HasDefaultValue(Enums.LanguageLevelEnum.NotSpecified);
 
             builder.Property(x => x.Category)
                 .HasColumnType("NVARCHAR")
                 .HasMaxLength(64);
+
+            builder.Property(x => x.DateCreated)
+                .HasColumnType("DATETIME2")
+                .IsRequired();
+
+            builder.Property(x => x.DateModified)
+                .HasColumnType("DATETIME2")
+                .IsRequired();
         }
     }
 }
