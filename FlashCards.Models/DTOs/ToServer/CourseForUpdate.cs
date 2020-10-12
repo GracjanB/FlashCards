@@ -6,9 +6,6 @@ namespace FlashCards.Models.DTOs.ToServer
     public class CourseForUpdate
     {
         [Required(ErrorMessage = "Field is required")]
-        public int Id { get; set; }
-
-        [Required(ErrorMessage = "Field is required")]
         public int AccountId { get; set; }
 
         [Required(ErrorMessage = "Field is required")]
@@ -19,7 +16,7 @@ namespace FlashCards.Models.DTOs.ToServer
         public string Description { get; set; }
 
         [Required(ErrorMessage = "Field is required")]
-        [Range(0, 2, ErrorMessage = "Course type must be set")]
+        [Range(0, 2, ErrorMessage = "Course type must be set. Acceptable values are 0, 1 and 2")]
         public int CourseType { get; set; }
     }
 }

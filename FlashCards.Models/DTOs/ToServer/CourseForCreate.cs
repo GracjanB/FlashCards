@@ -11,6 +11,12 @@ namespace FlashCards.Models.DTOs.ToServer
         [MaxLength(4000, ErrorMessage = "Description characters cannot be greater than 4000")]
         public string Description { get; set; }
 
+        /* 
+         * CourseTypeEnum
+         * 0 - Public
+         * 1 - Private
+         * 2 - Draft
+         */
         [Required(ErrorMessage = "Field is required")]
         [Range(0, 2, ErrorMessage = "Course type must be set")]
         public int CourseType { get; set; }

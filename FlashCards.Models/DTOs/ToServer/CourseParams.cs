@@ -17,8 +17,6 @@
 
         public int PageNumber { get; set; } = 1;
 
-        public int UserId { get; set; }
-
         public int CourseType { get; set; }
     }
 }

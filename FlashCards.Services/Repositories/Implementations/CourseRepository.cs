@@ -43,13 +43,13 @@ namespace FlashCards.Services.Repositories.Implementations
             return true;
         }
 
-        public async Task<bool> Update(CourseForUpdate course)
+        public async Task<bool> Update(int courseId, CourseForUpdate course)
         {
-            var courseFromRepo = _context.Courses.FirstOrDefault(x => x.Id == course.Id);
+            var courseFromRepo = _context.Courses.FirstOrDefault(x => x.Id == courseId);
 
             if(courseFromRepo == null)
             {
-                _logger.LogWarning($"Course with given id { course.Id } does not exists");
+                _logger.LogWarning($"Course with given id { courseId } does not exists");
                 throw new CourseNotFoundException();
             }
 
@@ -82,9 +82,15 @@ namespace FlashCards.Services.Repositories.Implementations
             return await PagedList<Course>.CreateAsync(courses, courseParams.PageNumber, courseParams.PageSize);
         }
 
+        public async Task<Course> Get(int id)
+        {
+            return await _context.Courses.Include(x => x.CourseInfo).FirstOrDefaultAsync(x => x.Id == id);
+        }
+
         public async Task<bool> CanEdit(int courseId, int accountId)
         {
             return await _context.Courses.AnyAsync(x => x.Id == courseId && x.AccountCreatedId == accountId);
         }
+
     }
 }
