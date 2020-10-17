@@ -11,11 +11,13 @@ namespace FlashCards.Services.Repositories.Abstracts
 {
     public interface ICourseRepository 
     {
-        Task<bool> Create(Course course);
-
-        Task<bool> Update(CourseForUpdate courseForUpdate);
+        Task<Course> Get(int id);
 
         Task<PagedList<Course>> GetCourses(CourseParams courseParams);
+
+        Task<bool> Create(Course course);
+
+        Task<bool> Update(int courseId, CourseForUpdate courseForUpdate);
 
         Task<bool> CanEdit(int courseId, int accountId);
     }

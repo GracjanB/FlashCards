@@ -40,7 +40,7 @@ namespace FlashCards.WebAPI.Controllers
         /// <remarks>
         /// Sample request:
         /// 
-        ///     POST /api/auth/courses
+        ///     POST /api/courses
         ///         {
         ///             "name": "Course name",
         ///             "description": "Course sample description",
@@ -89,7 +89,7 @@ namespace FlashCards.WebAPI.Controllers
         /// <remarks>
         /// Sample request:
         /// 
-        ///     GET /api/auth/courses
+        ///     GET /api/courses
         ///         {
         ///             "pageSize": 10,
         ///             "pageNumber": 1,
@@ -154,7 +154,7 @@ namespace FlashCards.WebAPI.Controllers
         /// <remarks>
         /// Sample request:
         /// 
-        ///     PUT /api/auth/courses/{id}
+        ///     PUT /api/courses/{id}
         ///         {
         ///             "name": "New course name",
         ///             "description": "New course sample description",

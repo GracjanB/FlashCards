@@ -12,8 +12,8 @@ namespace FlashCards.Helpers.AutoMapper.ExtendedProfiles
         public UserForDetailProfile()
         {
             CreateMap<User, UserForDetail>()
-                .ForMember(dest => dest.DisplayName, options => 
-                    options.MapFrom(src => 
+                .ForMember(dest => dest.DisplayName, options =>
+                    options.MapFrom(src =>
                         src.UserInfo.DisplayName))
                 .ForMember(dest => dest.PhotoUrl, options =>
                     options.MapFrom(src =>
@@ -32,7 +32,10 @@ namespace FlashCards.Helpers.AutoMapper.ExtendedProfiles
                         src.UserInfo.Country))
                 .ForMember(dest => dest.DateCreated, options =>
                     options.MapFrom(src =>
-                        src.UserInfo.DateCreated));
+                        src.UserInfo.DateCreated))
+                .ForMember(dest => dest.AccountId, options =>
+                    options.MapFrom(src =>
+                        src.UserInfoId));
         }
     }
 }
