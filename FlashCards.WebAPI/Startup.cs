@@ -65,6 +65,7 @@ namespace FlashCards.WebAPI
             });
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<ICourseRepository, CourseRepository>();
+            services.AddScoped<ILessonRepository, LessonRepository>();
             services.AddScoped<ISubscribedCourseRepository, SubscribedCourseRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

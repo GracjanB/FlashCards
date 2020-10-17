@@ -58,7 +58,7 @@
             <remarks>
             Sample request:
             
-                POST /api/auth/courses
+                POST /api/courses
                     {
                         "name": "Course name",
                         "description": "Course sample description",
@@ -84,7 +84,7 @@
             <remarks>
             Sample request:
             
-                GET /api/auth/courses
+                GET /api/courses
                     {
                         "pageSize": 10,
                         "pageNumber": 1,
@@ -119,7 +119,7 @@
             <remarks>
             Sample request:
             
-                PUT /api/auth/courses/{id}
+                PUT /api/courses/{id}
                     {
                         "name": "New course name",
                         "description": "New course sample description",
@@ -139,6 +139,40 @@
             <response code="500">If during update occurred an error</response>
             PUT: api/courses/{id}
         </member>
+        <member name="M:FlashCards.WebAPI.Controllers.LessonsController.GetLessonDetail(System.Int32)">
+            <summary>
+            Get details about lesson
+            </summary>
+            <param name="id">Lesson ID</param>
+            <returns>Status</returns>
+            <response code="200">Detailed info about lesson</response>
+            <response code="401">If token has expired</response>
+            <response code="404">If lesson has been not found</response>
+            GET: api/courses/{courseId}/lessons/{id}
+        </member>
+        <member name="M:FlashCards.WebAPI.Controllers.LessonsController.GetLessons(System.Int32,FlashCards.Models.DTOs.ToServer.LessonParams)">
+            <summary>
+            Get paged list of courses
+            </summary>
+            <remarks>
+            Sample request:
+            
+                GET /api/courses/34/lessons
+                    {
+                        "pageSize": 10,
+                        "pageNumber": 1,
+                        "category": "home"
+                    }
+            
+            </remarks>
+            <param name="courseId">Course ID</param>
+            <param name="lessonParams">Paged list parameters</param>
+            <response code="200">Returns paged list of lessons</response>
+            <response code="400">If incoming data was invalid</response>
+            <response code="401">If token has expired</response>
+            <returns>Status</returns>
+            GET: /api/courses/{courseId}/lessons
+        </member>
         <member name="M:FlashCards.WebAPI.Controllers.LessonsController.CreateLesson(System.Int32,FlashCards.Models.DTOs.ToServer.LessonForCreate)">
             <summary>
             Creates new lesson in course
@@ -146,22 +180,49 @@
             <remarks>
             Sample request:
             
-                POST /api/courses/{courseId}/lessons
+                POST /api/courses/23/lessons
                     {
                         "name": "Things in house",
                         "description": "The lesson contains vocabulary for use in house",
-                        "category": "House"
+                        "category": "house"
                     }
                     
             </remarks>
             <param name="courseId">Course id where new lesson will be created</param>
             <param name="lessonForCreate">DTO</param>
             <response code="200">If creation was successfull</response>
-            <response code="400">If incoming data was invalid or course was not found</response>
+            <response code="400">If incoming data was invalid</response>
             <response code="401">If token has expired or user has no ability to add new lesson to course</response>
+            <response code="404">If course with given id was not found</response>
             <response code="500">If occurred error during creation a new lesson</response>
             <returns>Status</returns>
             POST: api/courses/{courseId}/lessons
+        </member>
+        <member name="M:FlashCards.WebAPI.Controllers.LessonsController.UpdateLesson(System.Int32,System.Int32,FlashCards.Models.DTOs.ToServer.LessonForUpdate)">
+            <summary>
+            Updates lesson data
+            </summary>
+            <remarks>
+            Sample request:
+            
+                PUT /api/courses/23/lessons
+                    {
+                        "name": "New lesson name",
+                        "description": "New description for lesson",
+                        "category": "law"
+                    }
+                    
+            </remarks>
+            <param name="courseId">Course ID</param>
+            <param name="id">Lesson ID</param>
+            <param name="lessonForUpdate">New data for lesson</param>
+            <response code="200">If update was successfull</response>
+            <response code="400">If incoming data was invalid</response>
+            <response code="401">If token has expired or user has no ability to add new lesson to course</response>
+            <response code="404">If lesson with given id was not found</response>
+            <response code="500">If occurred error during update a new lesson</response>
+            <returns>Status</returns>
+            PUT: api/courses/{courseId}/lessons/{lessonId}
         </member>
         <member name="M:FlashCards.WebAPI.Controllers.UsersController.GetUser(System.Int32)">
             <summary>

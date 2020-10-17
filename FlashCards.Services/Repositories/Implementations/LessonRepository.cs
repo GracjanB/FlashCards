@@ -1,5 +1,7 @@
 ﻿using FlashCards.Data.DataModel;
 using FlashCards.Data.Models;
+using FlashCards.Models.DTOs.Common;
+using FlashCards.Models.DTOs.ToServer;
 using FlashCards.Models.Exceptions;
 using FlashCards.Services.Repositories.Abstracts;
 using Microsoft.EntityFrameworkCore;
@@ -25,7 +27,7 @@ namespace FlashCards.Services.Repositories.Implementations
 
         public async Task<bool> Create(int courseId, Lesson lesson)
         {
-            var course = _context.Courses.FirstOrDefault(x => x.Id == courseId);
+            var course = _context.Courses.Include(x => x.Lessons).FirstOrDefault(x => x.Id == courseId);
 
             if(course == null)
             {
@@ -86,35 +88,37 @@ namespace FlashCards.Services.Repositories.Implementations
 
         public async Task<Lesson> Get(int id)
         {
-            return await _context.Lessons.FirstOrDefaultAsync(x => x.Id == id);
+            return await _context.Lessons.Include(x => x.Flashcards).FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task<List<Lesson>> GetLessons(int courseId)
+        public async Task<PagedList<Lesson>> GetLessons(int courseId, LessonParams lessonParams)
         {
-            return await _context.Lessons.Where(x => x.CourseId == courseId).ToListAsync();
+            var lessons = _context.Lessons.Where(x => x.CourseId == courseId).AsQueryable();
+
+            return await PagedList<Lesson>.CreateAsync(lessons, lessonParams.PageNumber, lessonParams.PageSize);
         }
 
-        public async Task<bool> Update(Lesson lesson)
+        public async Task<bool> Update(int lessonId, LessonForUpdate lessonForUpdate)
         {
-            var lessonFromRepo = _context.Lessons.FirstOrDefault(x => x.Id == lesson.Id);
+            var lessonFromRepo = _context.Lessons.FirstOrDefault(x => x.Id == lessonId);
 
             if(lessonFromRepo == null)
             {
-                _logger.LogWarning($"Lesson with given id { lesson.Id } does not exists");
+                _logger.LogWarning($"Lesson with given id { lessonId } does not exists");
                 throw new LessonNotFoundException();
             }
 
             try
             {
                 lessonFromRepo.DateModified = DateTime.Now;
-                lessonFromRepo.Name = lesson.Name;
-                lessonFromRepo.Description = lesson.Description;
-                lessonFromRepo.Category = lesson.Category;
+                lessonFromRepo.Name = lessonForUpdate.Name;
+                lessonFromRepo.Description = lessonForUpdate.Description;
+                lessonFromRepo.Category = lessonForUpdate.Category;
                 await _context.SaveChangesAsync();
             }
             catch(Exception ex)
             {
-                _logger.LogError(ex, $"An error occured during update lesson with given id { lesson.Id }");
+                _logger.LogError(ex, $"An error occured during update lesson with given id { lessonId }");
                 return false;
             }
 

@@ -1,4 +1,6 @@
 ﻿using FlashCards.Data.Models;
+using FlashCards.Models.DTOs.Common;
+using FlashCards.Models.DTOs.ToServer;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,12 +12,12 @@ namespace FlashCards.Services.Repositories.Abstracts
     {
         Task<Lesson> Get(int id);
 
-        Task<List<Lesson>> GetLessons(int courseId);
+        Task<PagedList<Lesson>> GetLessons(int courseId, LessonParams lessonParams);
 
         Task<bool> Create(int courseId, Lesson lesson);
 
         Task<bool> Create(int courseId, IEnumerable<Lesson> lessons);
 
-        Task<bool> Update(Lesson lesson);
+        Task<bool> Update(int lessonId, LessonForUpdate lessonForUpdate);
     }
 }
