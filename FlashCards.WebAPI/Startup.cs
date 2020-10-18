@@ -20,6 +20,7 @@ using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using System;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 
@@ -36,10 +37,14 @@ namespace FlashCards.WebAPI
 
         public void ConfigureServices(IServiceCollection services)
         {
-            // TODO: Get all classes from assembly
-            services.AddAutoMapper(typeof(CommonProfiles), 
-                typeof(UserForDetailProfile), typeof(CourseForCreateProfile), typeof(CourseForListProfile),
-                typeof(CourseForDetailProfile));
+            var automapperProfiles = Assembly.GetEntryAssembly()
+                                             .GetReferencedAssemblies()
+                                             .Select(Assembly.Load)
+                                             .SelectMany(x => x.GetTypes())
+                                             .Where(x => x.Name.EndsWith("Profile") && x.FullName.StartsWith("FlashCards.Helpers.AutoMapper"))
+                                             .ToList();
+            automapperProfiles.Add(typeof(CommonProfiles));
+            services.AddAutoMapper(automapperProfiles.ToArray());
 
             services.AddDbContext<FlashcardsDataModel>(config =>
             {
@@ -66,6 +71,7 @@ namespace FlashCards.WebAPI
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<ICourseRepository, CourseRepository>();
             services.AddScoped<ILessonRepository, LessonRepository>();
+            services.AddScoped<IFlashcardRepository, FlashcardRepository>();
             services.AddScoped<ISubscribedCourseRepository, SubscribedCourseRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
