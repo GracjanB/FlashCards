@@ -15,7 +15,7 @@ namespace FlashCards.Services.Repositories.Abstracts
 
         Task<PagedList<Course>> GetCourses(CourseParams courseParams);
 
-        Task<bool> Create(Course course);
+        Task<bool> Create(int accountId, Course course);
 
         Task<bool> Update(int courseId, CourseForUpdate courseForUpdate);
 

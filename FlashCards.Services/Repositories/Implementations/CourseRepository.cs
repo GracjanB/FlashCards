@@ -24,13 +24,14 @@ namespace FlashCards.Services.Repositories.Implementations
             _logger = logger;
         }
 
-        public async Task<bool> Create(Course course)
+        public async Task<bool> Create(int accountId, Course course)
         {
             try
             {
                 course.CourseInfo = new CourseInfo() { Id = 0, AmountOfEnrolled = 0 };
                 course.DateCreated = DateTime.Now;
                 course.DateModified = DateTime.Now;
+                course.AccountCreatedId = accountId;
                 _context.Courses.Add(course);
                 await _context.SaveChangesAsync();
             }

@@ -69,15 +69,10 @@ namespace FlashCards.WebAPI.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
-            var accountId = _userRepository.GetUserAccountId(userId);
-
-            if (courseForCreate.AccountId != accountId)
-                return Unauthorized();
-
+            var accountId = _userRepository.GetUserAccountId(int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value));
             var courseEntity = _mapper.Map<Course>(courseForCreate);
 
-            if (await _courseRepository.Create(courseEntity))
+            if (await _courseRepository.Create(accountId, courseEntity))
                 return Ok();
 
             return StatusCode(500, new ErrorResponse { ErrorMessage = "An error occurred during create new course. Try again later." });
@@ -110,7 +105,7 @@ namespace FlashCards.WebAPI.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
         [Produces("application/json")]
-        public async Task<IActionResult> GetCourses(CourseParams courseParams)
+        public async Task<IActionResult> GetCourses([FromQuery] CourseParams courseParams)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -158,8 +153,7 @@ namespace FlashCards.WebAPI.Controllers
         ///         {
         ///             "name": "New course name",
         ///             "description": "New course sample description",
-        ///             "courseType": 0,
-        ///             "accountId": 213
+        ///             "courseType": 0
         ///         }
         /// 
         /// Additional information:
@@ -184,10 +178,9 @@ namespace FlashCards.WebAPI.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
-            var accountId = _userRepository.GetUserAccountId(userId);
+            var accountId = _userRepository.GetUserAccountId(int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value));
 
-            if (courseForUpdate.AccountId != accountId || !await _courseRepository.CanEdit(id, courseForUpdate.AccountId))
+            if (!await _courseRepository.CanEdit(id, accountId))
                 return Unauthorized();
 
             try

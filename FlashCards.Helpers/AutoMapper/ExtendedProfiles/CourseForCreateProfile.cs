@@ -18,10 +18,7 @@ namespace FlashCards.Helpers.AutoMapper.ExtendedProfiles
                     options => options.MapFrom(x => x.Description))
 
                 .ForMember(dest => dest.CourseType,
-                    options => options.MapFrom(x => (CourseTypeEnum)x.CourseType))
-
-                .ForMember(dest => dest.AccountCreatedId,
-                    options => options.MapFrom(x => x.AccountId));
+                    options => options.MapFrom(x => (CourseTypeEnum)x.CourseType));
         }
     }
 }

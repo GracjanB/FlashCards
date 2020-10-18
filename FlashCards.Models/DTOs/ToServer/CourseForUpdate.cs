@@ -6,9 +6,6 @@ namespace FlashCards.Models.DTOs.ToServer
     public class CourseForUpdate
     {
         [Required(ErrorMessage = "Field is required")]
-        public int AccountId { get; set; }
-
-        [Required(ErrorMessage = "Field is required")]
         [StringLength(maximumLength: 40, MinimumLength = 4, ErrorMessage = "Name must be between 4 and 40 characters")]
         public string Name { get; set; }
 

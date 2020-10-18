@@ -20,8 +20,5 @@ namespace FlashCards.Models.DTOs.ToServer
         [Required(ErrorMessage = "Field is required")]
         [Range(0, 2, ErrorMessage = "Course type must be set")]
         public int CourseType { get; set; }
-
-        [Required(ErrorMessage = "Field is required")]
-        public int AccountId { get; set; }
     }
 }
