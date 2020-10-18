@@ -1,4 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import {CourseService} from '../core/_services/course.service';
+import {PaginatedResult, Pagination} from '../core/_models/common/pagination';
+import {CourseParams} from '../core/_models/_dtos/toServer/courseParams';
+import {AlertifyService} from '../core/_services/alertify.service';
+import {Course} from '../core/_models/_dtos/fromServer/course';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-courses',
@@ -6,10 +12,32 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./courses.component.css']
 })
 export class CoursesComponent implements OnInit {
+  courses: Course[];
+  pagination: Pagination;
 
-  constructor() { }
+  constructor(private courseService: CourseService,
+              private alertifyService: AlertifyService,
+              private route: ActivatedRoute) { }
 
   ngOnInit(): void {
+    this.route.data.subscribe(data => {
+      this.courses = data.courses.result;
+      this.pagination = data.courses.pagination;
+    });
+    console.log('This is from ngInit:');
+    console.log(this.courses);
+    console.log(this.pagination);
   }
 
+  getCourses() {
+    const courseParams = new CourseParams(0);
+    this.courseService.getCourses(1, 10, courseParams).subscribe(
+      (result: PaginatedResult<Course[]>) => {
+        this.courses = result.result;
+        this.pagination = result.pagination;
+      }, error => {
+        this.alertifyService.showErrorAlert(error);
+      }
+    );
+  }
 }

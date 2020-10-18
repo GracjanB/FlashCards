@@ -7,13 +7,13 @@
         </div>
         <div class="col-7">
           <div class="card-body">
-            <h1 class="card-title">Nazwa kursu</h1>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer vehicula quam vulputate diam pulvinar, at lobortis eros dapibus. Proin id ligula gravida, placerat nulla nec, ultrices urna. Phasellus posuere ex ut tellus condimentum pretium. Praesent accumsan lacinia tellus sed pulvinar. Donec nec vestibulum nisi, non luctus leo. Nunc tincidunt elit.</p>
+            <h1 class="card-title">{{ course.name }}</h1>
+            <p>{{ course.description }}</p>
           </div>
         </div>
         <div class="col-2">
           <h3>Autor</h3>
-          <p>Nazwa autora</p>
+          <p>{{ course.authorDisplayName }}</p>
         </div>
       </div>
     </div>

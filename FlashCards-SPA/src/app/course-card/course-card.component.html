@@ -5,20 +5,20 @@
       <div class="container mt-1">
         <div class="row">
           <p class="text-muted author-p">
-            Autor: <a href="#">Uzytkownik1</a>
+            Autor: <a href="#">{{ course.authorDisplayName }}</a>
           </p>
         </div>
         <div class="row">
-          <a href="#">
+          <a (click)="onCourseClick()">
             <h2 class="card-title">
-              Phrasal Verbs 3 - C1
+              {{ course.name | titlecase }}
             </h2>
           </a>
         </div>
       </div>
     </div>
     <div class="card-footer">
-      Subscriptions: 34K
+      Subscriptions: {{ course.numberOfEnrolled }}
     </div>
   </div>
 </div>

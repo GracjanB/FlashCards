@@ -5,7 +5,7 @@
     </div>
     <div class="col-9">
       <div class="form-inline pull-right">
-        <button class="btn btn-primary mr-3">Utwórz kurs</button>
+        <button class="btn btn-primary mr-3" (click)="getCourses()">Utwórz kurs</button>
         <div class="input-group">
           <input type="text" class="form-control" placeholder="Szukaj...">
           <div class="input-group-append">
@@ -19,8 +19,8 @@
   </div>
   <hr class="mt-0">
   <div class="row">
-    <div class="col-lg-3 col-md-4 col-sm-6">
-      <app-course-card></app-course-card>
+    <div *ngFor="let course of courses" class="col-lg-3 col-md-4 col-sm-6">
+      <app-course-card [course]="course"></app-course-card>
     </div>
   </div>
 </div>

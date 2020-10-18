@@ -26,6 +26,10 @@ import { CourseCardComponent } from './course-card/course-card.component';
 import { LessonCardComponent } from './lesson-card/lesson-card.component';
 import { LessonDetailComponent } from './lesson-detail/lesson-detail.component';
 import {TabsModule} from 'ngx-bootstrap/tabs';
+import {CourseService} from './core/_services/course.service';
+import {CourseAdapter} from './core/_adapters/courseAdapter';
+import {CoursesResolver} from './core/_resolvers/courses.resolver';
+import {CourseDetailResolver} from './core/_resolvers/course-detail.resolver';
 
 @NgModule({
   declarations: [
@@ -58,7 +62,11 @@ import {TabsModule} from 'ngx-bootstrap/tabs';
   ],
   providers: [
     AuthService,
-    AlertifyService
+    AlertifyService,
+    CourseService,
+    CourseAdapter,
+    CoursesResolver,
+    CourseDetailResolver
   ],
   bootstrap: [AppComponent]
 })
