@@ -133,7 +133,7 @@ namespace FlashCards.WebAPI.Controllers
         [Produces("application/json")]
         public async Task<IActionResult> GetCourse(int id)
         {
-            var courseFromRepo = await _courseRepository.Get(id);
+            var courseFromRepo = await _courseRepository.GetDetail(id);
 
             if (courseFromRepo == null)
                 return BadRequest(new ErrorResponse { ErrorMessage = "No course found with given id." });

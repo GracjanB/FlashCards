@@ -123,8 +123,7 @@
                     {
                         "name": "New course name",
                         "description": "New course sample description",
-                        "courseType": 0,
-                        "accountId": 213
+                        "courseType": 0
                     }
             
             Additional information:
@@ -138,6 +137,77 @@
             <response code="401">If token has expired or user has no access to edit this course</response>
             <response code="500">If during update occurred an error</response>
             PUT: api/courses/{id}
+        </member>
+        <member name="M:FlashCards.WebAPI.Controllers.FlashcardsController.GetFlashcards(System.Int32)">
+            <summary>
+            Get all flashcards from lesson
+            </summary>
+            <param name="lessonId"></param>
+            <returns></returns>
+            GET: api/courses/{courseId}/lessons/{lessonId}/flashcards/all
+        </member>
+        <member name="M:FlashCards.WebAPI.Controllers.FlashcardsController.CreateFlashcard(System.Int32,System.Int32,FlashCards.Models.DTOs.ToServer.FlashcardForCreate)">
+            <summary>
+            Creates new flashcard to lesson
+            </summary>
+            <remarks>
+            Sample request:
+            
+                POST /api/courses/34/lessons/232/flashcards
+                    {
+                        "phrase": "Additional",
+                        "phrasePronunciation": "əˈdiSH(ə)n(ə)l",
+                        "phraseSampleSentence": "I have an additional monitor for work",
+                        "phraseComment": "",
+                        "translatedPhrase": "Dodatkowy",
+                        "translatedPhraseSampleSentence": "Mam dodatkowy monitor do pracy",
+                        "translatedPhraseComment": "",
+                        "languageLevel": 2,
+                        "category": "miscellaneous"
+                    }
+                    
+            </remarks>
+            <param name="courseId">Course ID</param>
+            <param name="lessonId">Lesson ID</param>
+            <param name="flashcardForCreate">Flashcard DTO</param>
+            <response code="200">If create was successful</response>
+            <response code="400">If sent data was invalid (returns model state)</response>
+            <response code="401">If token has expired or user has no access to edit this course</response>
+            <response code="404">If lesson with given id has not been found</response>
+            <response code="500">If during create occurred an error</response>
+            <returns>Status</returns>
+            POST api/courses/{courseId}/lessons/{lessonId}/flashcards
+        </member>
+        <member name="M:FlashCards.WebAPI.Controllers.FlashcardsController.UpdateFlashcard(System.Int32,System.Int32,FlashCards.Models.DTOs.ToServer.FlashcardForUpdate)">
+            <summary>
+            Updates flashcard data
+            </summary>
+            <remarks>
+            Sample request:
+            
+                POST /api/courses/34/lessons/232/flashcards
+                    {
+                        "phrase": "Additional",
+                        "phrasePronunciation": "əˈdiSH(ə)n(ə)l",
+                        "phraseSampleSentence": "I have an additional monitor for work",
+                        "phraseComment": "",
+                        "translatedPhrase": "Dodatkowy",
+                        "translatedPhraseSampleSentence": "Mam dodatkowy monitor do pracy",
+                        "translatedPhraseComment": "",
+                        "languageLevel": 2,
+                        "category": "miscellaneous"
+                    }
+                    
+            </remarks>
+            <param name="courseId">Course ID</param>
+            <param name="id">Flashcard ID</param>
+            <param name="flashcardForUpdate">Flashcard DTO</param>
+            <response code="200">If create was successful</response>
+            <response code="400">If sent data was invalid (returns model state)</response>
+            <response code="401">If token has expired or user has no access to edit this course</response>
+            <response code="404">If lesson with given id has not been found</response>
+            <response code="500">If during create occurred an error</response>
+            <returns>Status</returns>
         </member>
         <member name="M:FlashCards.WebAPI.Controllers.LessonsController.GetLessonDetail(System.Int32)">
             <summary>
@@ -205,7 +275,7 @@
             <remarks>
             Sample request:
             
-                PUT /api/courses/23/lessons
+                PUT /api/courses/23/lessons/546
                     {
                         "name": "New lesson name",
                         "description": "New description for lesson",

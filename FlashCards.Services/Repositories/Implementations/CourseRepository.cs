@@ -88,6 +88,14 @@ namespace FlashCards.Services.Repositories.Implementations
             return await _context.Courses.Include(x => x.CourseInfo).FirstOrDefaultAsync(x => x.Id == id);
         }
 
+        public async Task<Course> GetDetail(int id)
+        {
+            return await _context.Courses
+                                 .Include(x => x.CourseInfo)
+                                 .Include(x => x.Lessons)
+                                 .FirstOrDefaultAsync(x => x.Id == id);
+        }
+
         public async Task<bool> CanEdit(int courseId, int accountId)
         {
             return await _context.Courses.AnyAsync(x => x.Id == courseId && x.AccountCreatedId == accountId);

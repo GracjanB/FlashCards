@@ -16,7 +16,8 @@ namespace FlashCards.Helpers.AutoMapper.ExtendedProfiles
                 .ForMember(dest => dest.DateCreated, options => options.MapFrom(src => src.DateCreated.ToShortDateString()))
                 .ForMember(dest => dest.DateModified, options => options.MapFrom(src => src.DateModified.ToShortDateString()))
                 .ForMember(dest => dest.CourseType, options => options.MapFrom(src => src.CourseType))
-                .ForMember(dest => dest.AmountOfEnrolled, options => options.MapFrom(src => src.CourseInfo.AmountOfEnrolled));
+                .ForMember(dest => dest.AmountOfEnrolled, options => options.MapFrom(src => src.CourseInfo.AmountOfEnrolled))
+                .ForMember(dest => dest.Lessons, options => options.MapFrom(src => src.Lessons));
         }
     }
 }

@@ -15,6 +15,7 @@ namespace FlashCards.Helpers.AutoMapper
             CreateMap<LessonForCreate, Lesson>();
             CreateMap<Lesson, LessonForList>();
             CreateMap<Flashcard, FlashcardForList>();
+            CreateMap<FlashcardForCreate, Flashcard>();
         }
     }
 }

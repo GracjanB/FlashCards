@@ -13,6 +13,8 @@ namespace FlashCards.Services.Repositories.Abstracts
     {
         Task<Course> Get(int id);
 
+        Task<Course> GetDetail(int id);
+
         Task<PagedList<Course>> GetCourses(CourseParams courseParams);
 
         Task<bool> Create(int accountId, Course course);

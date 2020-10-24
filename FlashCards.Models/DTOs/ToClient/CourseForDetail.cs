@@ -1,4 +1,6 @@
-﻿namespace FlashCards.Models.DTOs.ToClient
+﻿using System.Collections.Generic;
+
+namespace FlashCards.Models.DTOs.ToClient
 {
     public class CourseForDetail
     {
@@ -17,5 +19,7 @@
         public string DateModified { get; set; }
 
         public string AmountOfEnrolled { get; set; }
+
+        public ICollection<LessonForList> Lessons { get; set; }
     }
 }
