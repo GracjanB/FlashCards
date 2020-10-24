@@ -18,11 +18,11 @@
       </div>
     </div>
   </div>
-  <h1 class="mt-4">Tu będą lekcje</h1>
+  <h1 class="mt-4">Lekcje</h1>
   <hr>
   <div class="row">
-    <div class="col-lg-3 col-md-4 col-sm-6">
-      <app-lesson-card></app-lesson-card>
+    <div *ngFor="let lesson of course.lessons" class="col-lg-3 col-md-4 col-sm-6">
+      <app-lesson-card [lesson]="lesson"></app-lesson-card>
     </div>
   </div>
 </div>

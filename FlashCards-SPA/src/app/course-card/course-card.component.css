@@ -1,3 +1,7 @@
 .card-body {
   padding-top: 5px;
 }
+
+a {
+  cursor: pointer;
+}

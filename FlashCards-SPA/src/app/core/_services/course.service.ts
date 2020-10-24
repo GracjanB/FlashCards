@@ -9,6 +9,7 @@ import { map } from 'rxjs/operators';
 import { CourseAdapter } from '../_adapters/courseAdapter';
 import { CourseForUpdate } from '../_models/_dtos/toServer/courseForUpdate';
 import { CourseForCreate } from '../_models/_dtos/toServer/courseForCreate';
+import { CourseDetailed } from '../_models/_dtos/fromServer/courseDetailed';
 
 @Injectable({
   providedIn: 'root'
@@ -46,7 +47,7 @@ export class CourseService {
     }));
   }
 
-  getCourse(id: number): Observable<Course> {
+  getCourse(id: number): Observable<CourseDetailed> {
     const url = this.baseUrl + '/' + id;
     return this.httpClient.get(url, {
       headers: new HttpHeaders({
@@ -55,7 +56,7 @@ export class CourseService {
       observe: 'response'
     }).pipe(
       map(response => {
-        return this.adapter.adaptCourse(response.body);
+        return this.adapter.adaptCourseDetailed(response.body);
       })
     );
   }

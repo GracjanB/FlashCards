@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Course} from '../core/_models/_dtos/fromServer/course';
 import {ActivatedRoute} from '@angular/router';
+import {CourseDetailed} from '../core/_models/_dtos/fromServer/courseDetailed';
 
 @Component({
   selector: 'app-course-detail',
@@ -8,13 +9,14 @@ import {ActivatedRoute} from '@angular/router';
   styleUrls: ['./course-detail.component.css']
 })
 export class CourseDetailComponent implements OnInit {
-  course: Course;
+  course: CourseDetailed;
 
   constructor(private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.route.data.subscribe(data => {
       this.course = data.course;
+      console.log(this.course);
     });
   }
 

@@ -30,6 +30,11 @@ import {CourseService} from './core/_services/course.service';
 import {CourseAdapter} from './core/_adapters/courseAdapter';
 import {CoursesResolver} from './core/_resolvers/courses.resolver';
 import {CourseDetailResolver} from './core/_resolvers/course-detail.resolver';
+import {LessonAdapter} from './core/_adapters/lessonAdapter';
+import {FlashcardAdapter} from './core/_adapters/flashcardAdapter';
+import {LessonService} from './core/_services/lesson.service';
+import {MapExtensions} from './core/_extensions/mapExtensions';
+import {LessonDetailResolver} from './core/_resolvers/lesson-detail.resolver';
 
 @NgModule({
   declarations: [
@@ -66,7 +71,12 @@ import {CourseDetailResolver} from './core/_resolvers/course-detail.resolver';
     CourseService,
     CourseAdapter,
     CoursesResolver,
-    CourseDetailResolver
+    CourseDetailResolver,
+    LessonAdapter,
+    FlashcardAdapter,
+    LessonService,
+    MapExtensions,
+    LessonDetailResolver
   ],
   bootstrap: [AppComponent]
 })
