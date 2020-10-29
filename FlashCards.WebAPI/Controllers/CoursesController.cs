@@ -73,7 +73,10 @@ namespace FlashCards.WebAPI.Controllers
             var courseEntity = _mapper.Map<Course>(courseForCreate);
 
             if (await _courseRepository.Create(accountId, courseEntity))
-                return Ok();
+            {
+                var courseForReturn = _mapper.Map<CourseForDetail>(courseEntity);
+                return Ok(courseForReturn);
+            }
 
             return StatusCode(500, new ErrorResponse { ErrorMessage = "An error occurred during create new course. Try again later." });
         }

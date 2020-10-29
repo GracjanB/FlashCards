@@ -145,7 +145,10 @@ namespace FlashCards.WebAPI.Controllers
             try
             {
                 if (await _lessonRepository.Create(courseId, lessonEntity))
-                    return Ok();
+                {
+                    var lessonToReturn = _mapper.Map<LessonForDetail>(lessonEntity);
+                    return Ok(lessonToReturn);
+                }
 
                 return StatusCode(500, new ErrorResponse { ErrorMessage = "An error occurred during create new lesson. Try again later." });
             }
