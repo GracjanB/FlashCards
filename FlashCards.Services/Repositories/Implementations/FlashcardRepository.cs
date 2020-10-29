@@ -1,5 +1,7 @@
 ﻿using FlashCards.Data.DataModel;
+using FlashCards.Data.Enums;
 using FlashCards.Data.Models;
+using FlashCards.Models.DTOs.ToServer;
 using FlashCards.Models.Exceptions;
 using FlashCards.Services.Repositories.Abstracts;
 using Microsoft.EntityFrameworkCore;
@@ -7,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -89,13 +92,18 @@ namespace FlashCards.Services.Repositories.Implementations
             return await _context.Flashcards.Where(x => x.LessonId == lessonId).ToListAsync();
         }
 
-        public async Task<bool> Update(Flashcard flashcard)
+        public async Task<Flashcard> GetFlashcard(int id)
         {
-            var flashcardFromRepo = _context.Flashcards.FirstOrDefault(x => x.Id == flashcard.Id);
+            return await _context.Flashcards.FirstOrDefaultAsync(x => x.Id == id);
+        }
+
+        public async Task<bool> Update(int id, FlashcardForUpdate flashcard)
+        {
+            var flashcardFromRepo = _context.Flashcards.FirstOrDefault(x => x.Id == id);
 
             if(flashcardFromRepo == null)
             {
-                _logger.LogWarning($"Flashcard with given id { flashcard.Id } does not exists");
+                _logger.LogWarning($"Flashcard with given id { id } does not exists");
                 throw new FlashcardNotFoundException();
             }
 
@@ -108,7 +116,7 @@ namespace FlashCards.Services.Repositories.Implementations
                 flashcardFromRepo.TranslatedPhrase = flashcard.TranslatedPhrase;
                 flashcardFromRepo.TranslatedPhraseSampleSentence = flashcard.TranslatedPhraseSampleSentence;
                 flashcardFromRepo.TranslatedPhraseComment = flashcard.TranslatedPhraseComment;
-                flashcardFromRepo.LanguageLevel = flashcard.LanguageLevel;
+                flashcardFromRepo.LanguageLevel = (LanguageLevelEnum)flashcard.LanguageLevel;
                 flashcardFromRepo.Category = flashcard.Category;
                 flashcardFromRepo.DateModified = DateTime.Now;
 
@@ -116,7 +124,7 @@ namespace FlashCards.Services.Repositories.Implementations
             }
             catch(Exception ex)
             {
-                _logger.LogError(ex, $"An error occurred during update flashcard with given id { flashcard.Id }");
+                _logger.LogError(ex, $"An error occurred during update flashcard with given id { id }");
                 return false;
             }
 
