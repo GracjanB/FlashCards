@@ -35,6 +35,12 @@ import {FlashcardAdapter} from './core/_adapters/flashcardAdapter';
 import {LessonService} from './core/_services/lesson.service';
 import {MapExtensions} from './core/_extensions/mapExtensions';
 import {LessonDetailResolver} from './core/_resolvers/lesson-detail.resolver';
+import { CourseFormComponent } from './course-gen/course-form/course-form.component';
+import { LessonFormComponent } from './course-gen/lesson-form/lesson-form.component';
+import { LessonListComponent } from './course-gen/lesson-list/lesson-list.component';
+import { FlashcardFormComponent } from './course-gen/flashcard-form/flashcard-form.component';
+import {CollapseModule} from 'ngx-bootstrap/collapse';
+import {FlashcardService} from './core/_services/flashcard.service';
 
 @NgModule({
   declarations: [
@@ -51,20 +57,25 @@ import {LessonDetailResolver} from './core/_resolvers/lesson-detail.resolver';
     CourseDetailComponent,
     CourseCardComponent,
     LessonCardComponent,
-    LessonDetailComponent
+    LessonDetailComponent,
+    CourseFormComponent,
+    LessonFormComponent,
+    LessonListComponent,
+    FlashcardFormComponent
   ],
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    LayoutModule,
-    NgbModule,
-    FormsModule,
-    HttpClientModule,
-    ReactiveFormsModule,
-    RouterModule.forRoot(appRoutes),
-    BsDropdownModule.forRoot(),
-    TabsModule
-  ],
+    imports: [
+        BrowserModule,
+        BrowserAnimationsModule,
+        LayoutModule,
+        NgbModule,
+        FormsModule,
+        HttpClientModule,
+        ReactiveFormsModule,
+        RouterModule.forRoot(appRoutes),
+        BsDropdownModule.forRoot(),
+        TabsModule,
+        CollapseModule
+    ],
   providers: [
     AuthService,
     AlertifyService,
@@ -76,7 +87,8 @@ import {LessonDetailResolver} from './core/_resolvers/lesson-detail.resolver';
     FlashcardAdapter,
     LessonService,
     MapExtensions,
-    LessonDetailResolver
+    LessonDetailResolver,
+    FlashcardService
   ],
   bootstrap: [AppComponent]
 })

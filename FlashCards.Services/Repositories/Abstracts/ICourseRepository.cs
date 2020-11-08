@@ -22,5 +22,7 @@ namespace FlashCards.Services.Repositories.Abstracts
         Task<bool> Update(int courseId, CourseForUpdate courseForUpdate);
 
         Task<bool> CanEdit(int courseId, int accountId);
+
+        bool Exists(int id);
     }
 }

@@ -1,4 +1,5 @@
 export class FlashcardForUpdate {
+  id: number;
   phrase: string;
   phrasePronunciation: string;
   phraseSampleSentence: string;
@@ -6,17 +7,18 @@ export class FlashcardForUpdate {
   translatedPhrase: string;
   translatedPhraseSampleSentence: string;
   translatedPhraseComment: string;
-  languageLevel: string;
+  languageLevel: number;
   category: string;
 
-  constructor(phrase: string,
+  constructor(id: number,
+              phrase: string,
               phrasePronunciation: string,
               phraseSampleSentence: string,
               phraseComment: string,
               translatedPhrase: string,
               translatedPhraseSampleSentence: string,
               translatedPhraseComment: string,
-              languageLevel: string,
+              languageLevel: number,
               category: string) {
     this.phrase = phrase;
     this.phrasePronunciation = phrasePronunciation;

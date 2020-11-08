@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Course} from '../core/_models/_dtos/fromServer/course';
+import {CourseShort} from '../core/_models/_dtos/fromServer/courseShort';
 import {Router} from '@angular/router';
 
 @Component({
@@ -8,7 +8,7 @@ import {Router} from '@angular/router';
   styleUrls: ['./course-card.component.css']
 })
 export class CourseCardComponent implements OnInit {
-  @Input() course: Course;
+  @Input() course: CourseShort;
 
   constructor(private router: Router) { }
 

@@ -1,0 +1,20 @@
+<div class="container mt-2">
+  <div class="row mt-0">
+    <div class="col-lg-6">
+      <h2>Lekcje</h2>
+    </div>
+    <div class="col-lg-6">
+      <span class="pull-right">
+        <button type="button" class="btn btn-primary btn-success" (click)="onAddNewLesson()">
+          Dodaj nową lekcję
+        </button>
+      </span>
+    </div>
+  </div>
+  <hr>
+  <div class="row">
+    <div class="col-lg-2 col-md-4 col-sm-6" *ngFor="let lesson of lessons">
+      <app-lesson-card [lesson]="lesson" (lessonSelected)="onLessonClick($event)"></app-lesson-card>
+    </div>
+  </div>
+</div>

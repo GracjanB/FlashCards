@@ -1,0 +1,57 @@
+<div class="container mt-2 mb-5">
+  <div class="row justify-content-center">
+    <div class="col-12">
+      <form [formGroup]="courseForm" (ngSubmit)="createCourse()">
+        <!-- Course Name -->
+        <div class="form-group ml-3 mt-2">
+          <label for="name">Nazwa kursu</label>
+          <input id="name" class="form-control" type="text" formControlName="name" placeholder="Nazwa kursu"
+                 style="max-width: 500px;"
+                 [ngClass]="{'is-invalid': courseForm.get('name').errors && courseForm.get('name').touched}">
+          <div class="invalid-feedback"
+               *ngIf="courseForm.get('name').touched && courseForm.get('name').hasError('required')">
+            Nazwa jest wymagana
+          </div>
+          <div class="invalid-feedback"
+               *ngIf="courseForm.get('name').touched && courseForm.get('name').hasError('minlength')">
+            Minimalna ilość znaków to 4
+          </div>
+          <div class="invalid-feedback"
+               *ngIf="courseForm.get('name').touched && courseForm.get('name').hasError('maxlength')">
+            Maksymalna ilość znaków to 64
+          </div>
+        </div>
+        <!-- Course Description -->
+        <div class="form-group ml-3">
+          <label for="description">Opis kursu</label>
+          <textarea id="description" class="form-control" formControlName="description" placeholder="Opis kursu"
+                    style="max-width: 500px; max-height: 200px;"
+                    [ngClass]="{'is-invalid': courseForm.get('description').errors && courseForm.get('description').touched}">
+                    </textarea>
+          <div class="invalid-feedback"
+               *ngIf="courseForm.get('description').touched && courseForm.get('description').hasError('maxlength')">
+            Maksymalna ilość znaków to 1024
+          </div>
+        </div>
+        <!-- Course Type -->
+        <div class="form-group ml-3">
+          <label for="courseType">Dostępność</label>
+          <select id="courseType" class="form-control" style="max-width: 500px;" formControlName="courseType"
+                  [ngClass]="{'is-invalid': courseForm.get('courseType').errors && courseForm.get('courseType').touched}">
+            <option value="0">Publiczny</option>
+            <option value="1">Prywatny</option>
+            <option value="2">Wersja robocza</option>
+          </select>
+          <div class="invalid-feedback"
+               *ngIf="courseForm.get('courseType').touched && courseForm.get('courseType').hasError('required')">
+            Typ kursu jest wymagany
+          </div>
+        </div>
+        <div class="row justify-content-end mr-5 mb-2">
+          <button class="btn btn-primary btn-success mr-3" type="submit">Zapisz</button>
+          <button class="btn btn-primary btn-info" type="button">Edytuj</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

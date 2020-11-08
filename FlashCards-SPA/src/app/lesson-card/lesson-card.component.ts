@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {LessonShort} from '../core/_models/_dtos/fromServer/lessonShort';
 import {Router} from '@angular/router';
 
@@ -9,6 +9,7 @@ import {Router} from '@angular/router';
 })
 export class LessonCardComponent implements OnInit {
   @Input() lesson: LessonShort;
+  @Output() lessonSelected: EventEmitter<LessonShort> = new EventEmitter<LessonShort>();
 
   constructor(private router: Router) { }
 
@@ -16,8 +17,9 @@ export class LessonCardComponent implements OnInit {
   }
 
   onLessonClick(): void {
-    const url = 'courses/' + this.lesson.courseId + /lessons/ + this.lesson.id;
-    this.router.navigate([url]);
+    // const url = 'courses/' + this.lesson.courseId + /lessons/ + this.lesson.id;
+    // this.router.navigate([url]);
+    this.lessonSelected.emit(this.lesson);
   }
 
 }

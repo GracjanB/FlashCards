@@ -14,3 +14,7 @@ h1 {
   margin-left: 10px;
   margin-bottom: 15px;
 }
+
+.nav-item {
+  cursor: pointer;
+}

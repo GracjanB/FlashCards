@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Course } from '../_models/_dtos/fromServer/course';
+import { CourseShort } from '../_models/_dtos/fromServer/courseShort';
 import { LessonAdapter } from './lessonAdapter';
 import { CourseDetailed } from '../_models/_dtos/fromServer/courseDetailed';
 import { LessonShort } from '../_models/_dtos/fromServer/lessonShort';
+import {CourseForCreate} from '../_models/_dtos/toServer/courseForCreate';
+import {CourseForUpdate} from '../_models/_dtos/toServer/courseForUpdate';
 
 @Injectable({
   providedIn: 'root'
@@ -11,8 +13,8 @@ export class CourseAdapter {
 
   constructor(private lessonAdapter: LessonAdapter) { }
 
-  adaptCourse(course: any): Course {
-    return new Course(
+  adaptCourse(course: any): CourseShort {
+    return new CourseShort(
       course.id,
       course.name,
       course.description,
@@ -20,7 +22,8 @@ export class CourseAdapter {
       course.numberOfEnrolled,
       course.authorDisplayName,
       course.numberOfRatings,
-      course.averageRating);
+      course.averageRating,
+      course.courseType);
   }
 
   adaptCourseDetailed(course: any): CourseDetailed {
@@ -39,6 +42,15 @@ export class CourseAdapter {
       course.authorDisplayName,
       course.numberOfRatings,
       course.averageRating,
+      course.courseType,
       lessons);
+  }
+
+  adaptCourseForCreate(course: any): CourseForCreate {
+    return new CourseForCreate(course.name, course.description, Number(course.courseType));
+  }
+
+  adaptCourseForUpdate(course: any): CourseForUpdate {
+    return new CourseForUpdate(course.name, course.description, Number(course.courseType));
   }
 }

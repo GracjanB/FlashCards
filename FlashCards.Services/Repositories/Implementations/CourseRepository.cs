@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
 namespace FlashCards.Services.Repositories.Implementations
@@ -101,5 +102,9 @@ namespace FlashCards.Services.Repositories.Implementations
             return await _context.Courses.AnyAsync(x => x.Id == courseId && x.AccountCreatedId == accountId);
         }
 
+        public bool Exists(int id)
+        {
+            return _context.Courses.Any(x => x.Id == id);
+        }
     }
 }

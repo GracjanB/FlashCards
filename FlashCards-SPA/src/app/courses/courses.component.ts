@@ -3,7 +3,7 @@ import {CourseService} from '../core/_services/course.service';
 import {PaginatedResult, Pagination} from '../core/_models/common/pagination';
 import {CourseParams} from '../core/_models/_dtos/toServer/courseParams';
 import {AlertifyService} from '../core/_services/alertify.service';
-import {Course} from '../core/_models/_dtos/fromServer/course';
+import {CourseShort} from '../core/_models/_dtos/fromServer/courseShort';
 import {ActivatedRoute} from '@angular/router';
 
 @Component({
@@ -12,7 +12,7 @@ import {ActivatedRoute} from '@angular/router';
   styleUrls: ['./courses.component.css']
 })
 export class CoursesComponent implements OnInit {
-  courses: Course[];
+  courses: CourseShort[];
   pagination: Pagination;
 
   constructor(private courseService: CourseService,
@@ -32,7 +32,7 @@ export class CoursesComponent implements OnInit {
   getCourses() {
     const courseParams = new CourseParams(0);
     this.courseService.getCourses(1, 10, courseParams).subscribe(
-      (result: PaginatedResult<Course[]>) => {
+      (result: PaginatedResult<CourseShort[]>) => {
         this.courses = result.result;
         this.pagination = result.pagination;
       }, error => {

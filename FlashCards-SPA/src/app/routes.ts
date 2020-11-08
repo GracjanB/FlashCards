@@ -11,6 +11,10 @@ import { LessonDetailComponent } from './lesson-detail/lesson-detail.component';
 import { CoursesResolver } from './core/_resolvers/courses.resolver';
 import { CourseDetailResolver } from './core/_resolvers/course-detail.resolver';
 import { LessonDetailResolver } from './core/_resolvers/lesson-detail.resolver';
+import {CourseFormComponent} from './course-gen/course-form/course-form.component';
+import {LessonListComponent} from './course-gen/lesson-list/lesson-list.component';
+import {LessonFormComponent} from './course-gen/lesson-form/lesson-form.component';
+import {FlashcardFormComponent} from './course-gen/flashcard-form/flashcard-form.component';
 
 export const appRoutes: Routes = [
   { path: '', component: HomeComponent },
@@ -20,7 +24,7 @@ export const appRoutes: Routes = [
   { path: 'courses', component: CoursesComponent, resolve: { courses: CoursesResolver }},
   { path: 'courses/:id', component: CourseDetailComponent, resolve: { course: CourseDetailResolver }},
   { path: 'courses/:courseId/lessons/:id', component: LessonDetailComponent, resolve: { lesson: LessonDetailResolver }},
-  { path: 'newCourseTool', component: CourseGenComponent },
+  { path: 'course-generator', component: CourseGenComponent },
   { path: 'analytics', component: AnalyticsComponent },
   { path: '**', redirectTo: '', pathMatch: 'full'}
 ];

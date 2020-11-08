@@ -1,0 +1,217 @@
+<div class="container mt-2 mb-2">
+  <div class="row justify-content-center">
+    <div class="col-12">
+      <div class="row justify-content-center mt-2">
+        <div class="col-10">
+          <div class="card">
+            <div *ngIf="lesson.flashcards.length == 0 || lesson.flashcards == null" class="card-header">
+              Brak fiszek
+            </div>
+            <div *ngIf="lesson.flashcards.length > 0" class="card-header">
+              Fiszki - {{ lesson.flashcards.length }}
+            </div>
+            <div class="card-body">
+              <table class="table table-hover">
+                <tbody>
+                <tr *ngFor="let flashcard of lesson.flashcards">
+                  <td>{{ flashcard.phrase }}</td>
+                  <td>{{ flashcard.translatedPhrase }}</td>
+                  <td>
+                    <button class="btn btn-primary btn-sm mr-1" type="button">Edit</button>
+                    <button class="btn btn-secondary btn-sm" type="button">Delete</button>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="row justify-content-end mr-2 mt-3 mb-3">
+            <button type="button" class="btn btn-primary" role="button"
+                    (click)="flashcardFormCollapsed = !flashcardFormCollapsed">
+              Dodaj nową fiszkę
+            </button>
+            <!--
+              Przycisk ma sterować tym divem poniżej,
+              w sensie nadawać mu klasę collapse lub nie (zrobić jako toggle)
+            -->
+          </div>
+        </div>
+      </div>
+
+      <div [collapse]="flashcardFormCollapsed" [isAnimated]="true">
+        <div class="row justify-content-center">
+          <div class="col-10">
+            <div class="card card-body">
+              <form [formGroup]="flashcardForm" (ngSubmit)="createFlashcard()">
+                <div class="row">
+                  <div class="col-6">
+                    <h1 class="text-center">Angielski</h1>
+
+                    <!-- Phrase -->
+                    <div class="form-group">
+                      <label for="phrase">Słowo/wyrażenie</label>
+                      <input id="phrase" class="form-control" type="email" placeholder="Wprowadź słowo"
+                             formControlName="phrase"
+                             [ngClass]="{'is-invalid': flashcardForm.get('phrase').errors &&
+                        flashcardForm.get('phrase').touched}">
+                      <div class="invalid-feedback"
+                           *ngIf="flashcardForm.get('phrase').touched &&
+                           flashcardForm.get('phrase').hasError('required')">
+                        Pole jest wymagane
+                      </div>
+                      <div class="invalid-feedback"
+                           *ngIf="flashcardForm.get('phrase').touched &&
+                           flashcardForm.get('phrase').hasError('minlength')">
+                        Minimalna ilość znaków to 2
+                      </div>
+                      <div class="invalid-feedback"
+                           *ngIf="flashcardForm.get('phrase').touched &&
+                           flashcardForm.get('phrase').hasError('maxlength')">
+                        Maksymalna ilość znaków to 64
+                      </div>
+                    </div>
+
+                    <!-- Phrase Pronunciation -->
+                    <div class="form-group">
+                      <label for="phrasePronunciation">Wymowa</label>
+                      <input id="phrasePronunciation" class="form-control" type="email"
+                             placeholder="Wprowadź wymowę słowa/wyrażenia" formControlName="phrasePronunciation"
+                             [ngClass]="{'is-invalid': flashcardForm.get('phrasePronunciation').errors &&
+                             flashcardForm.get('phrasePronunciation').touched}">
+                      <div class="invalid-feedback"
+                           *ngIf="flashcardForm.get('phrasePronunciation').touched &&
+                           flashcardForm.get('phrasePronunciation').hasError('maxlength')">
+                        Maksymalna ilość znaków to 64
+                      </div>
+                    </div>
+
+                    <!-- Phrase Sample Sentence -->
+                    <div class="form-group">
+                      <label for="phraseSampleSentence">Przykładowe zdanie</label>
+                      <input id="phraseSampleSentence" class="form-control" type="email"
+                             placeholder="Wprowadź przykładowe zdanie" formControlName="phraseSampleSentence"
+                             [ngClass]="{'is-invalid': flashcardForm.get('phraseSampleSentence').errors &&
+                             flashcardForm.get('phraseSampleSentence').touched}">
+                      <div class="invalid-feedback"
+                           *ngIf="flashcardForm.get('phraseSampleSentence').touched &&
+                           flashcardForm.get('phraseSampleSentence').hasError('maxlength')">
+                        Maksymalna ilość znaków to 128
+                      </div>
+                    </div>
+
+                    <!-- Phrase Comment -->
+                    <div class="form-group">
+                      <label for="phraseComment">Komentarz</label>
+                      <input id="phraseComment" class="form-control" type="email"
+                             placeholder="Wprowadź komentarz" formControlName="phraseComment"
+                             [ngClass]="{'is-invalid': flashcardForm.get('phraseComment').errors &&
+                             flashcardForm.get('phraseComment').touched}">
+                      <div class="invalid-feedback"
+                           *ngIf="flashcardForm.get('phraseComment').touched &&
+                           flashcardForm.get('phraseComment').hasError('maxlength')">
+                        Maksymalna ilość znaków to 128
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <h1 class="text-center">Polski</h1>
+
+                    <!-- Translated Phrase -->
+                    <div class="form-group">
+                      <label for="translatedPhrase">Przetłumaczone słowo/wyrażenie</label>
+                      <input id="translatedPhrase" class="form-control" type="email"
+                             placeholder="Wprowadź przetłumaczone słowo/wyrażenie" formControlName="translatedPhrase"
+                             [ngClass]="{'is-invalid': flashcardForm.get('translatedPhrase').errors &&
+                             flashcardForm.get('translatedPhrase').touched}">
+                      <div class="invalid-feedback"
+                           *ngIf="flashcardForm.get('translatedPhrase').touched &&
+                           flashcardForm.get('translatedPhrase').hasError('required')">
+                        Pole jest wymagane
+                      </div>
+                      <div class="invalid-feedback"
+                           *ngIf="flashcardForm.get('translatedPhrase').touched &&
+                           flashcardForm.get('translatedPhrase').hasError('minlength')">
+                        Minimalna ilość znaków to 2
+                      </div>
+                      <div class="invalid-feedback"
+                           *ngIf="flashcardForm.get('translatedPhrase').touched &&
+                           flashcardForm.get('translatedPhrase').hasError('maxlength')">
+                        Maksymalna ilość znaków to 64
+                      </div>
+                    </div>
+
+                    <!-- Translated Phrase Sample Sentence -->
+                    <div class="form-group">
+                      <label for="translatedPhraseSampleSentence">Przykładowe zdanie (tłumaczenie)</label>
+                      <input id="translatedPhraseSampleSentence" class="form-control" type="email"
+                             placeholder="Wprowadź przykładowe zdanie (tłuamczenie)"
+                             formControlName="translatedPhraseSampleSentence"
+                             [ngClass]="{'is-invalid': flashcardForm.get('translatedPhraseSampleSentence').errors &&
+                             flashcardForm.get('translatedPhraseSampleSentence').touched}">
+                      <div class="invalid-feedback"
+                           *ngIf="flashcardForm.get('translatedPhraseSampleSentence').touched &&
+                           flashcardForm.get('translatedPhraseSampleSentence').hasError('maxlength')">
+                        Maksymalna ilość znaków to 128
+                      </div>
+                    </div>
+
+                    <!-- Translated Phrase Comment -->
+                    <div class="form-group">
+                      <label for="translatedPhraseComment">Komentarz</label>
+                      <input id="translatedPhraseComment" class="form-control" type="email"
+                             placeholder="Wprowadź komentarz" formControlName="translatedPhraseComment"
+                             [ngClass]="{'is-invalid': flashcardForm.get('translatedPhraseComment').errors &&
+                             flashcardForm.get('translatedPhraseComment').touched}">
+                    </div>
+                    <div class="invalid-feedback"
+                         *ngIf="flashcardForm.get('translatedPhraseComment').touched &&
+                           flashcardForm.get('translatedPhraseComment').hasError('maxlength')">
+                      Maksymalna ilość znaków to 128
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-6">
+                    <h2>Dodatkowe informacje o fiszce</h2>
+
+                    <!-- Language Level -->
+                    <div class="form-group">
+                      <label for="languageLevel">Poziom</label>
+                      <select id="languageLevel" class="form-control" style="max-width: 500px;"
+                              formControlName="languageLevel">
+                        <option>A1</option>
+                        <option>A2</option>
+                        <option>B1</option>
+                        <option>B2</option>
+                        <option>B2/C1</option>
+                        <option>C1</option>
+                        <option>C2</option>
+                      </select>
+                    </div>
+
+                    <!-- Category -->
+                    <div class="form-group">
+                      <label for="category">Kategoria</label>
+                      <select id="category" class="form-control" style="max-width: 500px;" formControlName="category">
+                        <option>Mieszkanie</option>
+                        <option>Kuchnia</option>
+                        <option>Zwierzęta</option>
+                        <option>Słownictwo biznesowe</option>
+                        <option>Kolory</option>
+                        <option>Prawo</option>
+                        <option>Informatyka</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="row justify-content-center">
+                  <button type="submit" class="btn btn-primary btn-success">Zapisz</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

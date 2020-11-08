@@ -6,7 +6,7 @@ export class FlashcardForCreate {
   translatedPhrase: string;
   translatedPhraseSampleSentence: string;
   translatedPhraseComment: string;
-  languageLevel: string;
+  languageLevel: number;
   category: string;
 
   constructor(phrase: string,
@@ -16,7 +16,7 @@ export class FlashcardForCreate {
               translatedPhrase: string,
               translatedPhraseSampleSentence: string,
               translatedPhraseComment: string,
-              languageLevel: string,
+              languageLevel: number,
               category: string) {
     this.phrase = phrase;
     this.phrasePronunciation = phrasePronunciation;

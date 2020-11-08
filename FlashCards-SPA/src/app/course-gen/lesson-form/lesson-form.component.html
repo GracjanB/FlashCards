@@ -1,0 +1,63 @@
+<div class="container mt-2 mb-5">
+  <div class="row justify-content-center">
+    <div class="col-12">
+      <form [formGroup]="lessonForm" (ngSubmit)="createLesson()">
+
+        <!-- Lesson Name -->
+        <div class="form-group mt-2 ml-3">
+          <label for="name">Nazwa lekcji</label>
+          <input id="name" class="form-control" type="text" formControlName="name"
+                 placeholder="Nazwa kursu" style="max-width: 500px;"
+                 [ngClass]="{'is-invalid': lessonForm.get('name').errors && lessonForm.get('name').touched }">
+          <div class="invalid-feedback"
+               *ngIf="lessonForm.get('name').touched && lessonForm.get('name').hasError('required')">
+            Nazwa jest wymagana
+          </div>
+          <div class="invalid-feedback"
+               *ngIf="lessonForm.get('name').touched && lessonForm.get('name').hasError('minlength')">
+            Minimalna ilość znaków to 4
+          </div>
+          <div class="invalid-feedback"
+               *ngIf="lessonForm.get('name').touched && lessonForm.get('name').hasError('maxlength')">
+            Maksymalna ilość znaków to 64
+          </div>
+        </div>
+
+        <!-- Lesson Description -->
+        <div class="form-group ml-3">
+          <label for="description">Opis lekcji</label>
+          <textarea id="description" class="form-control" style="max-width: 500px; max-height: 200px;"
+                    placeholder="Opis lekcji" formControlName="description"
+                    [ngClass]="{'is-invalid': lessonForm.get('description').errors && lessonForm.get('description').touched}">
+            </textarea>
+          <div class="invalid-feedback"
+               *ngIf="lessonForm.get('description').touched && lessonForm.get('name').hasError('description')">
+            Maksymalna ilość znaków to 1024
+          </div>
+        </div>
+
+        <!-- Lesson Category -->
+        <div class="form-group ml-3">
+          <label for="category">Kategoria</label>
+          <select id="category" class="form-control" style="max-width: 500px;" formControlName="category"
+                  [ngClass]="{'is-invalid': lessonForm.get('category').errors && lessonForm.get('category').touched}">
+            <option value="cat1">Kategoria 1</option>
+            <option value="cat2">Kategoria 2</option>
+            <option value="cat3">Kategoria 3</option>
+          </select>
+          <div class="invalid-feedback"
+               *ngIf="lessonForm.get('category').touched && lessonForm.get('name').hasError('required')">
+            Pole jest wymagane
+          </div>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="row ml-3">
+          <button class="btn btn-primary btn-success mr-3" type="submit">Zapisz</button>
+          <button class="btn btn-primary btn-info" type="button">Edytuj</button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>

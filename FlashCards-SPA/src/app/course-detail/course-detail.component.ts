@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {Course} from '../core/_models/_dtos/fromServer/course';
+import {CourseShort} from '../core/_models/_dtos/fromServer/courseShort';
 import {ActivatedRoute} from '@angular/router';
 import {CourseDetailed} from '../core/_models/_dtos/fromServer/courseDetailed';
 

@@ -26,7 +26,7 @@ namespace FlashCards.Services.Repositories.Implementations
             _logger = logger;
         }
 
-        public async Task<bool> Create(int lessonId, Flashcard flashcard)
+        public async Task<Flashcard> Create(int lessonId, Flashcard flashcard)
         {
             var lesson = _context.Lessons.FirstOrDefault(x => x.Id == lessonId);
 
@@ -40,16 +40,17 @@ namespace FlashCards.Services.Repositories.Implementations
             {
                 flashcard.DateCreated = DateTime.Now;
                 flashcard.DateModified = DateTime.Now;
-                lesson.Flashcards.Add(flashcard);
+                flashcard.LessonId = lessonId;
+                _context.Flashcards.Add(flashcard);
                 await _context.SaveChangesAsync();
             }
             catch(Exception ex)
             {
                 _logger.LogError(ex, "An error occurred during add new flashcard to lesson");
-                return false;
+                return null;
             }
 
-            return true;
+            return flashcard;
         }
 
         public async Task<bool> Create(int lessonId, IEnumerable<Flashcard> flashcards)
@@ -70,7 +71,8 @@ namespace FlashCards.Services.Repositories.Implementations
                     {
                         flashcard.DateCreated = DateTime.Now;
                         flashcard.DateModified = DateTime.Now;
-                        lesson.Flashcards.Add(flashcard);
+                        flashcard.LessonId = lessonId;
+                        _context.Flashcards.Add(flashcard);
                     }
 
                     _context.SaveChanges();
@@ -97,7 +99,7 @@ namespace FlashCards.Services.Repositories.Implementations
             return await _context.Flashcards.FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task<bool> Update(int id, FlashcardForUpdate flashcard)
+        public async Task<Flashcard> Update(int id, FlashcardForUpdate flashcard)
         {
             var flashcardFromRepo = _context.Flashcards.FirstOrDefault(x => x.Id == id);
 
@@ -125,10 +127,10 @@ namespace FlashCards.Services.Repositories.Implementations
             catch(Exception ex)
             {
                 _logger.LogError(ex, $"An error occurred during update flashcard with given id { id }");
-                return false;
+                return null;
             }
 
-            return true;
+            return flashcardFromRepo;
         }
     }
 }

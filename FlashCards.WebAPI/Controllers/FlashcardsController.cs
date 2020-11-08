@@ -117,8 +117,13 @@ namespace FlashCards.WebAPI.Controllers
 
             try
             {
-                if (await _flashcardsRepository.Create(lessonId, flashcardEntity))
-                    return Ok();
+                var flashcardToReturnRepo = _flashcardsRepository.Create(lessonId, flashcardEntity).Result;
+
+                if(flashcardToReturnRepo != null)
+                {
+                    var flashcardToReturnMapped = _mapper.Map<FlashcardForDetail>(flashcardToReturnRepo);
+                    return Ok(flashcardToReturnMapped);
+                }
 
                 return StatusCode(500, new ErrorResponse { ErrorMessage = "An error occurred during create flashcard. Try again later." });
             }
@@ -175,8 +180,12 @@ namespace FlashCards.WebAPI.Controllers
 
             try
             {
-                if (await _flashcardsRepository.Update(id, flashcardForUpdate))
-                    return Ok();
+                var flashcardToReturnRepo = _flashcardsRepository.Update(id, flashcardForUpdate).Result;
+                if(flashcardToReturnRepo != null)
+                {
+                    var flashcardToReturnMapped = _mapper.Map<FlashcardForDetail>(flashcardToReturnRepo);
+                    return Ok(flashcardToReturnMapped);
+                }
 
                 return StatusCode(500, new ErrorResponse { ErrorMessage = "An error occurred during update flashcard. Try again later." });
             }
