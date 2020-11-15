@@ -8,6 +8,7 @@ using FlashCards.Data.Models;
 using FlashCards.Models.DTOs.ToClient;
 using FlashCards.Models.DTOs.ToServer;
 using FlashCards.Services.Abstracts;
+using FlashCards.Services.Exceptions;
 using FlashCards.Services.Repositories.Abstracts;
 using FlashCards.Services.UnitOfWork.Abstracts;
 using Microsoft.AspNetCore.Authorization;
@@ -59,6 +60,26 @@ namespace FlashCards.WebAPI.Controllers
             return Ok(userToReturn);
         }
 
+        [HttpGet("{id}/courses")]
+        [ProducesResponseType(200)]
+        [Produces("application/json")]
+        public IActionResult GetUserWithCourses(int id)
+        {
+            if (id != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+                return Unauthorized();
+
+            try
+            {
+                var userToReturn = _userRepository.GetDetailedWithCourses(id);
+                return Ok(userToReturn);
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError(ex, $"Error during get user details with courses. User ID: { id }");
+                return StatusCode(500, "Error during retrive data.");
+            }
+        }
+
         /// <summary>
         /// List of users
         /// </summary>
@@ -105,7 +126,7 @@ namespace FlashCards.WebAPI.Controllers
         public async Task<IActionResult> ChangePassword(int id, UserForPasswordChange userForPasswordChange)
         {
             if (id != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
-                return Unauthorized("Bad access token");
+                return Unauthorized();
 
             var userFromRepo = _userRepository.Get(id);
 
@@ -125,6 +146,57 @@ namespace FlashCards.WebAPI.Controllers
             }
 
             return Ok("Password has been changed successfully");
+        }
+
+        /// <summary>
+        /// Update user credentials
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     PUT /api/users/{id}
+        ///         {
+        ///             "firstName": "John",
+        ///             "lastName": "Smith",
+        ///             "displayName": "JSmit32",
+        ///             "city": "Chicago",
+        ///             "country": "United States",
+        ///         }
+        ///         
+        /// </remarks>
+        /// <param name="id">User ID</param>
+        /// <param name="userForUpdate"></param>
+        /// <returns></returns>
+        /// PUT /api/users/{id}
+        [HttpPut("{id}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        [Produces("application/json")]
+        public IActionResult UpdateUser(int id, UserForUpdate userForUpdate)
+        {
+            if (id != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+                return Unauthorized();
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            try
+            {
+                var updatedUserFromRepo = _userRepository.Update(id, userForUpdate);
+                var userToReturn = _mapper.Map<UserForDetail>(updatedUserFromRepo);
+
+                return Ok(userToReturn);
+            }
+            catch(UserNotFoundException)
+            {
+                return BadRequest("User with given id does not exists.");
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError(ex, "Error during update user credentials.");
+                return StatusCode(500, ex.Message);
+            }
         }
     }
 }

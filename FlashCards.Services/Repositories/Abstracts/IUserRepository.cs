@@ -1,4 +1,6 @@
 ﻿using FlashCards.Data.Models;
+using FlashCards.Models.DTOs.ToClient;
+using FlashCards.Models.DTOs.ToServer;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -8,9 +10,13 @@ namespace FlashCards.Services.Repositories.Abstracts
     {
         User Get(int id);
 
+        UserForDetailCourses GetDetailedWithCourses(int id);
+
         Task Create(User user);
 
         Task Update(User user);
+
+        User Update(int userId, UserForUpdate userForUpdate);
 
         bool UserExists(string email);
 
