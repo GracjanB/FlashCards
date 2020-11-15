@@ -7,9 +7,11 @@ namespace FlashCards.Data.Models
     {
         public int Id { get; set; }
 
-        public DateTime LastTrainedDate { get; set; }
+        public DateTime LastActivity { get; set; }
 
         public decimal OverallProgress { get; set; }
+
+        public bool IsSubscribed { get; set; }
 
 
         public int AccountId { get; set; }

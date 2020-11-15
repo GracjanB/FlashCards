@@ -1,16 +1,17 @@
 using AutoMapper;
 using FlashCards.Data.DataModel;
 using FlashCards.Helpers.AutoMapper;
-using FlashCards.Helpers.AutoMapper.ExtendedProfiles;
 using FlashCards.Services.Abstracts;
+using FlashCards.Services.Common.Abstracts;
+using FlashCards.Services.Common.Implementations;
 using FlashCards.Services.Implementations;
 using FlashCards.Services.Repositories.Abstracts;
 using FlashCards.Services.Repositories.Implementations;
-using FlashCards.Services.UnitOfWork.Abstracts;
-using FlashCards.Services.UnitOfWork.Implementations;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -37,6 +38,7 @@ namespace FlashCards.WebAPI
 
         public void ConfigureServices(IServiceCollection services)
         {
+            // AutoMapper config
             var automapperProfiles = Assembly.GetEntryAssembly()
                                              .GetReferencedAssemblies()
                                              .Select(Assembly.Load)
@@ -46,16 +48,19 @@ namespace FlashCards.WebAPI
             automapperProfiles.Add(typeof(CommonProfiles));
             services.AddAutoMapper(automapperProfiles.ToArray());
 
+            // Database connection config
             services.AddDbContext<FlashcardsDataModel>(config =>
             {
                 config.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
                 config.EnableSensitiveDataLogging();
             });
+
+            // Swagger documentation config
             services.AddSwaggerGen(x =>
             {
-                x.SwaggerDoc("v1", new OpenApiInfo 
-                { 
-                    Title = "FlashCards API", 
+                x.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "FlashCards API",
                     Version = "v1",
                     Contact = new OpenApiContact
                     {
@@ -68,12 +73,8 @@ namespace FlashCards.WebAPI
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 x.IncludeXmlComments(xmlPath);
             });
-            services.AddScoped<IAuthService, AuthService>();
-            services.AddScoped<ICourseRepository, CourseRepository>();
-            services.AddScoped<ILessonRepository, LessonRepository>();
-            services.AddScoped<IFlashcardRepository, FlashcardRepository>();
-            services.AddScoped<ISubscribedCourseRepository, SubscribedCourseRepository>();
-            services.AddScoped<IUserRepository, UserRepository>();
+
+            // Authentication config
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
@@ -85,6 +86,15 @@ namespace FlashCards.WebAPI
                         ValidateAudience = false
                     };
                 });
+
+            // Services
+            services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<ICourseRepository, CourseRepository>();
+            services.AddScoped<ILessonRepository, LessonRepository>();
+            services.AddScoped<IFlashcardRepository, FlashcardRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<ISubscriptionsService, SubscriptionService>();
+            
             services.AddControllers();
         }
 
@@ -106,6 +116,26 @@ namespace FlashCards.WebAPI
                 x.AllowAnyOrigin()
                  .AllowAnyMethod()
                  .AllowAnyHeader());
+
+            //app.UseExceptionHandler(config =>
+            //{
+            //    config.Run(async context =>
+            //    {
+            //        context.Response.StatusCode = 500;
+            //        context.Response.ContentType = "application/json";
+
+            //        var error = context.Features.Get<IExceptionHandlerFeature>();
+            //        if(error != null)
+            //        {
+            //            var ex = error.Error;
+
+            //            await context.Response.WriteAsync(new ErrorModel()
+            //            {
+
+            //            })
+            //        }
+            //    });
+            //});
 
             app.UseHttpsRedirection();
 

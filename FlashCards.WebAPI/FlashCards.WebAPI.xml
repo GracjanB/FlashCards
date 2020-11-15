@@ -144,7 +144,15 @@
             </summary>
             <param name="lessonId"></param>
             <returns></returns>
-            GET: api/courses/{courseId}/lessons/{lessonId}/flashcards/all
+            GET: api/courses/{courseId}/lessons/{lessonId}/flashcards
+        </member>
+        <member name="M:FlashCards.WebAPI.Controllers.FlashcardsController.GetFlashcard(System.Int32)">
+            <summary>
+            Get flashcard
+            </summary>
+            <param name="id">Flashcard ID</param>
+            <returns></returns>
+            GET: api/courses/{courseId}/lessons/{lessonId}/flashcards/{id}
         </member>
         <member name="M:FlashCards.WebAPI.Controllers.FlashcardsController.CreateFlashcard(System.Int32,System.Int32,FlashCards.Models.DTOs.ToServer.FlashcardForCreate)">
             <summary>
@@ -294,6 +302,45 @@
             <returns>Status</returns>
             PUT: api/courses/{courseId}/lessons/{lessonId}
         </member>
+        <member name="M:FlashCards.WebAPI.Controllers.SubscriptionsController.GetCoursesPaged(FlashCards.Models.DTOs.ToServer.SubscribedCoursesParams)">
+             <summary>
+             Get subscribed courses as paged list
+             </summary>
+             <remarks>
+             Sample request:
+             
+                 GET /api/subscriptions
+                     {
+                         "pageSize": 10,
+                         "pageNumber": 1
+                     }
+            
+             </remarks>
+             <param name="subscribedCoursesParams"></param>
+             <response code="200">Returns subscribed courses</response>
+             <returns>Status</returns>
+             GET api/subscriptions
+        </member>
+        <member name="M:FlashCards.WebAPI.Controllers.SubscriptionsController.SubscribeCourse(System.Int32)">
+            <summary>
+            Subscribe course
+            </summary>
+            <param name="courseId">Course ID</param>
+            <returns>Status</returns>
+            <response code="200">Returns subscribed course details</response>
+            <response code="400">When incoming data was invalid. Returns model state information</response>
+            POST api/subscriptions/subscribe/{courseId}
+        </member>
+        <member name="M:FlashCards.WebAPI.Controllers.SubscriptionsController.UnsubscribeCourse(System.Int32)">
+            <summary>
+            Unsubscribe course
+            </summary>
+            <param name="id">Subscription ID</param>
+            <response code="200">Returned if unsubscribe course completed successfully</response>
+            <response code="400">When incoming data was invalid. Returns model state information</response>
+            <returns>Status</returns>
+            PUT api/subscriptions/unsubscribe/{id}
+        </member>
         <member name="M:FlashCards.WebAPI.Controllers.UsersController.GetUser(System.Int32)">
             <summary>
             Get detail user information
@@ -332,6 +379,28 @@
             <response code="200">When changing password was successful</response>
             <response code="401">When access token or old password was invalid</response>
             PUT /api/users/{id}/changePassword
+        </member>
+        <member name="M:FlashCards.WebAPI.Controllers.UsersController.UpdateUser(System.Int32,FlashCards.Models.DTOs.ToServer.UserForUpdate)">
+            <summary>
+            Update user credentials
+            </summary>
+            <remarks>
+            Sample request:
+            
+                PUT /api/users/{id}
+                    {
+                        "firstName": "John",
+                        "lastName": "Smith",
+                        "displayName": "JSmit32",
+                        "city": "Chicago",
+                        "country": "United States",
+                    }
+                    
+            </remarks>
+            <param name="id">User ID</param>
+            <param name="userForUpdate"></param>
+            <returns></returns>
+            PUT /api/users/{id}
         </member>
     </members>
 </doc>

@@ -10,14 +10,19 @@ namespace FlashCards.Data.ModelsConfiguration
         {
             builder.HasKey(x => x.Id);
 
-            builder.Property(x => x.LastTrainedDate)
-                .HasColumnType("DATETIME2");
+            builder.Property(x => x.LastActivity)
+                .HasColumnType("DATETIME");
 
             builder.Property(x => x.OverallProgress)
                 .HasColumnType("DECIMAL");
 
             builder.Property(x => x.CourseId)
-                .HasColumnType("INT");
+                .HasColumnType("INT")
+                .IsRequired();
+
+            builder.Property(x => x.IsSubscribed)
+                .HasColumnType("BIT")
+                .IsRequired();
 
             builder.HasMany(x => x.Lessons)
                 .WithOne(x => x.SubscribedCourse)
