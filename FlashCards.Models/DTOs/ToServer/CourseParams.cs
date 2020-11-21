@@ -18,5 +18,7 @@
         public int PageNumber { get; set; } = 1;
 
         public int CourseType { get; set; }
+
+        public string SearchedTitle { get; set; }
     }
 }

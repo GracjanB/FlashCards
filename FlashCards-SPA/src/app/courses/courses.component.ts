@@ -4,7 +4,7 @@ import {PaginatedResult, Pagination} from '../core/_models/common/pagination';
 import {CourseParams} from '../core/_models/_dtos/toServer/courseParams';
 import {AlertifyService} from '../core/_services/alertify.service';
 import {CourseShort} from '../core/_models/_dtos/fromServer/courseShort';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-courses',
@@ -14,24 +14,25 @@ import {ActivatedRoute} from '@angular/router';
 export class CoursesComponent implements OnInit {
   courses: CourseShort[];
   pagination: Pagination;
+  searchedTitle: string;
+  isContentFiltered = false;
 
   constructor(private courseService: CourseService,
               private alertifyService: AlertifyService,
-              private route: ActivatedRoute) { }
+              private route: ActivatedRoute,
+              private router: Router) { }
 
   ngOnInit(): void {
     this.route.data.subscribe(data => {
       this.courses = data.courses.result;
       this.pagination = data.courses.pagination;
     });
-    console.log('This is from ngInit:');
-    console.log(this.courses);
-    console.log(this.pagination);
   }
 
-  getCourses() {
+  getCourses(page: number = 1, itemsPerPage: number = 8, searchedTitle: string = '') {
     const courseParams = new CourseParams(0);
-    this.courseService.getCourses(1, 10, courseParams).subscribe(
+    courseParams.searchedTitle = searchedTitle;
+    this.courseService.getCourses(page, itemsPerPage, courseParams).subscribe(
       (result: PaginatedResult<CourseShort[]>) => {
         this.courses = result.result;
         this.pagination = result.pagination;
@@ -39,5 +40,28 @@ export class CoursesComponent implements OnInit {
         this.alertifyService.showErrorAlert(error);
       }
     );
+  }
+
+  pageChanged(pagination: any): void {
+    if (this.isContentFiltered) {
+      this.getCourses(pagination.page, pagination.itemsPerPage, this.searchedTitle);
+    } else {
+      this.getCourses(pagination.page, pagination.itemsPerPage);
+    }
+  }
+
+  navigateToCourseGenerator(): void {
+    this.router.navigate(['/course-generator']);
+  }
+
+  search(): void {
+    this.isContentFiltered = true;
+    this.getCourses(1, 8, this.searchedTitle);
+  }
+
+  clearSearching(): void {
+    this.isContentFiltered = false;
+    this.searchedTitle = '';
+    this.getCourses();
   }
 }

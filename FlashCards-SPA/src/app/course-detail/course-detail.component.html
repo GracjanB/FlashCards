@@ -8,11 +8,12 @@
         <div class="col-7">
           <div class="card-body">
             <h1 class="card-title">{{ course.name }}</h1>
+            <hr>
             <p>{{ course.description }}</p>
           </div>
         </div>
         <div class="col-2">
-          <h3>Autor</h3>
+          <h3 class="text-center author mt-3">Autor</h3>
           <p>{{ course.authorDisplayName }}</p>
         </div>
       </div>
@@ -22,7 +23,7 @@
   <hr>
   <div class="row">
     <div *ngFor="let lesson of course.lessons" class="col-lg-3 col-md-4 col-sm-6">
-      <app-lesson-card [lesson]="lesson"></app-lesson-card>
+      <app-lesson-card [lesson]="lesson" (lessonSelected)="onLessonSelected($event)"></app-lesson-card>
     </div>
   </div>
 </div>

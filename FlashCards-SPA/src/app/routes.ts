@@ -15,6 +15,8 @@ import {CourseFormComponent} from './course-gen/course-form/course-form.componen
 import {LessonListComponent} from './course-gen/lesson-list/lesson-list.component';
 import {LessonFormComponent} from './course-gen/lesson-form/lesson-form.component';
 import {FlashcardFormComponent} from './course-gen/flashcard-form/flashcard-form.component';
+import {AccountProfileComponent} from './account-profile/account-profile.component';
+import {AccountEditComponent} from './account-edit/account-edit.component';
 
 export const appRoutes: Routes = [
   { path: '', component: HomeComponent },
@@ -25,6 +27,8 @@ export const appRoutes: Routes = [
   { path: 'courses/:id', component: CourseDetailComponent, resolve: { course: CourseDetailResolver }},
   { path: 'courses/:courseId/lessons/:id', component: LessonDetailComponent, resolve: { lesson: LessonDetailResolver }},
   { path: 'course-generator', component: CourseGenComponent },
+  { path: 'account/profile/:id', component: AccountProfileComponent },
+  { path: 'account/edit/:id', component: AccountEditComponent },
   { path: 'analytics', component: AnalyticsComponent },
   { path: '**', redirectTo: '', pathMatch: 'full'}
 ];

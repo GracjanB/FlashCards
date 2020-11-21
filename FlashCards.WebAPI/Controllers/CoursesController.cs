@@ -4,6 +4,7 @@ using FlashCards.Helpers.Extensions;
 using FlashCards.Models.DTOs.ToClient;
 using FlashCards.Models.DTOs.ToServer;
 using FlashCards.Models.Exceptions;
+using FlashCards.Services.Common.Abstracts;
 using FlashCards.Services.Repositories.Abstracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -22,14 +23,16 @@ namespace FlashCards.WebAPI.Controllers
     {
         private readonly ICourseRepository _courseRepository;
         private readonly IUserRepository _userRepository;
+        private readonly ISubscriptionsService _subscriptionsService;
         private readonly IMapper _mapper;
         private readonly ILogger<CoursesController> _logger;
 
         public CoursesController(ICourseRepository courseRepository, IUserRepository userRepository, 
-            IMapper mapper, ILogger<CoursesController> logger)
+            ISubscriptionsService subscriptionsService, IMapper mapper, ILogger<CoursesController> logger)
         {
             _courseRepository = courseRepository;
             _userRepository = userRepository;
+            _subscriptionsService = subscriptionsService;
             _mapper = mapper;
             _logger = logger;
         }
@@ -141,9 +144,18 @@ namespace FlashCards.WebAPI.Controllers
             if (courseFromRepo == null)
                 return BadRequest(new ErrorResponse { ErrorMessage = "No course found with given id." });
 
-            var courseForDetailDto = _mapper.Map<CourseForDetail>(courseFromRepo);
+            var accountId = _userRepository.GetUserAccountId(int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value));
 
-            return Ok(courseForDetailDto);
+            if (_subscriptionsService.IsSubscribing(accountId, id, out int subscriptionId))
+            {
+                var subscribedCourseDetail = _subscriptionsService.GetSubscribedCourseDetail(subscriptionId, id);
+                return Ok(subscribedCourseDetail);
+            }
+            else
+            {
+                var courseForDetailDto = _mapper.Map<CourseForDetail>(courseFromRepo);
+                return Ok(courseForDetailDto);
+            }
         }
 
         /// <summary>

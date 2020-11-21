@@ -10,7 +10,7 @@ import {Injectable} from '@angular/core';
 @Injectable()
 export class CoursesResolver implements Resolve<CourseShort[]> {
   private pageNumber = 1;
-  private pageSize = 10;
+  private pageSize = 8;
 
   constructor(private courseService: CourseService,
               private router: Router,

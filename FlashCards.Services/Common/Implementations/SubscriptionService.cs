@@ -40,7 +40,18 @@ namespace FlashCards.Services.Common.Implementations
             _context = context;
         }
 
-        public IEnumerable<SubscribedCourseDto> GetSubscribedCourses(int accountId, SubscribedCoursesParams subscribedCoursesParams, out PaginationHeader header)
+        public SubscribedCourseDetailed GetSubscribedCourseDetail(int subscriptionId, int courseId)
+        {
+            var subscription = _context.SubscribedCourses.FirstOrDefault(x => x.Id == subscriptionId);
+            var course = _context.Courses.FirstOrDefault(x => x.Id == courseId);
+
+            if (subscription == null || course == null)
+                return null;
+
+            return CreateDetailedDto(subscription, course);
+        }
+
+        public IEnumerable<SubscribedCourseShort> GetSubscribedCourses(int accountId, SubscribedCoursesParams subscribedCoursesParams, out PaginationHeader header)
         {
             var subscribedCoursesFromRepo = _context.SubscribedCourses
                                                     .Where(x => x.AccountId == accountId && x.IsSubscribed == true)
@@ -53,14 +64,30 @@ namespace FlashCards.Services.Common.Implementations
             var coursesFromRepo = _context.Courses.Include(x => x.AccountCreated.DisplayName).Where(x => coursesId.Contains(x.Id)).ToList();
             header = new PaginationHeader(coursesPagedList.CurrentPage, coursesPagedList.PageSize, coursesPagedList.TotalCount, coursesPagedList.TotalPages);
             
-            var coursesToReturn = _mapper.Map<IEnumerable<SubscribedCourseDto>>(coursesPagedList);
+            var coursesToReturn = _mapper.Map<IEnumerable<SubscribedCourseShort>>(coursesPagedList);
             foreach(var course in coursesToReturn)
                 course.Course = _mapper.Map<CourseShort>(coursesFromRepo.First(x => x.Id == course.CourseId));
 
             return coursesToReturn;
         }
 
-        public async Task<SubscribedCourseDto> SubscribeCourse(int courseId, int accountId)
+        public bool IsSubscribing(int accountId, int courseId, out int subscriptionId)
+        {
+            var subscription = _context.SubscribedCourses.FirstOrDefault(x => x.AccountId == accountId && x.CourseId == courseId && x.IsSubscribed == true);
+            
+            if(subscription != null)
+            {
+                subscriptionId = subscription.Id;
+                return true;
+            }
+            else
+            {
+                subscriptionId = default;
+                return false;
+            }
+        }
+
+        public async Task<SubscribedCourseShort> SubscribeCourse(int courseId, int accountId)
         {
             if (!_courseRepository.Exists(courseId))
                 throw new CourseNotExistsException();
@@ -126,12 +153,30 @@ namespace FlashCards.Services.Common.Implementations
             return output;
         }
 
-        private SubscribedCourseDto CreateDto(SubscribedCourse subscribedCourse, Course course)
+        private SubscribedCourseShort CreateDto(SubscribedCourse subscribedCourse, Course course)
         {
-            var subscribedCourseDto = _mapper.Map<SubscribedCourseDto>(subscribedCourse);
+            var subscribedCourseDto = _mapper.Map<SubscribedCourseShort>(subscribedCourse);
             subscribedCourseDto.Course = _mapper.Map<CourseShort>(course);
 
             return subscribedCourseDto;
+        }
+
+        private SubscribedCourseDetailed CreateDetailedDto(SubscribedCourse subscribedCourse, Course course)
+        {
+            return new SubscribedCourseDetailed
+            {
+                Id = course.Id,
+                AccountCreatedId = course.AccountCreatedId,
+                Name = course.Name,
+                Description = course.Description,
+                CourseType = (int)course.CourseType,
+                DateCreated = course.DateCreated.ToShortDateString(),
+                DateModified = course.DateModified.ToShortDateString(),
+                Lessons = _mapper.Map<ICollection<LessonForList>>(course.Lessons),
+                SubscriptionId = subscribedCourse.Id,
+                LastActivity = subscribedCourse.LastActivity,
+                OverallProgress = subscribedCourse.OverallProgress
+            };
         }
     }
 }

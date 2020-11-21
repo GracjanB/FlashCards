@@ -42,12 +42,15 @@
       </a>
       <!-- TODO: Menu is cut off on the right side, probably problem with position -->
       <div class="dropdown-menu dropdown-menu-right" *dropdownMenu>
-        <a class="dropdown-item">
-          <i class="fa fa-user mr-1"></i>Edit Profile
+        <a class="dropdown-item mb-1" [routerLink]="['/account/profile/2']">
+          <i class="fa fa-user mr-1"></i>Profil
+        </a>
+        <a class="dropdown-item" [routerLink]="['/account/edit/2']">
+          <i class="fa fa-cogs mr-1"></i>Ustawienia
         </a>
         <div class="dropdown-divider"></div>
         <a class="dropdown-item" (click)="logout()">
-          <i class="fa fa-sign-out mr-1"></i>Logout
+          <i class="fa fa-sign-out mr-1"></i>Wyloguj
         </a>
       </div>
     </div>

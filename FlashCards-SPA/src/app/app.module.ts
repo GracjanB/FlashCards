@@ -41,6 +41,9 @@ import { LessonListComponent } from './course-gen/lesson-list/lesson-list.compon
 import { FlashcardFormComponent } from './course-gen/flashcard-form/flashcard-form.component';
 import {CollapseModule} from 'ngx-bootstrap/collapse';
 import {FlashcardService} from './core/_services/flashcard.service';
+import { AccountProfileComponent } from './account-profile/account-profile.component';
+import { AccountEditComponent } from './account-edit/account-edit.component';
+import {PaginationModule} from 'ngx-bootstrap/pagination';
 
 @NgModule({
   declarations: [
@@ -61,7 +64,9 @@ import {FlashcardService} from './core/_services/flashcard.service';
     CourseFormComponent,
     LessonFormComponent,
     LessonListComponent,
-    FlashcardFormComponent
+    FlashcardFormComponent,
+    AccountProfileComponent,
+    AccountEditComponent
   ],
     imports: [
         BrowserModule,
@@ -74,7 +79,8 @@ import {FlashcardService} from './core/_services/flashcard.service';
         RouterModule.forRoot(appRoutes),
         BsDropdownModule.forRoot(),
         TabsModule,
-        CollapseModule
+        CollapseModule,
+        PaginationModule
     ],
   providers: [
     AuthService,

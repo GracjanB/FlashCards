@@ -80,6 +80,9 @@ namespace FlashCards.Services.Repositories.Implementations
                 .Include(x => x.Opinions)
                 .Where(x => x.CourseType == (CourseTypeEnum)courseParams.CourseType)
                 .AsQueryable();
+
+            if (!string.IsNullOrEmpty(courseParams.SearchedTitle) && !string.IsNullOrWhiteSpace(courseParams.SearchedTitle))
+                courses = courses.Where(x => x.Name.Contains(courseParams.SearchedTitle));
                 
             return await PagedList<Course>.CreateAsync(courses, courseParams.PageNumber, courseParams.PageSize);
         }

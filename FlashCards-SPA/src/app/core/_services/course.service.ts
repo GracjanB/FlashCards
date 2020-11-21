@@ -26,6 +26,7 @@ export class CourseService {
     params = params.append('pageNumber', page.toString());
     params = params.append('pageSize', itemsPerPage.toString());
     params = params.append('courseType', courseParams.courseType.toString());
+    params = params.append('searchedTitle', courseParams.searchedTitle);
 
     return this.httpClient.get(this.baseUrl, {
       headers: new HttpHeaders({

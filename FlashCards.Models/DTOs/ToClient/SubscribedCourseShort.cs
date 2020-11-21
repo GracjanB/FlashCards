@@ -2,7 +2,7 @@
 
 namespace FlashCards.Models.DTOs.ToClient
 {
-    public class SubscribedCourseDto
+    public class SubscribedCourseShort
     {
         public int Id { get; set; }
 

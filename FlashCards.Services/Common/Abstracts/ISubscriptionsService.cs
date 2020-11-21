@@ -8,11 +8,15 @@ namespace FlashCards.Services.Common.Abstracts
 {
     public interface ISubscriptionsService
     {
-        Task<SubscribedCourseDto> SubscribeCourse(int courseId, int accountId);
+        Task<SubscribedCourseShort> SubscribeCourse(int courseId, int accountId);
 
         bool UnsubscribeCourse(int subscribedCourseId);
 
-        IEnumerable<SubscribedCourseDto> GetSubscribedCourses(int accountId,
+        IEnumerable<SubscribedCourseShort> GetSubscribedCourses(int accountId,
             SubscribedCoursesParams subscribedCoursesParams, out PaginationHeader header);
+
+        bool IsSubscribing(int accountId, int courseId, out int subscriptionId);
+
+        SubscribedCourseDetailed GetSubscribedCourseDetail(int subscriptionId, int courseId);
     }
 }
