@@ -10,6 +10,7 @@ import {AlertifyService} from '../../core/_services/alertify.service';
 })
 export class LoginComponent implements OnInit {
   userForLogin: UserForLogin;
+  isBusy = false;
 
   constructor(private authService: AuthService,
               private alertifyService: AlertifyService) {
@@ -20,10 +21,14 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    this.authService.login(this.userForLogin).subscribe(next => {
+    this.isBusy = true;
+    this.authService.login(this.userForLogin).subscribe(
+      next => {
       this.alertifyService.showSuccessAlert('Successfully logged in');
     }, error => {
       this.alertifyService.showErrorAlert('Failed to login');
+    }, () => {
+      this.isBusy = false;
     });
   }
 

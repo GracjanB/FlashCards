@@ -14,18 +14,22 @@
           <div class="form-group">
             <label for="email1">Email address</label>
             <input type="email" name="email" class="form-control" id="email1" placeholder="Enter email"
-              required [(ngModel)]="userForLogin.email">
+              required [(ngModel)]="userForLogin.email" [disabled]="isBusy">
           </div>
           <!-- Password Input -->
           <div class="form-group">
             <label for="password1">Password</label>
             <input type="password" name="password" id="password1" class="form-control" placeholder="Enter Password"
-              required [(ngModel)]="userForLogin.password">
+              required [(ngModel)]="userForLogin.password" [disabled]="isBusy">
           </div>
           <!-- Submit Button -->
           <div class="col-md-12 text-center ">
-            <button type="submit" class=" btn btn-block mybtn btn-primary tx-tfm" [disabled]="!loginForm.valid">
-              Login
+            <button type="submit" class=" btn btn-block mybtn btn-primary tx-tfm" [disabled]="!loginForm.valid || isBusy">
+              <span *ngIf="isBusy">
+                <span class="spinner-border spinner-border-sm" role="status"></span>
+              Loading...
+              </span>
+              <span *ngIf="!isBusy">Login</span>
             </button>
           </div>
           <!-- Or break -->
