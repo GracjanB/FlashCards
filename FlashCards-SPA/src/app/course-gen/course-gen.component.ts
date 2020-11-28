@@ -168,8 +168,8 @@ export class CourseGenComponent implements OnInit, AfterViewInit {
     } else {
       const courseForUpdate = this.courseAdapter.adaptCourseForUpdate(event);
       this.courseService.updateCourse(this.course.id, courseForUpdate).subscribe(next => {
-        this.course.name = event.name;
-        this.course.description = event.description;
+        this.course.courseName = event.name;
+        this.course.courseDescription = event.description;
         this.course.courseType = event.courseType;
         const courseToSendBack = this.courseAdapter.adaptCourseForCreate(this.course);
         this.onCourseUpdated.next(courseToSendBack);

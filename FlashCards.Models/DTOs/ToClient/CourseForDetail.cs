@@ -20,7 +20,7 @@ namespace FlashCards.Models.DTOs.ToClient
 
         public string AmountOfEnrolled { get; set; }
 
-        public string IsSubscribing { get; set; }
+        public bool IsSubscribing { get; set; }
 
         public ICollection<LessonForList> Lessons { get; set; }
     }

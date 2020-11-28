@@ -1,11 +1,11 @@
 export class CourseShort {
   id: number;
-  name: string;
-  description: string;
+  courseName: string;
+  courseDescription: string;
   dateCreated: Date;
   numberOfEnrolled: string;
   courseType: number;
-  authorDisplayName: string;
+  accountCreatedDisplayName: string;
   numberOfRatings: number;
   averageRating: number;
 
@@ -13,11 +13,11 @@ export class CourseShort {
               numberOfEnrolled: string, authorDisplayName: string,
               numberOfRatings: number, averageRating: number, courseType: number) {
     this.id = id;
-    this.name = name;
-    this.description = description;
+    this.courseName = name;
+    this.courseDescription = description;
     this.dateCreated = new Date(dateCreated);
     this.numberOfEnrolled = numberOfEnrolled;
-    this.authorDisplayName = authorDisplayName;
+    this.accountCreatedDisplayName = authorDisplayName;
     this.numberOfRatings = numberOfRatings;
     this.averageRating = averageRating;
     this.courseType = courseType;

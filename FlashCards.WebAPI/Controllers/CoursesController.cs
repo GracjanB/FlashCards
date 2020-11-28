@@ -148,12 +148,18 @@ namespace FlashCards.WebAPI.Controllers
 
             if (_subscriptionsService.IsSubscribing(accountId, id, out int subscriptionId))
             {
-                var subscribedCourseDetail = _subscriptionsService.GetSubscribedCourseDetail(subscriptionId, id);
-                return Ok(subscribedCourseDetail);
+                // var subscribedCourseDetail = _subscriptionsService.GetSubscribedCourseDetail(subscriptionId, id);
+
+                // TODO
+                var subscribedCourseDetail2 = _subscriptionsService.GetSubscribedCourseDetail2(subscriptionId, id);
+
+                Console.WriteLine();
+                return Ok(subscribedCourseDetail2);
             }
             else
             {
                 var courseForDetailDto = _mapper.Map<CourseForDetail>(courseFromRepo);
+                courseForDetailDto.IsSubscribing = false;
                 return Ok(courseForDetailDto);
             }
         }

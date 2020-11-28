@@ -3,6 +3,6 @@ a {
 }
 
 .card-img-top {
-  height: auto;
-  width: 200px;
+  height: 100px;
+  width: auto;
 }

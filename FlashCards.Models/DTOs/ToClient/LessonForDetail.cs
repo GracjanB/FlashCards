@@ -16,6 +16,10 @@ namespace FlashCards.Models.DTOs.ToClient
 
         public string DateModified { get; set; }
 
+        public bool IsSubscribed { get; set; }
+
+        public decimal OverallProgress { get; set; }
+
         public ICollection<FlashcardForList> Flashcards { get; set; }
     }
 }

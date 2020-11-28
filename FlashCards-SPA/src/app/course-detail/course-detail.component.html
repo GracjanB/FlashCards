@@ -1,29 +1,68 @@
 <div class="container mt-5">
   <div class="row">
-    <div class="card">
-      <div class="row no-gutters">
-        <div class="col-3">
-          <img src="assets/CourseDefaultLogo.png" class="card-img" alt="Course Logo">
-        </div>
-        <div class="col-7">
-          <div class="card-body">
-            <h1 class="card-title">{{ course.name }}</h1>
-            <hr>
-            <p>{{ course.description }}</p>
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="row no-gutters">
+          <div class="col-3">
+            <img src="assets/CourseDefaultLogo.png" class="card-img" alt="Course Logo">
           </div>
-        </div>
-        <div class="col-2">
-          <h3 class="text-center author mt-3">Autor</h3>
-          <p>{{ course.authorDisplayName }}</p>
+          <div class="col-7">
+            <div class="card-body">
+              <h1 class="card-title">{{ course.courseName }}</h1>
+              <hr>
+              <p>{{ course.courseDescription }}</p>
+            </div>
+          </div>
+          <div class="col-2">
+            <h3 class="text-center author mt-3 mb-0">Autor</h3>
+            <h3 class="text-center"><a href="#">{{ course.accountCreatedDisplayName }}</a></h3>
+            <div class="row d-flex justify-content-end mt-5 mr-3">
+              <button class="btn btn-primary" *ngIf="isSubscribed">Kontynuuj naukę</button>
+              <button class="btn btn-primary" *ngIf="!isSubscribed">Subskrybuj</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
   <h1 class="mt-4">Lekcje</h1>
   <hr>
-  <div class="row">
-    <div *ngFor="let lesson of course.lessons" class="col-lg-3 col-md-4 col-sm-6">
-      <app-lesson-card [lesson]="lesson" (lessonSelected)="onLessonSelected($event)"></app-lesson-card>
+  <div class="card col-10 mx-auto mb-3" *ngIf="isSubscribed">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-11">
+          <h1 class="mt-3">Poznane fiszki</h1>
+        </div>
+        <div class="col-1">
+          <div class="dropdown" dropdown [isAnimated]="true" [autoClose]="true">
+            <button class="btn btn-menu" type="button" dropdownToggle>
+              <i class="fa fa-ellipsis-v fa-lg"></i>
+            </button>
+            <div class="dropdown-menu dropdown-menu-right" *dropdownMenu>
+              <a class="dropdown-item">
+                <i class="fa fa-book mr-2"></i>Wyczyść postęp
+              </a>
+              <a class="dropdown-item">
+                <i class="fa fa-book mr-2"></i>Zrezygnuj z kursu
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <hr class="mt-0">
+      <div class="progress mb-4 mt-0">
+        <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="10"
+             [ngStyle]="{width: course.overallProgress+'%'}"
+             aria-valuemin="0" aria-valuemax="100"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-10">
+    <div class="row">
+      <div *ngFor="let lesson of course.lessons" class="col-lg-3 col-md-4 col-sm-6">
+        <app-lesson-card [lesson]="lesson" (lessonSelected)="onLessonSelected($event)"></app-lesson-card>
+      </div>
     </div>
   </div>
 </div>

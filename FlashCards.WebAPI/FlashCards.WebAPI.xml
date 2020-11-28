@@ -217,10 +217,11 @@
             <response code="500">If during create occurred an error</response>
             <returns>Status</returns>
         </member>
-        <member name="M:FlashCards.WebAPI.Controllers.LessonsController.GetLessonDetail(System.Int32)">
+        <member name="M:FlashCards.WebAPI.Controllers.LessonsController.GetLessonDetail(System.Int32,System.Int32)">
             <summary>
             Get details about lesson
             </summary>
+            <param name="courseId"></param>
             <param name="id">Lesson ID</param>
             <returns>Status</returns>
             <response code="200">Detailed info about lesson</response>

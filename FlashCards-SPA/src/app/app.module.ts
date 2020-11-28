@@ -44,6 +44,9 @@ import {FlashcardService} from './core/_services/flashcard.service';
 import { AccountProfileComponent } from './account-profile/account-profile.component';
 import { AccountEditComponent } from './account-edit/account-edit.component';
 import {PaginationModule} from 'ngx-bootstrap/pagination';
+import {SubscriptionsService} from './core/_services/subscriptions.service';
+import {SubscriptionsAdapter} from './core/_adapters/subscriptionsAdapter';
+import {DashboardResolver} from './core/_resolvers/dashboard.resolver';
 
 @NgModule({
   declarations: [
@@ -94,7 +97,10 @@ import {PaginationModule} from 'ngx-bootstrap/pagination';
     LessonService,
     MapExtensions,
     LessonDetailResolver,
-    FlashcardService
+    FlashcardService,
+    SubscriptionsService,
+    SubscriptionsAdapter,
+    DashboardResolver
   ],
   bootstrap: [AppComponent]
 })

@@ -5,6 +5,8 @@ import {CourseParams} from '../core/_models/_dtos/toServer/courseParams';
 import {AlertifyService} from '../core/_services/alertify.service';
 import {CourseShort} from '../core/_models/_dtos/fromServer/courseShort';
 import {ActivatedRoute, Router} from '@angular/router';
+import {SubscribedCourseDetail} from '../core/_models/_dtos/fromServer/subscribedCourseDetail';
+import {CourseDetailed} from '../core/_models/_dtos/fromServer/courseDetailed';
 
 @Component({
   selector: 'app-courses',

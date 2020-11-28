@@ -62,9 +62,26 @@
     </div>
 
     <!-- Courses List -->
-    <div class="col col-lg-9">
-      <app-sub-course-card [course]="exampleCourse"></app-sub-course-card>
+    <div class="row" *ngIf="subscribedCourses.length > 0">
+      <div class="col col-lg-9">
+        <div *ngFor="let subscribedCourseShort of subscribedCourses" class="row ml-2 mb-3">
+          <app-sub-course-card [course]="subscribedCourseShort"></app-sub-course-card>
+        </div>
+        <div class="row d-flex justify-content-center mt-4">
+            <pagination [boundaryLinks]="true"
+                        [totalItems]="pagination.totalItems"
+                        [itemsPerPage]="pagination.itemsPerPage"
+                        [(ngModel)]="pagination.currentPage"
+                        (pageChanged)="pageChanged($event)"
+                        previousText="&lsaquo;" nextText="&rsaquo;"
+                        firstText="&laquo;" lastText="&raquo;"></pagination>
+        </div>
+      </div>
     </div>
-
+    <div class="row" *ngIf="subscribedCourses.length == 0">
+      <div class="col col-lg-9">
+        <h1>Nie subskrybujesz jeszcze żadnego kursu</h1>
+      </div>
+    </div>
   </div>
 </div>

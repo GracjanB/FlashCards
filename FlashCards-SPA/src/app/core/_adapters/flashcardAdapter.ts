@@ -13,7 +13,13 @@ export class FlashcardAdapter {
   constructor(private mapExtensions: MapExtensions) {}
 
   adaptFlashcardShort(flashcard: any): FlashcardShort {
-    return new FlashcardShort(flashcard.id, flashcard.phrase, flashcard.translatedPhrase);
+    return new FlashcardShort(
+      flashcard.id,
+      flashcard.phrase,
+      flashcard.translatedPhrase,
+      flashcard.isSubscribed,
+      flashcard.progress,
+      flashcard.markedAsHard);
   }
 
   adaptFlashcard(flashcard: any): Flashcard {

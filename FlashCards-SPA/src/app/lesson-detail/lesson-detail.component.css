@@ -1,0 +1,18 @@
+.star-default {
+  transform: scale(1.6, 1.6);
+  cursor: pointer;
+}
+
+.fa:hover {
+  transform: scale(2.0, 2.0);
+  transition-duration: 200ms;
+  transition-timing-function: ease-out;
+}
+
+.star-not-marked {
+  color: lightslategray;
+}
+
+.star-marked {
+  color: #dede40;
+}

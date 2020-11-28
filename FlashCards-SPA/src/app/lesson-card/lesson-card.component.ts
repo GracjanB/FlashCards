@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {LessonShort} from '../core/_models/_dtos/fromServer/lessonShort';
 import {Router} from '@angular/router';
+import {SubscribedLessonShort} from '../core/_models/_dtos/fromServer/subscribedLessonShort';
 
 @Component({
   selector: 'app-lesson-card',
@@ -8,12 +9,14 @@ import {Router} from '@angular/router';
   styleUrls: ['./lesson-card.component.css']
 })
 export class LessonCardComponent implements OnInit {
-  @Input() lesson: LessonShort;
-  @Output() lessonSelected: EventEmitter<LessonShort> = new EventEmitter<LessonShort>();
+  @Input() lesson: any;
+  @Output() lessonSelected: EventEmitter<any> = new EventEmitter<any>();
+  isSubscribed: boolean;
 
   constructor(private router: Router) { }
 
   ngOnInit(): void {
+    this.isSubscribed = this.lesson instanceof SubscribedLessonShort;
   }
 
   onLessonClick(): void {

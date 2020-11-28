@@ -1,51 +1,61 @@
 <div class="container mt-3">
+  <!-- Lesson info card -->
   <div class="card d-flex">
     <div class="card-body">
-      <div class="col-8 pull-left">
-        <h1 class="card-title">Angielski Phrasal Verbs 3</h1>
-        <button type="button" class="btn btn-primary btn-success">Pokaż wszystkie</button>
+      <div class="col-10 pull-left">
+        <h1 class="card-title">{{ lessonDetailed.name }}</h1>
+        <hr>
+        <h3>{{ lessonDetailed.description }}</h3>
       </div>
-      <div class="col-4 pull-right">
-        <p class="text-muted">
-          Autor: <a href="#">Użytkownik 1</a>
-        </p>
+      <div class="col-2 pull-right">
+        <h2 class="text-center mb-0">Autor</h2>
+        <h3 class="text-center"><a href="#">Użytkownik1</a> </h3>
+        <button type="button" class="btn btn-primary btn-success">Pokaż wszystkie</button>
       </div>
     </div>
   </div>
+  <!-- Progress info card -->
   <div class="row justify-content-center mt-4">
     <div class="col-10">
       <div class="card">
         <div class="card-body">
-          <h3 style="font-weight: bold;">Poziom 1</h3>
-          <h1 class="card-title">Lądowanie! 10-50</h1>
+          <h2 style="font-weight: bold;" class="mb-0">Poziom 1</h2>
+          <hr class="mt-1">
+          <h1 class="card-title">{{ lessonDetailed.name }}</h1>
           <div class="progress mb-4 mt-0">
-            <div class="progress-bar progress-bar-striped" role="progressbar" style="width: 10%" aria-valuenow="10"
+            <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="10"
+                 [ngStyle]="{width: lessonDetailed.overallProgress+'%'}"
                  aria-valuemin="0" aria-valuemax="100"></div>
           </div>
-          <hr>
-          <div class="pull-right">
+          <div class="pull-right" *ngIf="isSubscribed">
             <button type="button" class="btn btn-primary btn-success">Rozpocznij nauke</button>
           </div>
         </div>
       </div>
     </div>
   </div>
+  <!-- Flashcards table -->
   <div class="row justify-content-center mt-2">
     <div class="col-10">
       <div class="card">
         <div class="card-header">
-          Fiszki - 34
+          <h2 style="font-weight: bold;" class="mt-0 mb-0">Fiszki - {{ lessonDetailed.flashcards.length }}</h2>
         </div>
-        <table class="table table-hover">
+        <h1 class="text-center mt-2" *ngIf="lessonDetailed.flashcards.length == 0">Nie utworzono żadnych fiszek</h1>
+        <table class="table table-hover" *ngIf="lessonDetailed.flashcards.length > 0">
           <tbody>
-            <tr>
-              <td>Addictive</td>
-              <td>Uzależniający; Inny jakiś</td>
+            <tr *ngFor="let flashcard of lessonDetailed.flashcards">
+              <td><h3 class="mt-0 mb-0 ml-3">{{ flashcard.phrase }}</h3></td>
+              <td><h3 class="mt-0 mb-0">{{ flashcard.translatedPhrase }}</h3></td>
               <td>
                 <div class="progress">
-                  <div class="progress-bar progress-bar-striped" role="progressbar" style="width: 40%" aria-valuenow="10"
-                       aria-valuemin="0" aria-valuemax="100"></div>
+                  <div class="progress-bar progress-bar-striped" role="progressbar" style="min-width: 40px;"
+                       aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"
+                       [ngStyle]="{width: flashcard.progress+'%'}"></div>
                 </div>
+              </td>
+              <td *ngIf="flashcard.isSubscribed">
+                <i class="fa fa-star star-default star-marked"></i>
               </td>
             </tr>
           </tbody>

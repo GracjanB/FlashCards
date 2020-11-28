@@ -5,13 +5,13 @@
       <div class="container mt-1">
         <div class="row">
           <p class="text-muted author-p">
-            Autor: <a href="#">{{ course.authorDisplayName }}</a>
+            Autor: <a href="#">{{ course.accountCreatedDisplayName }}</a>
           </p>
         </div>
         <div class="row">
           <a (click)="onCourseClick()">
             <h2 class="card-title">
-              {{ course.name | titlecase }}
+              {{ course.courseName | titlecase }}
             </h2>
           </a>
         </div>

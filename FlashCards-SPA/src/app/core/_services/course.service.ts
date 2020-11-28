@@ -48,18 +48,21 @@ export class CourseService {
     }));
   }
 
-  getCourse(id: number): Observable<CourseDetailed> {
+  getCourse(id: number): Observable<any> {
     const url = this.baseUrl + '/' + id;
     return this.httpClient.get(url, {
       headers: new HttpHeaders({
         Authorization: 'Bearer ' + localStorage.getItem('token')
       }),
       observe: 'response'
-    }).pipe(
-      map(response => {
+    }).pipe(map(response => {
+      // @ts-ignore
+      if (response.body.isSubscribing === true) {
+        return this.adapter.adaptSubscribedCourseDetail(response.body);
+      } else {
         return this.adapter.adaptCourseDetailed(response.body);
-      })
-    );
+      }
+    }));
   }
 
   updateCourse(id: number, model: CourseForUpdate) {

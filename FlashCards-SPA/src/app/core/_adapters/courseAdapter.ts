@@ -5,6 +5,8 @@ import { CourseDetailed } from '../_models/_dtos/fromServer/courseDetailed';
 import { LessonShort } from '../_models/_dtos/fromServer/lessonShort';
 import {CourseForCreate} from '../_models/_dtos/toServer/courseForCreate';
 import {CourseForUpdate} from '../_models/_dtos/toServer/courseForUpdate';
+import {SubscribedCourseDetail} from '../_models/_dtos/fromServer/subscribedCourseDetail';
+import {SubscribedLessonShort} from '../_models/_dtos/fromServer/subscribedLessonShort';
 
 @Injectable({
   providedIn: 'root'
@@ -53,4 +55,28 @@ export class CourseAdapter {
   adaptCourseForUpdate(course: any): CourseForUpdate {
     return new CourseForUpdate(course.name, course.description, Number(course.courseType));
   }
+
+  adaptSubscribedCourseDetail(course: any): SubscribedCourseDetail {
+    const lessonsFromArg = course.lessons as [];
+    const lessons: SubscribedLessonShort[] = [];
+    for (const lesson of lessonsFromArg) {
+      lessons.push(this.lessonAdapter.adaptSubscribedLessonShort(lesson));
+    }
+
+    return new SubscribedCourseDetail(
+      course.subscriptionId,
+      course.courseId,
+      course.accountCreatedDisplayName,
+      course.courseName,
+      course.courseDescription,
+      course.courseType,
+      course.amountOfEnrolled,
+      course.isSubscribing,
+      course.amountOfFlashcards,
+      course.amountOfFlashcardsLearnt,
+      course.overallProgress,
+      course.lastActivity,
+      lessons);
+  }
+
 }

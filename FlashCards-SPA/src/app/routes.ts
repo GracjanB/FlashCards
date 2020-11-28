@@ -17,12 +17,13 @@ import {LessonFormComponent} from './course-gen/lesson-form/lesson-form.componen
 import {FlashcardFormComponent} from './course-gen/flashcard-form/flashcard-form.component';
 import {AccountProfileComponent} from './account-profile/account-profile.component';
 import {AccountEditComponent} from './account-edit/account-edit.component';
+import {DashboardResolver} from './core/_resolvers/dashboard.resolver';
 
 export const appRoutes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
-  { path: 'dashboard', component: DashboardComponent },
+  { path: 'dashboard', component: DashboardComponent, resolve: { subscribedCourses: DashboardResolver}},
   { path: 'courses', component: CoursesComponent, resolve: { courses: CoursesResolver }},
   { path: 'courses/:id', component: CourseDetailComponent, resolve: { course: CourseDetailResolver }},
   { path: 'courses/:courseId/lessons/:id', component: LessonDetailComponent, resolve: { lesson: LessonDetailResolver }},

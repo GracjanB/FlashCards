@@ -18,5 +18,9 @@ namespace FlashCards.Services.Common.Abstracts
         bool IsSubscribing(int accountId, int courseId, out int subscriptionId);
 
         SubscribedCourseDetailed GetSubscribedCourseDetail(int subscriptionId, int courseId);
+
+        SubscribedCourseDetail2 GetSubscribedCourseDetail2(int subscriptionId, int courseId);
+
+        LessonForDetail GetSubscribedLessonDetail(int subscriptionId, int lessonId);
     }
 }

@@ -8,6 +8,7 @@ using FlashCards.Helpers.Extensions;
 using FlashCards.Models.DTOs.ToClient;
 using FlashCards.Models.DTOs.ToServer;
 using FlashCards.Models.Exceptions;
+using FlashCards.Services.Common.Abstracts;
 using FlashCards.Services.Repositories.Abstracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -22,23 +23,27 @@ namespace FlashCards.WebAPI.Controllers
     {
         private readonly ILessonRepository _lessonRepository;
         private readonly ICourseRepository _courseRepository;
+        private readonly ISubscriptionsService _subscriptionsService;
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
         private readonly ILogger<LessonsController> _logger;
 
         public LessonsController(ILessonRepository lessonRepository, ICourseRepository courseRepository,
-            IMapper mapper, ILogger<LessonsController> logger, IUserRepository userRepository)
+            IMapper mapper, ILogger<LessonsController> logger, IUserRepository userRepository,
+            ISubscriptionsService subscriptionsService)
         {
             _lessonRepository = lessonRepository ?? throw new ArgumentNullException(nameof(lessonRepository));
             _courseRepository = courseRepository ?? throw new ArgumentNullException(nameof(courseRepository));
             _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _subscriptionsService = subscriptionsService ?? throw new ArgumentNullException(nameof(subscriptionsService));
         }
 
         /// <summary>
         /// Get details about lesson
         /// </summary>
+        /// <param name="courseId"></param>
         /// <param name="id">Lesson ID</param>
         /// <returns>Status</returns>
         /// <response code="200">Detailed info about lesson</response>
@@ -50,13 +55,24 @@ namespace FlashCards.WebAPI.Controllers
         [ProducesResponseType(401)]
         [ProducesResponseType(404)]
         [Produces("application/json")]
-        public async Task<IActionResult> GetLessonDetail(int id)
+        public async Task<IActionResult> GetLessonDetail(int courseId, int id)
         {
-            var lessonFromRepo = await _lessonRepository.Get(id);
-            if (lessonFromRepo == null)
-                return NotFound(new ErrorResponse { ErrorMessage = "Lesson has not been found." });
+            LessonForDetail lessonToReturn = null;
 
-            var lessonToReturn = _mapper.Map<LessonForDetail>(lessonFromRepo);
+            var accountId = _userRepository.GetUserAccountId(int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value));
+
+            if (_subscriptionsService.IsSubscribing(accountId, courseId, out int subscriptionId))
+                lessonToReturn = _subscriptionsService.GetSubscribedLessonDetail(subscriptionId, id);
+            else
+            {
+                var lessonFromRepo = await _lessonRepository.Get(id);
+                lessonToReturn = _mapper.Map<LessonForDetail>(lessonFromRepo);
+
+                // TODO: Think about how to change the way to inform client about subscription
+                lessonToReturn.IsSubscribed = false;
+                foreach (var flashcard in lessonToReturn.Flashcards)
+                    flashcard.IsSubscribed = false;
+            }
 
             return Ok(lessonToReturn);
         }

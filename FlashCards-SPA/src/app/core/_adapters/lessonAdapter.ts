@@ -4,6 +4,7 @@ import {FlashcardShort} from '../_models/_dtos/fromServer/flashcardShort';
 import {FlashcardAdapter} from './flashcardAdapter';
 import {Lesson} from '../_models/_dtos/fromServer/lesson';
 import {LessonForCreate} from '../_models/_dtos/toServer/lessonForCreate';
+import {SubscribedLessonShort} from '../_models/_dtos/fromServer/subscribedLessonShort';
 
 @Injectable({
   providedIn: 'root'
@@ -30,11 +31,17 @@ export class LessonAdapter {
       lesson.category,
       new Date(lesson.dateCreated),
       new Date(lesson.dateModified),
+      lesson.isSubscribed,
+      lesson.overallProgress,
       flashcards
     );
   }
 
   adaptLessonForCreate(lesson: any): LessonForCreate {
     return new LessonForCreate(lesson.name, lesson.description, lesson.category);
+  }
+
+  adaptSubscribedLessonShort(lesson: any): SubscribedLessonShort {
+    return new SubscribedLessonShort(lesson.id, lesson.name, lesson.progress);
   }
 }

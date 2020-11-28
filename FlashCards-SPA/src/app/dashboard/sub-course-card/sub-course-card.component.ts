@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {SubscribedCourse} from '../../core/_models/subscribedCourse';
+import {SubscribedCourseShort} from '../../core/_models/subscribedCourseShort';
 import {AlertifyService} from '../../core/_services/alertify.service';
 
 @Component({
@@ -8,7 +8,7 @@ import {AlertifyService} from '../../core/_services/alertify.service';
   styleUrls: ['./sub-course-card.component.css']
 })
 export class SubCourseCardComponent implements OnInit {
-  @Input() course: SubscribedCourse;
+  @Input() course: SubscribedCourseShort;
 
   constructor(private alertifyService: AlertifyService) { }
 

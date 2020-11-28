@@ -10,7 +10,7 @@
             <!-- Course Title -->
             <div class="col-10">
               <h2 class="card-title">
-                {{ course.name | titlecase }}
+                {{ course.courseName | titlecase }}
               </h2>
             </div>
             <!-- Right Upper Corner Menu -->
@@ -34,12 +34,12 @@
             <div class="col-12 text-right">
               <!-- Already Known Flashcards -->
               <div>
-                <p>Poznane fiszki {{ course.knownFlashcards }}/{{ course.allFlashcards }}</p>
+                <p>Poznane fiszki 465/1236</p>
               </div>
               <!-- Progress Bar -->
               <div class="progress">
                 <div class="progress-bar progress-bar-striped" role="progressbar"
-                     [ngStyle]="{'width': course.progress+'%'}"
+                     [ngStyle]="{'width': course.overallProgress+'%'}"
                      aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
               </div>
             </div>

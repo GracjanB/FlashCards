@@ -7,5 +7,11 @@
         public string Phrase { get; set; }
 
         public string TranslatedPhrase { get; set; }
+
+        public bool IsSubscribed { get; set; }
+
+        public decimal Progress { get; set; }
+
+        public bool MarkedAsHard { get; set; }
     }
 }
