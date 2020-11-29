@@ -36,4 +36,11 @@ export class DashboardComponent implements OnInit {
     console.log(pagination);
   }
 
+  public navigateToCourseGen(): void {
+    this.router.navigate(['course-generator']);
+  }
+
+  public navigateToAnalytics(): void {
+    this.router.navigate(['analytics']);
+  }
 }

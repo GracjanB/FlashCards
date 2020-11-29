@@ -20,7 +20,7 @@
                   <i class="fa fa-ellipsis-v fa-lg"></i>
                 </button>
                 <div class="dropdown-menu dropdown-menu-right" *dropdownMenu>
-                  <a class="dropdown-item">
+                  <a class="dropdown-item" [routerLink]="['/courses/' + course.courseId]">
                     <i class="fa fa-book mr-2"></i>Szczegóły
                   </a>
                   <a class="dropdown-item">
@@ -32,10 +32,6 @@
           </div>
           <div class="row">
             <div class="col-12 text-right">
-              <!-- Already Known Flashcards -->
-              <div>
-                <p>Poznane fiszki 465/1236</p>
-              </div>
               <!-- Progress Bar -->
               <div class="progress">
                 <div class="progress-bar progress-bar-striped" role="progressbar"
@@ -56,9 +52,6 @@
                 </a>
                 <a class="dropdown-item" (click)="playHardFlashcards()">
                   <i class="fa fa-book mr-2"></i>Trudne fiszki
-                </a>
-                <a class="dropdown-item" (click)="playNextFlashcards()">
-                  <i class="fa fa-book mr-2"></i>Poznaj następne
                 </a>
               </div>
             </div>
