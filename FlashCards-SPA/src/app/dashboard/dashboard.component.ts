@@ -28,8 +28,6 @@ export class DashboardComponent implements OnInit {
       this.subscribedCourses = data.subscribedCourses.result;
       this.pagination = data.subscribedCourses.pagination;
     });
-    console.log(this.subscribedCourses);
-    console.log(this.pagination);
   }
 
   pageChanged(pagination: any): void {
@@ -42,5 +40,20 @@ export class DashboardComponent implements OnInit {
 
   public navigateToAnalytics(): void {
     this.router.navigate(['analytics']);
+  }
+
+  public unsubscribeCourse(subscriptionId: number): void {
+    this.alertifyService.showConfirmAlert('Czy na pewno chcesz odsubskrybować kurs? Tej operacji nie można cofnąć.',
+      () => {
+        this.subscriptionsService.unsubscribeCourse(subscriptionId).subscribe(result => {
+          if (result) {
+            window.location.reload();
+          } else {
+            this.alertifyService.showErrorAlert('An error occurred during operation. Try again later..');
+          }
+        }, error => {
+          this.alertifyService.showErrorAlert('An error occurred during operation. Try again later..');
+        });
+      });
   }
 }

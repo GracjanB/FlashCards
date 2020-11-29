@@ -39,7 +39,6 @@ export class SubscriptionsService {
       if (response.headers.get('Pagination') != null) {
         paginatedResult.pagination = JSON.parse(response.headers.get('Pagination'));
       }
-      console.log(paginatedResult);
       return paginatedResult;
     }));
   }
@@ -53,6 +52,18 @@ export class SubscriptionsService {
       observe: 'response'
     }).pipe(map(response => {
       return this.subscriptionsAdapter.adaptSubscribedCourseShort(response.body);
+    }));
+  }
+
+  unsubscribeCourse(subscriptionId: number): Observable<boolean> {
+    const url = this.baseUrl + 'unsubscribe/' + subscriptionId;
+    return this.httpClient.put(url, null, {
+      headers: new HttpHeaders({
+        Authorization: 'Bearer ' + localStorage.getItem('token')
+      }),
+      observe: 'response'
+    }).pipe(map(response => {
+      return response.ok;
     }));
   }
 }

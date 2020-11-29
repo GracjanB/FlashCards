@@ -23,7 +23,7 @@
                   <a class="dropdown-item" [routerLink]="['/courses/' + course.courseId]">
                     <i class="fa fa-book mr-2"></i>Szczegóły
                   </a>
-                  <a class="dropdown-item">
+                  <a class="dropdown-item" (click)="onUnsubscribeCourse()">
                     <i class="fa fa-book mr-2"></i>Zrezygnuj z kursu
                   </a>
                 </div>

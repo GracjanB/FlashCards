@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {CourseShort} from '../core/_models/_dtos/fromServer/courseShort';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CourseDetailed} from '../core/_models/_dtos/fromServer/courseDetailed';
 import {LessonShort} from '../core/_models/_dtos/fromServer/lessonShort';
 import {SubscribedCourseDetail} from '../core/_models/_dtos/fromServer/subscribedCourseDetail';
+import {SubscriptionsService} from '../core/_services/subscriptions.service';
+import {AlertifyService} from '../core/_services/alertify.service';
 
 @Component({
   selector: 'app-course-detail',
@@ -17,7 +19,10 @@ export class CourseDetailComponent implements OnInit {
   isSubscribed: boolean;
 
   constructor(private route: ActivatedRoute,
-              private router: Router) { }
+              private router: Router,
+              private subscriptionsService: SubscriptionsService,
+              private alertifyService: AlertifyService) {
+  }
 
   ngOnInit(): void {
     this.route.data.subscribe(data => {
@@ -28,7 +33,7 @@ export class CourseDetailComponent implements OnInit {
 
   onLessonSelected(lesson: any): void {
     let url = '';
-    if (this.course instanceof CourseDetailed){
+    if (this.course instanceof CourseDetailed) {
       url = 'courses/' + this.course.id + '/lessons/' + lesson.id;
     } else {
       url = 'courses/' + this.course.courseId + '/lessons/' + lesson.id;
@@ -37,10 +42,29 @@ export class CourseDetailComponent implements OnInit {
   }
 
   private prepareComponent(): void {
-    if (this.course instanceof SubscribedCourseDetail) {
-      this.isSubscribed = true;
-    } else {
-      this.isSubscribed = false;
-    }
+    this.isSubscribed = this.course instanceof SubscribedCourseDetail;
+  }
+
+  public onSubscribeCourse(): void {
+    this.subscriptionsService.subscribeCourse(this.course.id).subscribe(next => {
+      window.location.reload();
+    }, error => {
+      this.alertifyService.showErrorAlert('An error occurred. Try again later..');
+    });
+  }
+
+  public onUnsubscribeCourse(): void {
+    this.alertifyService.showConfirmAlert('Czy na pewno chcesz odsubskrybować kurs? Tej operacji nie można cofnąć.',
+      () => {
+        this.subscriptionsService.unsubscribeCourse(this.course.subscriptionId).subscribe(result => {
+          if (result) {
+            window.location.reload();
+          } else {
+            this.alertifyService.showErrorAlert('An error occurred. Try again later..');
+          }
+        }, error => {
+          this.alertifyService.showErrorAlert('An error occurred. Try again later..');
+        });
+      });
   }
 }

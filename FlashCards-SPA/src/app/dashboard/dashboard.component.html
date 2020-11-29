@@ -66,7 +66,8 @@
     <div class="row" *ngIf="subscribedCourses.length > 0">
       <div class="col col-lg-9">
         <div *ngFor="let subscribedCourseShort of subscribedCourses" class="row ml-2 mb-3">
-          <app-sub-course-card [course]="subscribedCourseShort"></app-sub-course-card>
+          <app-sub-course-card [course]="subscribedCourseShort"
+                               (unsubscribeCourse)="unsubscribeCourse($event)"></app-sub-course-card>
         </div>
         <div class="row d-flex justify-content-center mt-4">
             <pagination [boundaryLinks]="true"
