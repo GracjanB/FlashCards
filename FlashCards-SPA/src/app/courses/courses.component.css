@@ -5,3 +5,9 @@
 h1 {
   font-family: 'Kaushan Script', cursive;
 }
+
+.courses-title {
+  font-weight: bold;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-size: 32px;
+}

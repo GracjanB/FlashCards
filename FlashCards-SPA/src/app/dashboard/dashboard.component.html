@@ -1,11 +1,10 @@
-<div class="container mt-5">
-  <div class="row justify-content-lg-center">
-    <div class="col-12 text-center">
-      <h1>My Courses</h1>
+<div class="container mt-2">
+  <div class="row justify-content-lg-start mb-3">
+    <div class="card col-9 d-lg-flex ml-5">
+      <h1 class="text-center dashboard-header mt-3 mb-3">Ostatnio przerabiane</h1>
     </div>
   </div>
   <div class="row justify-content-lg-center">
-
     <!-- User Card -->
     <div class="col col-lg-3">
       <div class="card">
@@ -57,7 +56,8 @@
         <div class="card-body">
           <h2 class="text-center">Utwórz swój własny kurs!</h2>
           <button class="btn btn-primary btn-block text-center"
-                  (click)="navigateToCourseGen()">Uruchom generator</button>
+                  (click)="navigateToCourseGen()">Uruchom generator
+          </button>
         </div>
       </div>
     </div>
@@ -70,13 +70,13 @@
                                (unsubscribeCourse)="unsubscribeCourse($event)"></app-sub-course-card>
         </div>
         <div class="row d-flex justify-content-center mt-4">
-            <pagination [boundaryLinks]="true"
-                        [totalItems]="pagination.totalItems"
-                        [itemsPerPage]="pagination.itemsPerPage"
-                        [(ngModel)]="pagination.currentPage"
-                        (pageChanged)="pageChanged($event)"
-                        previousText="&lsaquo;" nextText="&rsaquo;"
-                        firstText="&laquo;" lastText="&raquo;"></pagination>
+          <pagination [boundaryLinks]="true"
+                      [totalItems]="pagination.totalItems"
+                      [itemsPerPage]="pagination.itemsPerPage"
+                      [(ngModel)]="pagination.currentPage"
+                      (pageChanged)="pageChanged($event)"
+                      previousText="&lsaquo;" nextText="&rsaquo;"
+                      firstText="&laquo;" lastText="&raquo;"></pagination>
         </div>
       </div>
     </div>

@@ -1,5 +1,8 @@
 .large-title {
-  font-size: 48px;
+  font-size: 40px;
+  font-weight: bold;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  text-align: center;
 }
 
 h1 {
