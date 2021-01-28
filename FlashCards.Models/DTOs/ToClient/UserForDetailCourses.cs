@@ -6,8 +6,14 @@ namespace FlashCards.Models.DTOs.ToClient
 {
     public class UserForDetailCourses : UserForDetail
     {
-        public IEnumerable<CourseShort> CreatedCourses { get; set; }
+        public IEnumerable<CourseForList> CreatedCourses { get; set; }
 
-        public IEnumerable<CourseShort> SubscribedCourses { get; set; }
+        public IEnumerable<CourseForList> SubscribedCourses { get; set; }
+
+        public int NumberOfCreatedCourses { get; set; }
+
+        public int NumberOfSubscribedCourses { get; set; }
+
+        public int NumberOfAlreadyLearntFlashcards { get; set; }
     }
 }

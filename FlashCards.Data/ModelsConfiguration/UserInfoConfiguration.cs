@@ -25,6 +25,14 @@ namespace FlashCards.Data.ModelsConfiguration
             builder.Property(x => x.Country)
                 .HasColumnType("NVARCHAR(64)");
 
+            builder.Property(x => x.NumberOfWordsInLearningSession)
+                .HasColumnType("SMALLINT")
+                .HasDefaultValue(10);
+
+            builder.Property(x => x.NumberOfWordsInReviewSession)
+                .HasColumnType("SMALLINT")
+                .HasDefaultValue(10);
+
             builder.HasOne(x => x.User)
                 .WithOne(x => x.UserInfo);
 

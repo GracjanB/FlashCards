@@ -10,25 +10,25 @@
             <div class="card-body ml-3">
               <div class="row">
                 <div class="col-10">
-                  <h1 class="card-title pull-left">Davidson 957</h1>
+                  <h1 class="card-title pull-left">{{ user.displayName | titlecase }}</h1>
                 </div>
                 <div class="col-2 pull-right">
-                  <button class="btn btn-outline-primary pull-right">Edytuj profil</button>
+                  <button class="btn btn-outline-primary pull-right" (click)="editProfile()">Edytuj profil</button>
                 </div>
               </div>
               <hr class="mt-0">
               <div class="row">
                 <div class="col-4">
                   <h1 class="text-center">Nauczone słowa:</h1>
-                  <h2 class="text-center">3242</h2>
+                  <h2 class="text-center">{{ user.numberOfAlreadyLearntFlashcards }}</h2>
                 </div>
                 <div class="col-4">
                   <h1 class="text-center">Zasubskrybowane kursy:</h1>
-                  <h2 class="text-center">67</h2>
+                  <h2 class="text-center">{{ user.numberOfSubscribedCourses }}</h2>
                 </div>
                 <div class="col-4">
                   <h1 class="text-center">Utworzone kursy:</h1>
-                  <h2 class="text-center">768</h2>
+                  <h2 class="text-center">{{ user.numberOfCreatedCourses }}</h2>
                 </div>
               </div>
             </div>
@@ -45,12 +45,20 @@
         </div>
         <div class="col-8">
           <div class="btn-group pull-right" role="group">
-            <button type="button" class="btn btn-primary">Subskrypcje</button>
-            <button type="button" class="btn btn-primary">Utworzone</button>
+            <button type="button" class="btn btn-primary" (click)="showSubscribedCourses()">Subskrypcje</button>
+            <button type="button" class="btn btn-primary" (click)="showCreatedCourses()">Utworzone</button>
           </div>
         </div>
       </div>
       <hr class="mt-0">
+      <div class="row" *ngIf="displayedCourses.length > 0">
+        <div *ngFor="let course of displayedCourses" class="col-lg-3 col-md-4 col-sm-6">
+          <app-course-card [course]="course"></app-course-card>
+        </div>
+      </div>
+      <div class="row d-flex justify-content-center" *ngIf="displayedCourses.length == 0">
+        <h1>Brak kursów</h1>
+      </div>
     </div>
   </div>
 </div>

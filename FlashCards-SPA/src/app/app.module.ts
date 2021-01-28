@@ -47,6 +47,16 @@ import {PaginationModule} from 'ngx-bootstrap/pagination';
 import {SubscriptionsService} from './core/_services/subscriptions.service';
 import {SubscriptionsAdapter} from './core/_adapters/subscriptionsAdapter';
 import {DashboardResolver} from './core/_resolvers/dashboard.resolver';
+import { LearnComponent } from './learn/learn.component';
+import { LearnPhrasePresentationComponent } from './learn/learn-phrase-presentation/learn-phrase-presentation.component';
+import { LearnPhraseSelectionComponent } from './learn/learn-phrase-selection/learn-phrase-selection.component';
+import { LearnPhraseBlocksComponent } from './learn/learn-phrase-blocks/learn-phrase-blocks.component';
+import { LearnPhraseInputComponent } from './learn/learn-phrase-input/learn-phrase-input.component';
+import {LearningSessionServiceService} from './core/_services/learningSession.service';
+import {UserAdapter} from './core/_adapters/userAdapter';
+import {UserService} from './core/_services/user.service';
+import {AccountProfileResolver} from './core/_resolvers/account-profile.resolver';
+import {AccountEditResolver} from './core/_resolvers/account-edit.resolver';
 
 @NgModule({
   declarations: [
@@ -69,7 +79,12 @@ import {DashboardResolver} from './core/_resolvers/dashboard.resolver';
     LessonListComponent,
     FlashcardFormComponent,
     AccountProfileComponent,
-    AccountEditComponent
+    AccountEditComponent,
+    LearnComponent,
+    LearnPhrasePresentationComponent,
+    LearnPhraseSelectionComponent,
+    LearnPhraseBlocksComponent,
+    LearnPhraseInputComponent
   ],
     imports: [
         BrowserModule,
@@ -100,7 +115,12 @@ import {DashboardResolver} from './core/_resolvers/dashboard.resolver';
     FlashcardService,
     SubscriptionsService,
     SubscriptionsAdapter,
-    DashboardResolver
+    DashboardResolver,
+    LearningSessionServiceService,
+    UserAdapter,
+    UserService,
+    AccountProfileResolver,
+    AccountEditResolver
   ],
   bootstrap: [AppComponent]
 })

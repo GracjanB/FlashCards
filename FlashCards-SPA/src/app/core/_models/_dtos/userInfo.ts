@@ -1,4 +1,4 @@
-import { User } from '../user';
+import { User } from './fromServer/user';
 
 export class UserInfo {
   token: string;

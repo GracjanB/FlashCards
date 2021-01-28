@@ -40,6 +40,7 @@ namespace FlashCards.Services.Repositories.Implementations
             var userFromRepo = _context.Users
                 .Include(x => x.UserInfo)
                 .Include(x => x.UserInfo.CreatedCourses)
+                .ThenInclude(x => x.AccountCreated)
                 .Include(x => x.UserInfo.SubscribedCourses)
                 .FirstOrDefault(x => x.Id == id);
 
@@ -48,7 +49,8 @@ namespace FlashCards.Services.Repositories.Implementations
                 var subscribedCourseIds = userFromRepo.UserInfo.SubscribedCourses.Select(x => x.CourseId).ToList();
                 var subscribedCourses = _context.Courses.Where(x => subscribedCourseIds.Contains(x.Id)).ToList();
                 var userToReturn = _mapper.Map<UserForDetailCourses>(userFromRepo);
-                userToReturn.SubscribedCourses = _mapper.Map<IEnumerable<CourseShort>>(subscribedCourses);
+                userToReturn.SubscribedCourses = _mapper.Map<IEnumerable<CourseForList>>(subscribedCourses);
+                userToReturn.CreatedCourses = _mapper.Map<IEnumerable<CourseForList>>(userFromRepo.UserInfo.CreatedCourses);
 
                 return userToReturn;
             }

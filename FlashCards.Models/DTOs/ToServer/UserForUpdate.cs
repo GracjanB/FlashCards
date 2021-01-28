@@ -18,5 +18,11 @@ namespace FlashCards.Models.DTOs.ToServer
 
         [MaxLength(64, ErrorMessage = "Field cannot be longer than 64 characters")]
         public string Country { get; set; }
+
+        [Required(ErrorMessage = "Field is required")]
+        public int NumberOfWordsInLearningSession { get; set; }
+
+        [Required(ErrorMessage = "Field is required")]
+        public int NumberOfWordsInReviewSession { get; set; }
     }
 }

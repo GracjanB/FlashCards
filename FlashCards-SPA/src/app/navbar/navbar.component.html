@@ -32,6 +32,11 @@
       <li class="nav-item active">
         <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="['/learn']" routerLinkActive="$router_link-active$">
+          Learn test
+        </a>
+      </li>
     </ul>
     <div *ngIf="!userIsLoggedIn()" class="nav-item">
       <a class="nav-link text-light" [routerLink]="['/login']">Login</a>
@@ -42,10 +47,10 @@
       </a>
       <!-- TODO: Menu is cut off on the right side, probably problem with position -->
       <div class="dropdown-menu dropdown-menu-right" *dropdownMenu>
-        <a class="dropdown-item mb-1" [routerLink]="['/account/profile/2']">
+        <a class="dropdown-item mb-1" (click)="navigateToAccountProfile()">
           <i class="fa fa-user mr-1"></i>Profil
         </a>
-        <a class="dropdown-item" [routerLink]="['/account/edit/2']">
+        <a class="dropdown-item" (click)="navigateToAccountSettings()">
           <i class="fa fa-cogs mr-1"></i>Ustawienia
         </a>
         <div class="dropdown-divider"></div>

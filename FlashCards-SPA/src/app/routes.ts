@@ -11,13 +11,12 @@ import { LessonDetailComponent } from './lesson-detail/lesson-detail.component';
 import { CoursesResolver } from './core/_resolvers/courses.resolver';
 import { CourseDetailResolver } from './core/_resolvers/course-detail.resolver';
 import { LessonDetailResolver } from './core/_resolvers/lesson-detail.resolver';
-import {CourseFormComponent} from './course-gen/course-form/course-form.component';
-import {LessonListComponent} from './course-gen/lesson-list/lesson-list.component';
-import {LessonFormComponent} from './course-gen/lesson-form/lesson-form.component';
-import {FlashcardFormComponent} from './course-gen/flashcard-form/flashcard-form.component';
-import {AccountProfileComponent} from './account-profile/account-profile.component';
-import {AccountEditComponent} from './account-edit/account-edit.component';
-import {DashboardResolver} from './core/_resolvers/dashboard.resolver';
+import { AccountProfileComponent } from './account-profile/account-profile.component';
+import { AccountEditComponent } from './account-edit/account-edit.component';
+import { DashboardResolver } from './core/_resolvers/dashboard.resolver';
+import { LearnComponent } from './learn/learn.component';
+import {AccountProfileResolver} from './core/_resolvers/account-profile.resolver';
+import {AccountEditResolver} from './core/_resolvers/account-edit.resolver';
 
 export const appRoutes: Routes = [
   { path: '', component: HomeComponent },
@@ -28,8 +27,12 @@ export const appRoutes: Routes = [
   { path: 'courses/:id', component: CourseDetailComponent, resolve: { course: CourseDetailResolver }},
   { path: 'courses/:courseId/lessons/:id', component: LessonDetailComponent, resolve: { lesson: LessonDetailResolver }},
   { path: 'course-generator', component: CourseGenComponent },
-  { path: 'account/profile/:id', component: AccountProfileComponent },
-  { path: 'account/edit/:id', component: AccountEditComponent },
+  { path: 'account/profile/:id', component: AccountProfileComponent, resolve: { userDetailedWithCourses: AccountProfileResolver }},
+  { path: 'account/edit/:id', component: AccountEditComponent, resolve: { userDetailed: AccountEditResolver }},
   { path: 'analytics', component: AnalyticsComponent },
+  { path: 'learn', component: LearnComponent },
   { path: '**', redirectTo: '', pathMatch: 'full'}
 ];
+
+
+

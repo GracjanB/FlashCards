@@ -21,6 +21,10 @@ namespace FlashCards.Data.Models
 
         public DateTime DateCreated { get; set; }
 
+        public int NumberOfWordsInLearningSession { get; set; }
+
+        public int NumberOfWordsInReviewSession { get; set; }
+
 
         public User User { get; set; }
 

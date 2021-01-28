@@ -21,8 +21,8 @@
           <div class="row">
             <div class="col-3">
               <img src="assets/UserDefaultLogo.jpg" class="card-img mb-2" alt="User Photo">
-              <button class="btn btn-primary btn-block">Nowe zdjęcie</button>
-              <button class="btn btn-primary btn-block">Zobacz profil</button>
+              <button class="btn btn-primary btn-block" (click)="changePhoto()">Nowe zdjęcie</button>
+              <button class="btn btn-primary btn-block" (click)="navigateToAccountProfile()">Zobacz profil</button>
             </div>
             <div class="col-9">
               <!-- Profile Tab -->
@@ -32,7 +32,8 @@
                   <div class="form-group">
                     <label for="firstName">Imię</label>
                     <input id="firstName" class="form-control" type="text" formControlName="firstName" placeholder="Imię"
-                           [ngClass]="{'is-invalid': accountForm.get('firstName').errors && accountForm.get('firstName').touched}">
+                           [ngClass]="{'is-invalid': accountForm.get('firstName').errors && accountForm.get('firstName').touched}"
+                           [disabled]="isBusy">
                     <div class="invalid-feedback"
                          *ngIf="accountForm.get('firstName').touched && accountForm.get('firstName').hasError('maxlength')">
                       Maksymalna ilość znaków to 64
@@ -42,7 +43,8 @@
                   <div class="form-group">
                     <label for="lastName">Nazwisko</label>
                     <input id="lastName" class="form-control" formControlName="lastName" placeholder="Nazwisko" type="text"
-                           [ngClass]="{'is-invalid': accountForm.get('lastName').errors && accountForm.get('lastName').touched}">
+                           [ngClass]="{'is-invalid': accountForm.get('lastName').errors && accountForm.get('lastName').touched}"
+                           [disabled]="isBusy">
                     <div class="invalid-feedback"
                          *ngIf="accountForm.get('lastName').touched && accountForm.get('lastName').hasError('maxlength')">
                       Maksymalna ilość znaków to 64
@@ -52,7 +54,7 @@
                   <div class="form-group">
                     <label for="displayName">Nazwa wyświetlana profilu</label>
                     <input id="displayName" class="form-control" formControlName="displayName" placeholder="Nazwa wyświetlana" type="text"
-                           [ngClass]="{'is-invalid': accountForm.get('displayName').errors && accountForm.get('displayName').touched}">
+                           [ngClass]="{'is-invalid': accountForm.get('displayName').errors && accountForm.get('displayName').touched}" [disabled]="isBusy">
                     <div class="invalid-feedback"
                          *ngIf="accountForm.get('displayName').touched && accountForm.get('displayName').hasError('maxlength')">
                       Maksymalna ilość znaków to 64
@@ -66,7 +68,7 @@
                   <div class="form-group">
                     <label for="city">Miasto</label>
                     <input id="city" class="form-control" formControlName="city" placeholder="Miasto" type="text"
-                           [ngClass]="{'is-invalid': accountForm.get('city').errors && accountForm.get('city').touched}">
+                           [ngClass]="{'is-invalid': accountForm.get('city').errors && accountForm.get('city').touched}" [disabled]="isBusy">
                     <div class="invalid-feedback"
                          *ngIf="accountForm.get('city').touched && accountForm.get('city').hasError('maxlength')">
                       Maksymalna ilość znaków to 64
@@ -76,7 +78,7 @@
                   <div class="form-group">
                     <label for="country">Kraj</label>
                     <input id="country" class="form-control" formControlName="country" placeholder="Kraj" type="text"
-                           [ngClass]="{'is-invalid': accountForm.get('country').errors && accountForm.get('country').touched}">
+                           [ngClass]="{'is-invalid': accountForm.get('country').errors && accountForm.get('country').touched}" [disabled]="isBusy">
                     <div class="invalid-feedback"
                          *ngIf="accountForm.get('country').touched && accountForm.get('country').hasError('maxlength')">
                       Maksymalna ilość znaków to 64
@@ -84,17 +86,17 @@
                   </div>
                   <!-- Submit button -->
                   <button class="btn btn-primary btn-success" type="submit"
-                          [disabled]="accountForm.hasError || !accountForm.dirty">Zapisz</button>
+                          [disabled]="!accountForm.valid || !accountForm.dirty || isBusy">Zapisz</button>
                 </form>
               </div>
               <!-- Learning Tab -->
               <div *ngIf="learningTabActive">
-                <form [formGroup]="learningForm" (ngSubmit)="submitLearningForm()">
+                <form [formGroup]="learningForm" (ngSubmit)="submitAccountForm()">
                   <!-- Number of flashcards in learning session -->
                   <div class="form-group">
                     <label for="flashcardsInLearningSession">Ilość fiszek w każdej sesji nauki</label>
-                    <input id="flashcardsInLearningSession" class="form-control"
-                           formControlName="flashcardsInLearningSession" placeholder="Imię" type="number"
+                    <input id="flashcardsInLearningSession" class="form-control" min="5" max="30" [disabled]="isBusy"
+                           formControlName="flashcardsInLearningSession" placeholder="Ilość słów w sesji nauki" type="number"
                            [ngClass]="{'is-invalid': learningForm.get('flashcardsInLearningSession').errors &&
                               learningForm.get('flashcardsInLearningSession').touched}">
                     <div class="invalid-feedback"
@@ -111,8 +113,8 @@
                   <!-- Number of flashcards in revision session -->
                   <div class="form-group">
                     <label for="flashcardsInRevisionSession">Ilość fiszek w każdej sesji powtórki</label>
-                    <input id="flashcardsInRevisionSession" class="form-control"
-                           formControlName="flashcardsInRevisionSession" placeholder="Imię" type="number"
+                    <input id="flashcardsInRevisionSession" class="form-control" min="5" max="50" [disabled]="isBusy"
+                           formControlName="flashcardsInRevisionSession" placeholder="Ilość słów w sesji powtórkowej" type="number"
                            [ngClass]="{'is-invalid': learningForm.get('flashcardsInRevisionSession').errors &&
                               learningForm.get('flashcardsInRevisionSession').touched}">
                     <div class="invalid-feedback"
@@ -128,7 +130,7 @@
                   </div>
                   <!-- Submit button -->
                   <button class="btn btn-primary btn-success" type="submit"
-                          [disabled]="learningForm.hasError || !learningForm.dirty">Zapisz</button>
+                          [disabled]="!learningForm.valid || !learningForm.dirty || isBusy">Zapisz</button>
                 </form>
               </div>
               <!-- Change password Tab -->
@@ -140,7 +142,7 @@
                     <input id="oldPassword" class="form-control" formControlName="oldPassword"
                            placeholder="Stare hasło" type="password"
                            [ngClass]="{'is-invalid': passwordForm.get('oldPassword').errors &&
-                              passwordForm.get('oldPassword').touched}">
+                              passwordForm.get('oldPassword').touched}" [disabled]="isBusy">
                     <div class="invalid-feedback" *ngIf="passwordForm.get('oldPassword').touched &&
                             passwordForm.get('oldPassword').hasError('required')">
                       Pole jest wymagane
@@ -160,7 +162,7 @@
                     <input id="newPassword" class="form-control" formControlName="newPassword"
                            placeholder="Nowe hasło" type="password"
                            [ngClass]="{'is-invalid': passwordForm.get('newPassword').errors &&
-                              passwordForm.get('newPassword').touched}">
+                              passwordForm.get('newPassword').touched}" [disabled]="isBusy">
                     <div class="invalid-feedback" *ngIf="passwordForm.get('newPassword').touched &&
                             passwordForm.get('newPassword').hasError('required')">
                       Pole jest wymagane
@@ -180,7 +182,7 @@
                     <input id="newPasswordConfirm" class="form-control" formControlName="newPasswordConfirm"
                            placeholder="Potwierdź nowe hasło" type="password"
                            [ngClass]="{'is-invalid': passwordForm.get('newPasswordConfirm').errors &&
-                              passwordForm.get('newPasswordConfirm').touched}">
+                              passwordForm.get('newPasswordConfirm').touched}" [disabled]="isBusy">
                     <div class="invalid-feedback" *ngIf="passwordForm.get('newPasswordConfirm').touched &&
                             passwordForm.get('newPasswordConfirm').hasError('required')">
                       Pole jest wymagane
@@ -193,10 +195,14 @@
                             passwordForm.get('newPasswordConfirm').hasError('maxlength')">
                       Maksymalna ilość znaków to 32
                     </div>
+                    <div class="invalid-feedback" *ngIf="passwordForm.get('newPasswordConfirm').touched &&
+                            passwordForm.get('newPasswordConfirm').hasError('mismatch')">
+                      Password doesn't match
+                    </div>
                   </div>
                   <!-- Submit Button -->
                   <button class="btn btn-primary btn-success" type="submit"
-                          [disabled]="passwordForm.hasError || !passwordForm.dirty">Zapisz</button>
+                          [disabled]="!passwordForm.valid || !passwordForm.dirty || isBusy">Zapisz</button>
                 </form>
               </div>
             </div>

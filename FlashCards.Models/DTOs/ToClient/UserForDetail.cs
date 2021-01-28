@@ -25,5 +25,9 @@ namespace FlashCards.Models.DTOs.ToClient
         public string Country { get; set; }
 
         public DateTime DateCreated { get; set; }
+
+        public int NumberOfWordsInLearningSession { get; set; }
+
+        public int NumberOfWordsInReviewSession { get; set; }
     }
 }

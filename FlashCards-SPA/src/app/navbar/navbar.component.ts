@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthService} from '../core/_services/auth.service';
 import {Router} from '@angular/router';
-import {User} from '../core/_models/user';
+import {User} from '../core/_models/_dtos/fromServer/user';
 
 @Component({
   selector: 'app-main-navbar',
@@ -23,6 +23,16 @@ export class NavbarComponent implements OnInit{
     this.authService.logout();
     this.userDisplayName = '';
     this.router.navigate(['']);
+  }
+
+  navigateToAccountProfile(): void {
+    const user: User = JSON.parse(localStorage.getItem('user'));
+    this.router.navigate(['/account/profile/' + user.id]);
+  }
+
+  navigateToAccountSettings(): void {
+    const user: User = JSON.parse(localStorage.getItem('user'));
+    this.router.navigate(['/account/edit/' + user.id]);
   }
 
   userIsLoggedIn(): boolean {

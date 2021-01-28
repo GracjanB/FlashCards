@@ -1,9 +1,6 @@
 ﻿using AutoMapper;
 using FlashCards.Data.Models;
 using FlashCards.Models.DTOs.ToClient;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace FlashCards.Helpers.AutoMapper.ExtendedProfiles
 {
@@ -35,7 +32,13 @@ namespace FlashCards.Helpers.AutoMapper.ExtendedProfiles
                         src.UserInfo.DateCreated))
                 .ForMember(dest => dest.AccountId, options =>
                     options.MapFrom(src =>
-                        src.UserInfoId));
+                        src.UserInfoId))
+                .ForMember(dest => dest.NumberOfWordsInLearningSession, options =>
+                    options.MapFrom(src =>
+                        src.UserInfo.NumberOfWordsInLearningSession))
+                .ForMember(dest => dest.NumberOfWordsInReviewSession, options =>
+                    options.MapFrom(src =>
+                        src.UserInfo.NumberOfWordsInReviewSession));
         }
     }
 }

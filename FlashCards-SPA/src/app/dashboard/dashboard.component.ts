@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {User} from '../core/_models/user';
+import {User} from '../core/_models/_dtos/fromServer/user';
 import {SubscribedCourseShort} from '../core/_models/subscribedCourseShort';
 import {SubscriptionsService} from '../core/_services/subscriptions.service';
 import {Pagination} from '../core/_models/common/pagination';
