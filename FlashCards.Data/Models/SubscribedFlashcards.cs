@@ -8,11 +8,15 @@ namespace FlashCards.Data.Models
 
         public DateTime LastTrainingDate { get; set; }
 
+        public DateTime LastRevisionDate { get; set; }
+
         public int TrainLevel { get; set; }
 
         public int DifficultyLevel { get; set; }
 
         public bool MarkedAsHard { get; set; }
+
+        public bool MarkedAsIgnored { get; set; }
 
 
         public int FlashcardId { get; set; }

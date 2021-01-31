@@ -3,6 +3,11 @@
   cursor: pointer;
 }
 
+.ignore-default {
+  transform: scale(1.6, 1.6);
+  cursor: pointer;
+}
+
 .fa:hover {
   transform: scale(2.0, 2.0);
   transition-duration: 200ms;
@@ -10,9 +15,17 @@
 }
 
 .star-not-marked {
-  color: lightslategray;
+  color: gray;
 }
 
 .star-marked {
   color: #dede40;
+}
+
+.ignore-not-marked {
+  color: gray;
+}
+
+.ignore-marked {
+  color: firebrick;
 }

@@ -55,7 +55,14 @@
                 </div>
               </td>
               <td *ngIf="flashcard.isSubscribed">
-                <i class="fa fa-star star-default star-marked"></i>
+                <i class="fa fa-star star-default mr-4"
+                   (click)="markFlashcardAsHard(flashcard)"
+                   [ngClass]="{'star-marked': flashcard.markedAsHard,
+                               'star-not-marked': !flashcard.markedAsHard}"></i>
+                <i class="fa fa-ban ignore-default"
+                   (click)="markFlashcardAsIgnored(flashcard)"
+                   [ngClass]="{'ignore-marked': flashcard.markedAsIgnored,
+                               'ignore-not-marked': !flashcard.markedAsIgnored}"></i>
               </td>
             </tr>
           </tbody>

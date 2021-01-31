@@ -57,6 +57,7 @@ import {UserAdapter} from './core/_adapters/userAdapter';
 import {UserService} from './core/_services/user.service';
 import {AccountProfileResolver} from './core/_resolvers/account-profile.resolver';
 import {AccountEditResolver} from './core/_resolvers/account-edit.resolver';
+import {CourseManagerService} from './core/_services/courseManager.service';
 
 @NgModule({
   declarations: [
@@ -120,7 +121,8 @@ import {AccountEditResolver} from './core/_resolvers/account-edit.resolver';
     UserAdapter,
     UserService,
     AccountProfileResolver,
-    AccountEditResolver
+    AccountEditResolver,
+    CourseManagerService
   ],
   bootstrap: [AppComponent]
 })

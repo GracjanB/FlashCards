@@ -1,5 +1,6 @@
 export class UserDetailed {
   id: number;
+  accountId: number;
   email: string;
   displayName: string;
   photoUrl: string;
@@ -12,6 +13,7 @@ export class UserDetailed {
   numberOfWordsInReviewSession: number;
 
   constructor(id: number,
+              accountId: number,
               email: string,
               displayName: string,
               photoUrl: string,
@@ -23,6 +25,7 @@ export class UserDetailed {
               numberOfWordsInLearningSession: number,
               numberOfWordsInReviewSession: number) {
     this.id = id;
+    this.accountId = accountId;
     this.email = email;
     this.displayName = displayName;
     this.photoUrl = photoUrl;

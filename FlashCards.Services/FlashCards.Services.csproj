@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\FlashCards.Data\FlashCards.Data.csproj" />
+    <ProjectReference Include="..\FlashCards.Helpers\FlashCards.Helpers.csproj" />
     <ProjectReference Include="..\FlashCards.Models\FlashCards.Models.csproj" />
   </ItemGroup>
 

@@ -47,7 +47,7 @@ namespace FlashCards.WebAPI
                                              .ToList();
             automapperProfiles.Add(typeof(CommonProfiles));
             services.AddAutoMapper(automapperProfiles.ToArray());
-
+            
             // Database connection config
             services.AddDbContext<FlashcardsDataModel>(config =>
             {
@@ -94,6 +94,8 @@ namespace FlashCards.WebAPI
             services.AddScoped<IFlashcardRepository, FlashcardRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ISubscriptionsService, SubscriptionService>();
+            services.AddScoped<ILearnService, LearnService>();
+            services.AddScoped<ISubscribedCourseManagerService, SubscribedCourseManagerService>();
             
             services.AddControllers();
         }
@@ -149,6 +151,8 @@ namespace FlashCards.WebAPI
             {
                 endpoints.MapControllers();
             });
+
+            
         }
     }
 }

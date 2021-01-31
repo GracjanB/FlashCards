@@ -45,6 +45,7 @@ export class UserAdapter {
   adaptUserDetailed(userDetailed: any): UserDetailed {
     return new UserDetailed(
       userDetailed.id,
+      userDetailed.accountId,
       userDetailed.email,
       userDetailed.displayName,
       userDetailed.photoUrl,

@@ -15,11 +15,13 @@ export class FlashcardAdapter {
   adaptFlashcardShort(flashcard: any): FlashcardShort {
     return new FlashcardShort(
       flashcard.id,
+      flashcard.subscribedFlashcardId,
       flashcard.phrase,
       flashcard.translatedPhrase,
       flashcard.isSubscribed,
       flashcard.progress,
-      flashcard.markedAsHard);
+      flashcard.markedAsHard,
+      flashcard.markedAsIgnored);
   }
 
   adaptFlashcard(flashcard: any): Flashcard {

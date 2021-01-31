@@ -4,6 +4,8 @@
     {
         public int Id { get; set; }
 
+        public int SubscribedFlashcardId { get; set; }
+
         public string Phrase { get; set; }
 
         public string TranslatedPhrase { get; set; }
@@ -13,5 +15,7 @@
         public decimal Progress { get; set; }
 
         public bool MarkedAsHard { get; set; }
+
+        public bool MarkedAsIgnored { get; set; }
     }
 }

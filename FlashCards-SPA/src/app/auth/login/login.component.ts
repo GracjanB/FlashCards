@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UserForLogin } from '../../core/_models/_dtos/userForLogin';
 import { AuthService } from '../../core/_services/auth.service';
 import {AlertifyService} from '../../core/_services/alertify.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -13,7 +14,8 @@ export class LoginComponent implements OnInit {
   isBusy = false;
 
   constructor(private authService: AuthService,
-              private alertifyService: AlertifyService) {
+              private alertifyService: AlertifyService,
+              private router: Router) {
     this.userForLogin = new UserForLogin();
   }
 
@@ -25,6 +27,7 @@ export class LoginComponent implements OnInit {
     this.authService.login(this.userForLogin).subscribe(
       next => {
       this.alertifyService.showSuccessAlert('Successfully logged in');
+      this.router.navigate(['/dashboard']);
     }, error => {
       this.alertifyService.showErrorAlert('Failed to login');
     }, () => {

@@ -150,11 +150,13 @@ namespace FlashCards.Services.Common.Implementations
                     output.Flashcards.Add(new FlashcardForList
                     {
                         Id = flashcard.Id,
+                        SubscribedFlashcardId = subFlashcard != null ? subFlashcard.Id : 0,
                         Phrase = flashcard.Phrase,
                         TranslatedPhrase = flashcard.TranslatedPhrase,
                         IsSubscribed = subscription.IsSubscribed,
                         Progress = subFlashcard != null ? subFlashcard.TrainLevel : 0.00M,
-                        MarkedAsHard = subFlashcard != null ? subFlashcard.MarkedAsHard : false
+                        MarkedAsHard = subFlashcard != null ? subFlashcard.MarkedAsHard : false,
+                        MarkedAsIgnored = subFlashcard != null ? subFlashcard.MarkedAsIgnored : false
                     });
                 }
             }
@@ -221,6 +223,35 @@ namespace FlashCards.Services.Common.Implementations
                     CourseId = courseId
                 };
 
+                var subscribedLessons = new List<SubscribedLesson>();
+                var lessonsWithFlashcards = _context.Courses.Include(x => x.Lessons).ThenInclude(x => x.Flashcards).FirstOrDefault(x => x.Id == courseId);
+
+                foreach(var lesson in lessonsWithFlashcards.Lessons)
+                {
+                    var flashcards = new List<SubscribedFlashcards>();
+
+                    foreach(var flashcard in lesson.Flashcards)
+                    {
+                        flashcards.Add(new SubscribedFlashcards
+                        {
+                            Id = 0,
+                            TrainLevel = 0,
+                            DifficultyLevel = 0,
+                            MarkedAsHard = false,
+                            FlashcardId = flashcard.Id
+                        });
+                    }
+
+                    subscribedLessons.Add(new SubscribedLesson
+                    {
+                        Id = 0,
+                        OverallProgress = 0,
+                        LessonId = lesson.Id,
+                        SubscribedFlashcards = flashcards
+                    });
+                }
+
+                subscribedCourse.Lessons = subscribedLessons;
                 _context.SubscribedCourses.Add(subscribedCourse);
             }
 
