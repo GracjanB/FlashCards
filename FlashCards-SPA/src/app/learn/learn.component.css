@@ -1,0 +1,41 @@
+.justified-icon {
+  transform: scale(2.5, 2.5);
+  color: white;
+}
+
+.reactive-icon {
+  transform: scale(2.5, 2.5);
+  color: white;
+  cursor: pointer;
+}
+
+.reactive-icon:hover {
+  transform: scale(2.9, 2.9);
+  transition-duration: 200ms;
+  transition-timing-function: ease-out;
+}
+
+.vertical-divider {
+  border-left: 3px solid #ffffff;
+  margin-left: 20px;
+  height: 40px;
+}
+
+.learning-title {
+  font-weight: bolder;
+  color: white;
+  font-size: 36px;
+  margin-left: 20px;
+  margin-top: 15px;
+  display: block;
+}
+
+.lesson-name-title {
+  font-weight: bolder;
+  color: white;
+  font-size: 24px;
+  margin-left: 30px;
+  margin-top: 20px;
+  display: block;
+}
+

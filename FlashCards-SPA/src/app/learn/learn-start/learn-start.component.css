@@ -1,0 +1,25 @@
+.star-default {
+  transform: scale(1.6, 1.6);
+  cursor: pointer;
+}
+
+.ignore-default {
+  transform: scale(1.6, 1.6);
+  cursor: pointer;
+}
+
+.star-not-marked {
+  color: gray;
+}
+
+.star-marked {
+  color: #dede40;
+}
+
+.ignore-not-marked {
+  color: gray;
+}
+
+.ignore-marked {
+  color: firebrick;
+}

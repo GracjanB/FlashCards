@@ -58,6 +58,8 @@ import {UserService} from './core/_services/user.service';
 import {AccountProfileResolver} from './core/_resolvers/account-profile.resolver';
 import {AccountEditResolver} from './core/_resolvers/account-edit.resolver';
 import {CourseManagerService} from './core/_services/courseManager.service';
+import { LearnStartComponent } from './learn/learn-start/learn-start.component';
+import { LearnSummaryComponent } from './learn/learn-summary/learn-summary.component';
 
 @NgModule({
   declarations: [
@@ -85,7 +87,9 @@ import {CourseManagerService} from './core/_services/courseManager.service';
     LearnPhrasePresentationComponent,
     LearnPhraseSelectionComponent,
     LearnPhraseBlocksComponent,
-    LearnPhraseInputComponent
+    LearnPhraseInputComponent,
+    LearnStartComponent,
+    LearnSummaryComponent
   ],
     imports: [
         BrowserModule,

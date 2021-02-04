@@ -1,0 +1,11 @@
+.learning-level-icon {
+  transform: scale(4.0, 4.0);
+}
+
+.bg-light-green {
+  background-color: lightgreen;
+}
+
+.bg-light-red {
+  background-color:  #ff8080;
+}

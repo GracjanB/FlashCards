@@ -1,0 +1,49 @@
+<div class="container d-flex" style="background-color: #e6e6e6; min-width: 900px;">
+  <div class="col-10 mt-3">
+    <div class="row">
+      <div class="col-10">
+        <h1>{{ currentPhrase.phrase }}</h1>
+        <p>Wpisz odpowiednie słowo po polsku lub angielsku</p>
+        <div class="input-group">
+          <input class="form-control" #phraseInput [readOnly]="true"
+            [ngClass]="{'bg-success': phraseGuessed}">
+          <div class="input-group-append">
+            <button class="btn btn-secondary" type="button" (click)="inputBackspace()"
+                    [disabled]="phraseInput.value.length < 1 || canContinue">
+              <i class="fa fa-arrow-left"></i>
+            </button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col mt-2" *ngFor="let phrase of currentPhrase.dividedFlashcardPhraseShuffled">
+            <button class="btn btn-outline-info" #buttonElement (click)="addToInput(buttonElement.value)"
+                    value="{{ phrase }}">{{ phrase }}</button>
+          </div>
+        </div>
+        <div class="row">
+          <button class="btn btn-primary btn-success" (click)="next()" *ngIf="canContinue">Dalej</button>
+        </div>
+      </div>
+      <div class="col">
+        <i class="fa fa-circle-o learning-level-icon mt-4"></i>
+      </div>
+    </div>
+    <div class="row d-flex justify-content-center mb-2 mt-4">
+      <button class="btn btn-outline-primary" (click)="showHint()">
+        <i class="fa fa-refresh mr-2"></i>
+        Podpowiedz
+      </button>
+    </div>
+    <div class="row mt-4 ml-2 mb-4" [collapse]="hintCollapsed" [isAnimated]="true">
+      <div class="card img-fluid d-flex justify-content-center col-8 p-1">
+        <img class="card-img-top" style="width: 100%; height: 200px;" src="assets/Flashcard-Background.jpg" alt="Flashcard">
+        <div class="card-img-overlay">
+          <h1 class="mb-1">To będzie przetłumaczone słowo</h1>
+          <h4 class="mt-0 mb-1">Wymowa</h4>
+          <h2 class="mt-0 mb-1">Przykładowe zdanie</h2>
+          <h3 class="mt-0">Komentarz</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

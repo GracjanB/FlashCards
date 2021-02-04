@@ -1,0 +1,27 @@
+.reactive-icon {
+  transform: scale(3.0, 3.0);
+  cursor: pointer;
+}
+
+.reactive-icon:hover {
+  transform: scale(3.5, 3.5);
+  transition-duration: 200ms;
+  transition-timing-function: ease-out;
+}
+
+.learning-level-icon {
+  transform: scale(4.0, 4.0);
+}
+
+.speaker-icon {
+  margin-left: 120px;
+}
+
+.word-guessed-bg {
+  background-color: indianred;
+}
+
+.word-not-guessed-bg {
+  background-color: limegreen;
+}
+
