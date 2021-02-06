@@ -39,7 +39,7 @@ export class LearnPhraseSelectionComponent implements OnInit {
   }
 
   onSelectedPhrase(selectedPhrase: string): void {
-    const output = selectedPhrase === this.currentPhrase.translatedPhrase;
+    const output = selectedPhrase === this.currentPhrase.correctPhrase;
     this.guessResult.emit(output);
   }
 

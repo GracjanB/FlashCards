@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace FlashCards.Models.DTOs.ToClient.Learn
 {
+    [Serializable]
     public class FlashcardForLearnSelection : FlashcardForLearn
     {
-        public const string FlashcardType = "selection";
+        public string FlashcardType { get; set; } = "selection";
 
         public List<string> FlashcardsForSelection { get; set; }
 

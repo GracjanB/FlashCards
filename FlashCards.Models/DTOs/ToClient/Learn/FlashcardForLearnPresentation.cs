@@ -1,8 +1,11 @@
-﻿namespace FlashCards.Models.DTOs.ToClient.Learn
+﻿using System;
+
+namespace FlashCards.Models.DTOs.ToClient.Learn
 {
+    [Serializable]
     public class FlashcardForLearnPresentation : FlashcardForLearn
     {
-        public const string FlashcardType = "presentation";
+        public string FlashcardType { get; set; } = "presentation";
 
         public bool WithInput { get; set; }
 

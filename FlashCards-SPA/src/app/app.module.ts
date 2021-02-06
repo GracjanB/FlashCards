@@ -60,6 +60,11 @@ import {AccountEditResolver} from './core/_resolvers/account-edit.resolver';
 import {CourseManagerService} from './core/_services/courseManager.service';
 import { LearnStartComponent } from './learn/learn-start/learn-start.component';
 import { LearnSummaryComponent } from './learn/learn-summary/learn-summary.component';
+import {LearnCourseResolver} from './core/_resolvers/learn-course.resolver';
+import {LearnLessonResolver} from './core/_resolvers/learn-lesson.resolver';
+import {RepetitionCourseResolver} from './core/_resolvers/repetition-course.resolver';
+import {RepetitionLessonResolver} from './core/_resolvers/repetition-lesson.resolver';
+import {LearnAdapter} from './core/_adapters/learnAdapter';
 
 @NgModule({
   declarations: [
@@ -126,7 +131,12 @@ import { LearnSummaryComponent } from './learn/learn-summary/learn-summary.compo
     UserService,
     AccountProfileResolver,
     AccountEditResolver,
-    CourseManagerService
+    CourseManagerService,
+    LearnCourseResolver,
+    LearnLessonResolver,
+    RepetitionCourseResolver,
+    RepetitionLessonResolver,
+    LearnAdapter
   ],
   bootstrap: [AppComponent]
 })

@@ -17,6 +17,10 @@ import { DashboardResolver } from './core/_resolvers/dashboard.resolver';
 import { LearnComponent } from './learn/learn.component';
 import {AccountProfileResolver} from './core/_resolvers/account-profile.resolver';
 import {AccountEditResolver} from './core/_resolvers/account-edit.resolver';
+import {LearnCourseResolver} from './core/_resolvers/learn-course.resolver';
+import {LearnLessonResolver} from './core/_resolvers/learn-lesson.resolver';
+import {RepetitionCourseResolver} from './core/_resolvers/repetition-course.resolver';
+import {RepetitionLessonResolver} from './core/_resolvers/repetition-lesson.resolver';
 
 export const appRoutes: Routes = [
   { path: '', component: HomeComponent },
@@ -31,6 +35,10 @@ export const appRoutes: Routes = [
   { path: 'account/edit/:id', component: AccountEditComponent, resolve: { userDetailed: AccountEditResolver }},
   { path: 'analytics', component: AnalyticsComponent },
   { path: 'learn', component: LearnComponent },
+  { path: 'learn/course/:subCourseId', component: LearnComponent, resolve: { learnConfiguration: LearnCourseResolver }},
+  { path: 'learn/course/:subCourseId/lesson/:subLessonId', component: LearnComponent, resolve: { learnConfiguration: LearnLessonResolver }},
+  { path: 'repetition/course/:subCourseId', component: LearnComponent, resolve: { learnConfiguration: RepetitionCourseResolver } },
+  { path: 'repetition/course/:subCourseId/lesson/:subLessonId', component: LearnComponent, resolve: { learnConfiguration: RepetitionLessonResolver } },
   { path: '**', redirectTo: '', pathMatch: 'full'}
 ];
 

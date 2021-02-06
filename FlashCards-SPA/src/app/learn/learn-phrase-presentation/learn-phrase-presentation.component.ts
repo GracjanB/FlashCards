@@ -11,6 +11,7 @@ export class LearnPhrasePresentationComponent implements OnInit {
   translatedFlashcardMoreInfoCollapsed: boolean;
   @Input() currentPhrase: FlashcardLearnForPresentation;
   @Output() showNext: EventEmitter<any> = new EventEmitter<any>();
+  @Output() guessResult: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   constructor() {
     this.flashcardMoreInfoCollapsed = true;
@@ -21,6 +22,7 @@ export class LearnPhrasePresentationComponent implements OnInit {
   }
 
   next(): void {
+    this.guessResult.emit(true);
     this.showNext.emit();
   }
 }
