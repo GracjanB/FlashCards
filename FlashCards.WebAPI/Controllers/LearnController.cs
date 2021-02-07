@@ -25,6 +25,8 @@ namespace FlashCards.WebAPI.Controllers
         {
             var learnConfiguration = LoadDesignData();
 
+            _learnService.DrawFlashcardsForLearn(1, 3);
+
             return Ok(learnConfiguration);
         }
 
