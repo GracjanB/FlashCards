@@ -25,7 +25,7 @@ namespace FlashCards.WebAPI
                 {
                     var context = scope.ServiceProvider.GetRequiredService<FlashcardsDataModel>();
                     context.Database.Migrate();
-                    Seed.SeedAdministrators(context);
+                    Seed.SeedAdministratorsAndDefaultCourse(context);
                 }
                 catch(Exception ex)
                 {
