@@ -11,13 +11,14 @@ namespace FlashCards.Data.ModelsConfiguration
             builder.HasKey(x => x.Id);
 
             builder.Property(x => x.Name)
-                .HasColumnType("NVARCHAR")
-                .HasMaxLength(128)
+                .HasMaxLength(64)
+                .IsFixedLength()
                 .IsRequired();
 
             builder.Property(x => x.Description)
                 .HasColumnType("NTEXT")
-                .HasMaxLength(4000);
+                .HasMaxLength(4000)
+                .IsFixedLength();
 
             builder.Property(x => x.DateCreated)
                 .HasColumnType("DATETIME2")
@@ -28,6 +29,10 @@ namespace FlashCards.Data.ModelsConfiguration
                 .IsRequired();
 
             builder.Property(x => x.CourseType)
+                .HasColumnType("TINYINT")
+                .IsRequired();
+
+            builder.Property(x => x.Status)
                 .HasColumnType("TINYINT")
                 .IsRequired();
 

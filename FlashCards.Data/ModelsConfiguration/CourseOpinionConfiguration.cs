@@ -12,7 +12,8 @@ namespace FlashCards.Data.ModelsConfiguration
 
             builder.Property(x => x.Description)
                 .HasColumnType("NTEXT")
-                .HasMaxLength(4000);
+                .HasMaxLength(4000)
+                .IsFixedLength();
 
             builder.Property(x => x.Rating)
                 .HasColumnType("TINYINT")

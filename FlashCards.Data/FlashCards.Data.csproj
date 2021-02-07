@@ -9,6 +9,8 @@
     <Compile Remove="Migrations\20201004153736_AddedNameColumnToLessonTable.Designer.cs" />
     <Compile Remove="Migrations\20201029081530_FixSubscribedCourseTable.cs" />
     <Compile Remove="Migrations\20201029081530_FixSubscribedCourseTable.Designer.cs" />
+    <Compile Remove="Migrations\20210206205348_FixedLengthOfFields.cs" />
+    <Compile Remove="Migrations\20210206205348_FixedLengthOfFields.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

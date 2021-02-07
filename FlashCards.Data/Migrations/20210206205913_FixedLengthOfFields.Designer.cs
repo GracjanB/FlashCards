@@ -4,14 +4,16 @@ using FlashCards.Data.DataModel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace FlashCards.Data.Migrations
 {
     [DbContext(typeof(FlashcardsDataModel))]
-    partial class FlashcardsDataModelModelSnapshot : ModelSnapshot
+    [Migration("20210206205913_FixedLengthOfFields")]
+    partial class FixedLengthOfFields
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,9 +50,6 @@ namespace FlashCards.Data.Migrations
                         .HasColumnType("nchar(64)")
                         .IsFixedLength(true)
                         .HasMaxLength(64);
-
-                    b.Property<byte>("Status")
-                        .HasColumnType("TINYINT");
 
                     b.HasKey("Id");
 
@@ -336,9 +335,6 @@ namespace FlashCards.Data.Migrations
                     b.Property<byte[]>("PasswordSalt")
                         .IsRequired()
                         .HasColumnType("BINARY(128)");
-
-                    b.Property<byte>("Role")
-                        .HasColumnType("TINYINT");
 
                     b.Property<int>("UserInfoId")
                         .HasColumnType("int");

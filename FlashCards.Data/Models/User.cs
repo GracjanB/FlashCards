@@ -1,4 +1,6 @@
-﻿namespace FlashCards.Data.Models
+﻿using FlashCards.Data.Enums;
+
+namespace FlashCards.Data.Models
 {
     public class User
     {
@@ -9,6 +11,8 @@
         public byte[] PasswordHash { get; set; }
 
         public byte[] PasswordSalt { get; set; }
+
+        public UserRoleEnum Role { get; set; }
 
         public int UserInfoId { get; set; }
 

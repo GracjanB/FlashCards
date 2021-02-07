@@ -50,6 +50,7 @@ namespace FlashCards.Services.Implementations
         public bool Register(User user, string password)
         {
             CreatePasswordHash(password, out byte[] passwordhash, out byte[] passwordSalt);
+            user.Role = Data.Enums.UserRoleEnum.User;
             user.PasswordHash = passwordhash;
             user.PasswordSalt = passwordSalt;
             _userRepository.Create(user);

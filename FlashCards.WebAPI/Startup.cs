@@ -51,7 +51,7 @@ namespace FlashCards.WebAPI
             // Database connection config
             services.AddDbContext<FlashcardsDataModel>(config =>
             {
-                config.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+                config.UseSqlServer(Configuration.GetConnectionString("DefaultConnectionv2"));
                 config.EnableSensitiveDataLogging();
             });
 
