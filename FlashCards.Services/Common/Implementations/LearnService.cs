@@ -51,19 +51,179 @@ namespace FlashCards.Services.Common.Implementations
 
         public void DrawFlashcardsForLearn(int subCourseId, int userId)
         {
-            // Wyszukanie słówek do nauki - lista FlashcardForLearn
+            // Wyszukanie ogólnie słówek do nauki - lista FlashcardForLearn
             var flashcardsForLearn = GetFlashcardsForLearn(subCourseId, userId); 
             FlashcardsForLearnListTest = flashcardsForLearn;
 
-            // Utworzenie fiszek do nauki - wszystkich (typu List<object>)
+            // Utworzenie fiszek do nauki - wszystkich (typu FlashcardForPresentation/Selection/Input/Blocks)
             var initialFlashcardsForLearn = InitialDrawFlashcards(flashcardsForLearn); 
 
             // Utworzenie dwóch list z już trenowanymi fiszkami i te z nigdy
             var alreadyTrainedFlashcards = ExcludeNeverTrainedFlashcards(initialFlashcardsForLearn, out List<object> neverTrainedFlashcards); // Dwie listy 
-            
+
+            // Utworzenie finalnej listy fiszek przygotowanych bezpośrednio do nauki
+            var finalList = ArrangeFlashcardsForLears(neverTrainedFlashcards, alreadyTrainedFlashcards);
+
+            Console.WriteLine();
+        }
+
+        private List<object> ArrangeFlashcardsForLears(List<object> neverTrainedFlashcards, List<object> alreadyTrainedFlashcards)
+        {
+            List<List<object>> finalListWithFlashcardsForLearn = new List<List<object>>();
+            var alreadyTrainedFlashcardsLocal = new List<object>(alreadyTrainedFlashcards);
+            var neverTrainedFlashcardsLocal = new List<object>(neverTrainedFlashcards);
+            var flashcardsForPresentationList = neverTrainedFlashcardsLocal.Where(x => x.GetType() == typeof(FlashcardForLearnPresentation)).ToList();
+            int parts = flashcardsForPresentationList.Count() % 2 == 0 ? flashcardsForPresentationList.Count() / 2 : (int)flashcardsForPresentationList.Count() / 2; // na ile części podzielić
+            var flashcardsForPresentationPartsList = flashcardsForPresentationList.Split(parts); // Podzielone na listę po dwie fiszki lub jedną jeżeli jest nieparzyście 
+
+            // Wstępne ułożenie fiszek (Pres-Pres-(n x Selection/Input)-Pres-Pres-...
+            foreach(var flashcardsPair in flashcardsForPresentationPartsList)
+            {
+                finalListWithFlashcardsForLearn.Add(flashcardsPair.ToList());
+                var tempListWithFlashcards = new List<object>();
+
+                var flashcardPairTemp = new List<FlashcardForLearnPresentation>();
+                foreach (var el in flashcardsPair)
+                    flashcardPairTemp.Add(el as FlashcardForLearnPresentation);
+
+                foreach(var flashcardElement in flashcardPairTemp)
+                {
+                    var firstFlashcardSet = neverTrainedFlashcardsLocal.Where(x =>
+                    {
+                        if (x.GetType() == typeof(FlashcardForLearnSelection))
+                        {
+                            var flashcard = x as FlashcardForLearnSelection;
+                            return flashcard.FlashcardId == flashcardElement.FlashcardId;
+                        }
+                        if (x.GetType() == typeof(FlashcardForLearnInput))
+                        {
+                            var flashcard = x as FlashcardForLearnInput;
+                            return flashcard.FlashcardId == flashcardElement.FlashcardId;
+                        }
+                        if (x.GetType() == typeof(FlashcardForLearnBlocks))
+                        {
+                            var flashcard = x as FlashcardForLearnBlocks;
+                            return flashcard.FlashcardId == flashcardElement.FlashcardId;
+                        }
+                        else return false;
+                    }).ToList();
+
+                    // Dodanie fiszek do nauki do tymczasowej listy
+                    var indexForDivideToHalf = (int)firstFlashcardSet.Count() / 2;
+                    var firstFlashcardSetHalf = firstFlashcardSet.GetRange(0, indexForDivideToHalf);
+                    tempListWithFlashcards = tempListWithFlashcards.Append(firstFlashcardSetHalf).ToList();
+
+                    // Usunięcie tych elementów z lokalnej listy
+                    foreach (var element in firstFlashcardSetHalf)
+                        neverTrainedFlashcardsLocal.Remove(element);
+                }
+
+                finalListWithFlashcardsForLearn.Add(tempListWithFlashcards.ToList());
+            }
+
+            var flashcardsThatCanBeAdded = new List<FlashcardForLearnPresentation>();
+
+            // Dopełnienie fiszkami 
+            for(int i = 0; i < finalListWithFlashcardsForLearn.Count(); i++)
+            {
+                // Jeżeli jest to zbiór fiszek prezentujących słowo
+                if(finalListWithFlashcardsForLearn[i][1].GetType() == typeof(FlashcardForLearnPresentation))
+                {
+                    var flashcardsToAdd = new List<object>();
+
+                    var flashcardsToSearch = new List<object>(flashcardsThatCanBeAdded);
+                    foreach (var ell in finalListWithFlashcardsForLearn[i])
+                        flashcardsToSearch.Add(ell as FlashcardForLearnPresentation);
+
+                    foreach(var element in flashcardsToSearch)
+                    {
+                        var firstFlashcardSet = neverTrainedFlashcardsLocal.Where(x =>
+                        {
+                            if (x.GetType() == typeof(FlashcardForLearnSelection))
+                            {
+                                var flashcard = x as FlashcardForLearnSelection;
+                                var flashcardToFind = element as FlashcardForLearnPresentation;
+                                return flashcard.FlashcardId == flashcardToFind.FlashcardId;
+                            }
+                            if (x.GetType() == typeof(FlashcardForLearnInput))
+                            {
+                                var flashcard = x as FlashcardForLearnInput;
+                                var flashcardToFind = element as FlashcardForLearnPresentation;
+                                return flashcard.FlashcardId == flashcardToFind.FlashcardId;
+                            }
+                            if (x.GetType() == typeof(FlashcardForLearnBlocks))
+                            {
+                                var flashcard = x as FlashcardForLearnBlocks;
+                                var flashcardToFind = element as FlashcardForLearnPresentation;
+                                return flashcard.FlashcardId == flashcardToFind.FlashcardId;
+                            }
+                            else return false;
+                        }).ToList();
+
+                        var indexForDivideToHalf = (int)((firstFlashcardSet.Count() + 0.5) / 2);
+
+                        for (int x = 0; x < 100; x++)
+                            firstFlashcardSet.Shuffle();
+
+                        var firstFlashcardSetHalf = firstFlashcardSet.GetRange(0, indexForDivideToHalf);
+
+                        foreach (var el in firstFlashcardSetHalf)
+                        {
+                            flashcardsToAdd.Add(el);
+                            neverTrainedFlashcardsLocal.Remove(el); // Usunięcie wybranych już fiszek z głównej listy
+                        }
+
+                        flashcardsThatCanBeAdded.Add(element as FlashcardForLearnPresentation);
+                    }
+
+                    var temp = finalListWithFlashcardsForLearn[i + 1];
+                    foreach (var el in flashcardsToAdd)
+                        temp.Add(el);
+
+                    for (int j = 0; j < 100; j++)
+                        temp.Shuffle();
+
+                    finalListWithFlashcardsForLearn[i + 1] = temp;
+                }
+            }
+
+            var indexOfHalfAlreadyTrainedFlashcards = (int)alreadyTrainedFlashcards.Count() / 2;
+            var alreadyTrainedFlashcardsListHalf = alreadyTrainedFlashcardsLocal.GetRange(0, indexOfHalfAlreadyTrainedFlashcards);
+
+            for (int x = 0; x < 100; x++)
+                alreadyTrainedFlashcardsListHalf.Shuffle();
+
+            var finalListWithFlashcardsTemp = new List<List<object>>();
+            finalListWithFlashcardsTemp.Add(alreadyTrainedFlashcardsListHalf);
+
+            foreach (var element in finalListWithFlashcardsForLearn)
+                finalListWithFlashcardsTemp.Add(element);
+
+            finalListWithFlashcardsForLearn = finalListWithFlashcardsTemp;
+
+            // Wyrzucenie tych fiszek, które zostały dodane do głównej listy
+            foreach (var element in alreadyTrainedFlashcardsListHalf)
+                alreadyTrainedFlashcardsLocal.Remove(element);
+
+            // Zrobienie ogólnej listy z pozostałymi fiszkami
+            var remainedFlashcards = new List<object>();
+            foreach (var element in alreadyTrainedFlashcardsLocal)
+                remainedFlashcards.Add(element);
+            foreach (var element in neverTrainedFlashcardsLocal)
+                if (element.GetType() != typeof(FlashcardForLearnPresentation))
+                    remainedFlashcards.Add(element);
+
+            // W następnym kroku przeliczyć ile jest wystąpień par typu FlashcardForLearnPresentation
+            // i podzielić lisę już trenowanych fiszek na tyle części do ilu można je wstawić pomiędzy tymi parami
+            // Potem zrobić podobną pętle jak wyżej i do każdego segmentu dorzucić te fiszki, potasować i dorzucić do zbioru
+            // Jeżeli coś pozostało z listy fiszek nauczonych to przerzucić to do następnego elementu na tamtej liście
+            // I tak do końca. Jeżeli pętla będzie na samym końcu i coś pozostanie ogólnie to wrzucić tam już wszystko wczesniej przetasowane
 
 
             Console.WriteLine();
+
+
+            throw new NotImplementedException();
         }
 
         private List<FlashcardForLearn> GetFlashcardsForLearn(int subCourseId, int userId)
