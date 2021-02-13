@@ -27,5 +27,7 @@ namespace FlashCards.Services.Repositories.Abstracts
         List<User> GetAllUsers();
 
         int GetUserAccountId(int userId);
+
+        bool IsAdministrator(int userId);
     }
 }

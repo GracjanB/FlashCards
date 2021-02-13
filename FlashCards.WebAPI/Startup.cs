@@ -96,6 +96,7 @@ namespace FlashCards.WebAPI
             services.AddScoped<ISubscriptionsService, SubscriptionService>();
             services.AddScoped<ILearnService, LearnService>();
             services.AddScoped<ISubscribedCourseManagerService, SubscribedCourseManagerService>();
+            services.AddScoped<IAdministrationService, AdministrationService>();
             
             services.AddControllers();
         }

@@ -1,0 +1,65 @@
+<div class="container mt-5">
+  <!-- Course Info Card -->
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="row no-gutters">
+          <div class="col-3">
+            <img src="assets/CourseDefaultLogo.png" class="card-img" alt="Course Logo">
+          </div>
+          <div class="col-7">
+            <div class="card-body">
+              <h1 class="card-title">{{ courseForCheck.name }}</h1>
+              <hr>
+              <p>{{ courseForCheck.description }}</p>
+            </div>
+          </div>
+          <div class="col-2">
+            <h3 class="text-center author mt-3 mb-0">Autor</h3>
+            <h3 class="text-center"><a href="#">{{ courseForCheck.accountCreatedName }}</a></h3>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Lessons -->
+  <div class="row mt-3 justify-content-center">
+    <div class="col-10">
+      <div class="row">
+        <div class="col-3">
+          <h1 class="course-title">Lekcje</h1>
+        </div>
+        <div class="col-9">
+          <div class="pull-right">
+            <button class="btn btn-primary btn-success mr-2" (click)="acceptCourse()">Akceptuj</button>
+            <button class="btn btn-primary btn-danger mr-2" (click)="notAcceptCourse()">Brak akceptacji</button>
+          </div>
+        </div>
+      </div>
+      <hr class="mt-0">
+      <div class="row" *ngIf="courseForCheck.lessons.length > 0">
+        <div *ngFor="let lesson of courseForCheck.lessons" class="col-lg-3 col-md-4 col-sm-6">
+          <app-lesson-for-check-card [lessonForCheck]="lesson"
+                                     (lessonSelected)="onLessonSelected($event)"></app-lesson-for-check-card>
+        </div>
+      </div>
+      <div class="row d-flex justify-content-center" *ngIf="courseForCheck.lessons.length == 0">
+        <h1>Brak lekcji</h1>
+      </div>
+    </div>
+  </div>
+  <!-- Flashcards -->
+  <div class="row mt-3" *ngIf="selectedLesson != null">
+    <div class="col-10">
+      <div class="row">
+        <h1 class="course-title">Fiszki - Lekcja: {{ selectedLesson.name }}</h1>
+      </div>
+      <hr class="mt-0">
+      <div class="row">
+        <div *ngFor="let flashcard of selectedLesson.flashcards" class="col-12">
+          <app-flashcard-for-check [flashcardForCheck]="flashcard"></app-flashcard-for-check>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

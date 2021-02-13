@@ -8,6 +8,7 @@ import {JwtHelperService} from '@auth0/angular-jwt';
 import {UserInfo} from '../_models/_dtos/userInfo';
 import {User} from '../_models/_dtos/fromServer/user';
 import {UserDetailed} from '../_models/_dtos/fromServer/userDetailed';
+import {UserRoleEnum} from '../_models/enums/userRoleEnum';
 
 @Injectable({
   providedIn: 'root'
@@ -45,5 +46,15 @@ export class AuthService {
 
   getLoggedInUserInfo(): UserDetailed {
     return JSON.parse(localStorage.getItem('user')) as UserDetailed;
+  }
+
+  userIsAdministrator(): boolean {
+    const user = JSON.parse(localStorage.getItem('user')) as User;
+    return user.role === UserRoleEnum.Administrator;
+  }
+
+  userIsSuperAdministrator(): boolean {
+    const user = JSON.parse(localStorage.getItem('user')) as User;
+    return user.role === UserRoleEnum.SuperAdministrator;
   }
 }

@@ -44,4 +44,11 @@ export class NavbarComponent implements OnInit{
     return false;
   }
 
+  userIsAdministrator(): boolean {
+    return this.authService.userIsAdministrator() || this.authService.userIsSuperAdministrator();
+  }
+
+  navigateToAdministratorPanel(): void {
+    this.router.navigate(['/admin/panel']);
+  }
 }

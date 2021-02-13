@@ -1,0 +1,21 @@
+<div class="card mb-4">
+  <div class="card-img-wrapper">
+    <img class="card-img-top" src="assets/CourseDefaultLogo.png" alt="Course logo">
+    <div class="card-body">
+      <div class="container mt-1">
+        <div class="row">
+          <p class="text-muted author-p">
+            Autor: <a href="#">{{ courseForCheck.accountCreatedName }}</a>
+          </p>
+        </div>
+        <div class="row">
+          <a (click)="onCourseClick()">
+            <h2 class="card-title">
+              {{ courseForCheck.name | titlecase }}
+            </h2>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

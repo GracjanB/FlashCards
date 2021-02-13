@@ -1,0 +1,65 @@
+<div class="container mt-3">
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="row no-gutters">
+          <div class="col-2">
+            <img src="assets/UserDefaultLogo.jpg" class="card-img" alt="User Photo">
+          </div>
+          <div class="col-10">
+            <div class="card-body ml-3">
+              <div class="row">
+                <div class="col-12">
+                  <h1 class="card-title pull-left" *ngIf="isAdministrator()">Administrator</h1>
+                  <h1 class="card-title pull-left" *ngIf="isSuperAdministrator()">Super Administrator</h1>
+                </div>
+              </div>
+              <hr class="mt-0">
+              <div class="row">
+                <div class="col-4">
+                  <button class="btn btn-primary btn-block" type="button">Wyświetl kursy oczekujące</button>
+                </div>
+                <div class="col-4">
+                  <button class="btn btn-primary btn-block" type="button"
+                          *ngIf="isAdministrator() || isSuperAdministrator()">Utwórz administratora</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-3 justify-content-center">
+    <div class="col-10">
+      <div class="row">
+        <div class="col-4">
+          <h1 class="course-title">Kursy oczekujące</h1>
+        </div>
+        <div class="col-8">
+          <div class="btn-group pull-right" dropdown>
+            <button class="btn btn-primary" type="button" dropdownToggle>
+              Sortowanie <span class="fa fa-caret-down"></span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-right" role="menu" *dropdownMenu>
+              <li role="menuitem" style="cursor: pointer"><a class="dropdown-item">Od najnowszych</a></li>
+              <li role="menuitem" style="cursor: pointer"><a class="dropdown-item">Od najstarszych</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <hr class="mt-0">
+      <div class="row" *ngIf="coursesForCheck.length > 0">
+        <div *ngFor="let course of coursesForCheck" class="col-lg-3 col-md-4 col-sm-6">
+          <app-course-for-check-card [courseForCheck]="course"
+                                     (courseSelected)="navigateToCourseCheck($event)"></app-course-for-check-card>
+        </div>
+      </div>
+      <div class="row d-flex justify-content-center" *ngIf="coursesForCheck.length == 0">
+        <h1>Brak kursów</h1>
+      </div>
+    </div>
+  </div>
+
+</div>

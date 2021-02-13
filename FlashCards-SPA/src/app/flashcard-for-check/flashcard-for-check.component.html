@@ -1,0 +1,28 @@
+<div class="col-lg-12">
+  <div class="card">
+    <div class="card-header">
+      <div class="row no-gutters">
+        <div class="col-4">
+          Phrase: {{ flashcardForCheck.phrase }}
+        </div>
+        <div class="col-8">
+          <button class="btn btn-primary" (click)="flashcardBodyCollapsed = !flashcardBodyCollapsed">Rozwiń</button>
+        </div>
+      </div>
+      <div [collapse]="flashcardBodyCollapsed" [isAnimated]="true">
+        <div class="card-body">
+          <ul class="list-group">
+            <li class="list-group-item"><label>Phrase: {{ flashcardForCheck.phrase }}</label></li>
+            <li class="list-group-item"><label>Pronunciation: {{ flashcardForCheck.phrasePronunciation }}</label></li>
+            <li class="list-group-item"><label>Sample sentence: {{ flashcardForCheck.phraseSampleSentence }}</label></li>
+            <li class="list-group-item"><label>Comment: {{ flashcardForCheck.phraseComment }}</label></li>
+            <li class="list-group-item"><label>Translated phrase: {{ flashcardForCheck.translatedPhrase }}</label></li>
+            <li class="list-group-item"><label>Translated sample sentence: {{ flashcardForCheck.translatedPhraseSampleSentence }}</label></li>
+            <li class="list-group-item"><label>Comment: {{ flashcardForCheck.translatedPhraseComment }}</label></li>
+            <li class="list-group-item"><label>Language level: {{ flashcardForCheck.languageLevel }}</label></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

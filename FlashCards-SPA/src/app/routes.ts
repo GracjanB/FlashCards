@@ -21,6 +21,10 @@ import {LearnCourseResolver} from './core/_resolvers/learn-course.resolver';
 import {LearnLessonResolver} from './core/_resolvers/learn-lesson.resolver';
 import {RepetitionCourseResolver} from './core/_resolvers/repetition-course.resolver';
 import {RepetitionLessonResolver} from './core/_resolvers/repetition-lesson.resolver';
+import {AdminPanelComponent} from './admin/admin-panel/admin-panel.component';
+import {AdminPanelResolver} from './core/_resolvers/admin-panel.resolver';
+import {CourseCheckPanelComponent} from './admin/course-check-panel/course-check-panel.component';
+import {AdminCourseCheckResolver} from './core/_resolvers/admin-course-check.resolver';
 
 export const appRoutes: Routes = [
   { path: '', component: HomeComponent },
@@ -39,6 +43,8 @@ export const appRoutes: Routes = [
   { path: 'learn/course/:subCourseId/lesson/:subLessonId', component: LearnComponent, resolve: { learnConfiguration: LearnLessonResolver }},
   { path: 'repetition/course/:subCourseId', component: LearnComponent, resolve: { learnConfiguration: RepetitionCourseResolver } },
   { path: 'repetition/course/:subCourseId/lesson/:subLessonId', component: LearnComponent, resolve: { learnConfiguration: RepetitionLessonResolver } },
+  { path: 'admin/panel', component: AdminPanelComponent, resolve: { coursesForCheck: AdminPanelResolver} },
+  { path: 'admin/courseCheck/:id', component: CourseCheckPanelComponent, resolve: { courseForCheck: AdminCourseCheckResolver} },
   { path: '**', redirectTo: '', pathMatch: 'full'}
 ];
 

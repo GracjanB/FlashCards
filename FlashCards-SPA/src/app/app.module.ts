@@ -65,6 +65,13 @@ import {LearnLessonResolver} from './core/_resolvers/learn-lesson.resolver';
 import {RepetitionCourseResolver} from './core/_resolvers/repetition-course.resolver';
 import {RepetitionLessonResolver} from './core/_resolvers/repetition-lesson.resolver';
 import {LearnAdapter} from './core/_adapters/learnAdapter';
+import { AdminPanelComponent } from './admin/admin-panel/admin-panel.component';
+import {AdministrationService} from './core/_services/administration.service';
+import {AdminPanelResolver} from './core/_resolvers/admin-panel.resolver';
+import { CourseForCheckCardComponent } from './course-for-check-card/course-for-check-card.component';
+import { CourseCheckPanelComponent } from './admin/course-check-panel/course-check-panel.component';
+import { LessonForCheckCardComponent } from './lesson-for-check-card/lesson-for-check-card.component';
+import { FlashcardForCheckComponent } from './flashcard-for-check/flashcard-for-check.component';
 
 @NgModule({
   declarations: [
@@ -94,7 +101,12 @@ import {LearnAdapter} from './core/_adapters/learnAdapter';
     LearnPhraseBlocksComponent,
     LearnPhraseInputComponent,
     LearnStartComponent,
-    LearnSummaryComponent
+    LearnSummaryComponent,
+    AdminPanelComponent,
+    CourseForCheckCardComponent,
+    CourseCheckPanelComponent,
+    LessonForCheckCardComponent,
+    FlashcardForCheckComponent
   ],
     imports: [
         BrowserModule,
@@ -136,7 +148,9 @@ import {LearnAdapter} from './core/_adapters/learnAdapter';
     LearnLessonResolver,
     RepetitionCourseResolver,
     RepetitionLessonResolver,
-    LearnAdapter
+    LearnAdapter,
+    AdministrationService,
+    AdminPanelResolver
   ],
   bootstrap: [AppComponent]
 })

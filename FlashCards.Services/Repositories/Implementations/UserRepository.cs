@@ -107,6 +107,11 @@ namespace FlashCards.Services.Repositories.Implementations
             return user != null ? user.UserInfoId : 0;
         }
 
-        
+        public bool IsAdministrator(int id)
+        {
+            var user = _context.Users.Include(x => x.UserInfo).FirstOrDefault(x => x.Id == id);
+
+            return user != null && (user.Role == Data.Enums.UserRoleEnum.Administrator || user.Role == Data.Enums.UserRoleEnum.SuperAdministrator);
+        }
     }
 }
