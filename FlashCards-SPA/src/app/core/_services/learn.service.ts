@@ -24,6 +24,9 @@ export class LearnService {
   getFlashcardsForLearn(subCourseId: number): Observable<LearnConfiguration> {
     const url = this.baseUrl + 'course/' + subCourseId;
     return this.httpClient.get(url, {
+      headers: new HttpHeaders({
+        Authorization: 'Bearer ' + localStorage.getItem('token')
+      }),
       observe: 'response'
     }).pipe(map(response => {
       return this.learnAdapter.adaptLearnConfiguration(response.body);
@@ -33,6 +36,9 @@ export class LearnService {
   getFlashcardsForLearnFromExactLesson(subCourseId: number, subLessonId: number): Observable<LearnConfiguration> {
     const url = this.baseUrl + 'course/' + subCourseId + '/lesson/' + subLessonId;
     return this.httpClient.get(url, {
+      headers: new HttpHeaders({
+        Authorization: 'Bearer ' + localStorage.getItem('token')
+      }),
       observe: 'response'
     }).pipe(map(response => {
       return this.learnAdapter.adaptLearnConfiguration(response.body);
@@ -42,6 +48,9 @@ export class LearnService {
   getFlashcardsForRepetition(subCourseId: number): Observable<LearnConfiguration> {
     const url = this.baseUrl + 'repetition/course/' + subCourseId;
     return this.httpClient.get(url, {
+      headers: new HttpHeaders({
+        Authorization: 'Bearer ' + localStorage.getItem('token')
+      }),
       observe: 'response'
     }).pipe(map(response => {
       return this.learnAdapter.adaptLearnConfiguration(response.body);
@@ -51,6 +60,9 @@ export class LearnService {
   getFlashcardsForRepetitionFromExactLesson(subCourseId: number, subLessonId: number): Observable<LearnConfiguration> {
     const url = this.baseUrl + 'repetition/course/' + subCourseId + '/lesson/' + subLessonId;
     return this.httpClient.get(url, {
+      headers: new HttpHeaders({
+        Authorization: 'Bearer ' + localStorage.getItem('token')
+      }),
       observe: 'response'
     }).pipe(map(response => {
       return this.learnAdapter.adaptLearnConfiguration(response.body);

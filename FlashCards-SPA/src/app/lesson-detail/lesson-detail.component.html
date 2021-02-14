@@ -23,9 +23,8 @@
           <hr class="mt-1">
           <h1 class="card-title">{{ lessonDetailed.name }}</h1>
           <div class="progress mb-4 mt-0">
-            <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="10"
-                 [ngStyle]="{width: lessonDetailed.overallProgress+'%'}"
-                 aria-valuemin="0" aria-valuemax="100"></div>
+            <div class="progress-bar progress-bar-striped" role="progressbar"
+                 [ngStyle]="{width: countOverallLessonProgress()+'%'}"></div>
           </div>
           <div class="pull-right" *ngIf="isSubscribed">
             <button type="button" class="btn btn-primary btn-success">Rozpocznij nauke</button>
@@ -48,10 +47,9 @@
               <td><h3 class="mt-0 mb-0 ml-3">{{ flashcard.phrase }}</h3></td>
               <td><h3 class="mt-0 mb-0">{{ flashcard.translatedPhrase }}</h3></td>
               <td>
-                <div class="progress">
-                  <div class="progress-bar progress-bar-striped" role="progressbar" style="min-width: 40px;"
-                       aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"
-                       [ngStyle]="{width: flashcard.progress+'%'}"></div>
+                <div class="progress" style="min-width: 100px;">
+                  <div class="progress-bar progress-bar-striped" role="progressbar"
+                       [ngStyle]="{width: (flashcard.progress * 10) +'%'}"></div>
                 </div>
               </td>
               <td *ngIf="flashcard.isSubscribed">

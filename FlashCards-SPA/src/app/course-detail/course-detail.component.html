@@ -17,7 +17,7 @@
             <h3 class="text-center author mt-3 mb-0">Autor</h3>
             <h3 class="text-center"><a href="#">{{ course.accountCreatedDisplayName }}</a></h3>
             <div class="row d-flex justify-content-end mt-5 mr-3">
-              <button class="btn btn-primary" *ngIf="isSubscribed">Kontynuuj naukę</button>
+              <button class="btn btn-primary" *ngIf="isSubscribed" (click)="onLearnContinue()">Kontynuuj naukę</button>
               <button class="btn btn-primary" *ngIf="!isSubscribed" (click)="onSubscribeCourse()">Subskrybuj</button>
             </div>
           </div>

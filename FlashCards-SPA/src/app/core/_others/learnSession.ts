@@ -21,7 +21,7 @@ export class LearnSession {
     this.drawnFlashcardsBeforeLearn = new Array<FlashcardForLearn>();
     for (const drawnFlashcard of drawnFlashcards) {
       this.drawnFlashcards.push(drawnFlashcard);
-      this.drawnFlashcardsBeforeLearn.push(drawnFlashcard);
+      this.drawnFlashcardsBeforeLearn.push(Object.assign(FlashcardForLearn, drawnFlashcard));
     }
     this.flashcards = new Array<any>();
     for (const flashcard of flashcards) {

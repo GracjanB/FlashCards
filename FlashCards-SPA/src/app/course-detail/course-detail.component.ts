@@ -41,6 +41,11 @@ export class CourseDetailComponent implements OnInit {
     this.router.navigate([url]);
   }
 
+  onLearnContinue(): void {
+    const subCourseId = this.course.subscriptionId;
+    this.router.navigate(['learn/course/' + subCourseId]);
+  }
+
   private prepareComponent(): void {
     this.isSubscribed = this.course instanceof SubscribedCourseDetail;
   }

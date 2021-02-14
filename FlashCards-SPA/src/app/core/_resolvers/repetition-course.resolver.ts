@@ -18,8 +18,12 @@ export class RepetitionCourseResolver implements Resolve<LearnConfiguration> {
   resolve(route: ActivatedRouteSnapshot): Observable<LearnConfiguration> {
     return this.learnService.getFlashcardsForRepetition(route.params.subCourseId).pipe(
       catchError(error => {
+        if (error.status === 404) {
+          this.alertifyService.showErrorAlert(error.error);
+        } else {
+          this.alertifyService.showErrorAlert('Problem with retrieving data');
+        }
         console.log(error);
-        this.alertifyService.showErrorAlert('Problem with retrieving data');
         this.router.navigate(['/dashboard']);
         return of(null);
       })

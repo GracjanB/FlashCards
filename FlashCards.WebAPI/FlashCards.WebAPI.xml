@@ -217,6 +217,14 @@
             <response code="500">If during create occurred an error</response>
             <returns>Status</returns>
         </member>
+        <member name="M:FlashCards.WebAPI.Controllers.LearnController.GetFlashcardsForLearn(System.Int32)">
+            <summary>
+            Get flashcards for learn for selected course
+            </summary>
+            <param name="subCourseId">Selected course Id (subscription)</param>
+            <returns>Learn configuration</returns>
+            GET: api/learn/course/{subCourseId}
+        </member>
         <member name="M:FlashCards.WebAPI.Controllers.LessonsController.GetLessonDetail(System.Int32,System.Int32)">
             <summary>
             Get details about lesson

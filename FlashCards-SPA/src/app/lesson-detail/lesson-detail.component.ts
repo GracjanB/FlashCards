@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Lesson} from '../core/_models/_dtos/fromServer/lesson';
 import {CourseManagerService} from '../core/_services/courseManager.service';
@@ -62,5 +62,12 @@ export class LessonDetailComponent implements OnInit {
     }, error => {
       this.alertifyService.showErrorAlert('Wystąpił błąd');
     });
+  }
+
+  countOverallLessonProgress(): number {
+    const totalScore = this.lessonDetailed.flashcards.length * 10;
+    let alreadyLearnedScore = 0;
+    this.lessonDetailed.flashcards.forEach(flashcard => alreadyLearnedScore += flashcard.progress);
+    return (alreadyLearnedScore / totalScore) * 100;
   }
 }

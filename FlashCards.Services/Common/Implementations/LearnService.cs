@@ -4,6 +4,7 @@ using FlashCards.Models.DTOs.ToClient.Learn;
 using FlashCards.Services.Common.Abstracts;
 using FlashCards.Services.Repositories.Abstracts;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,61 +14,51 @@ namespace FlashCards.Services.Common.Implementations
 {
     public class LearnService : ILearnService
     {
+        private readonly FlashcardsDataModel _context;
+        private readonly IUserRepository _userRepository;
+        private readonly ILogger<LearnService> _logger;
+        private Random RandomGen;
+
         private const int AmountOfTrainLevel = 5;
-
         private const int PointsForInput = 2;
-
         private const int PointsForSelection = 1;
-
         private const int PointsForPresentation = 1;
-
         private const int PointsForBlocks = 1;
-
-        private List<object> FlashcardsForLearnList { get; set; }
 
         private List<FlashcardForLearn> FlashcardsForLearnListTest { get; set; }
 
-        private readonly FlashcardsDataModel _context;
-
-        private readonly IUserRepository _userRepository;
-
-        private Random RandomGen { get; set; }
-
-        public LearnService(FlashcardsDataModel context, IUserRepository userRepository)
+        public LearnService(FlashcardsDataModel context, IUserRepository userRepository,
+            ILogger<LearnService> logger)
         {
             _context = context;
             _userRepository = userRepository;
-            FlashcardsForLearnListTest = LoadDesignData();
             RandomGen = new Random();
+            _logger = logger;
         }
 
-        public void DrawFlashcards()
-        {
-            //var temp = InitialDrawFlashcards(FlashcardsForLearnListTest);
-            //var temp2 = SetupFlashcardsForLearn(temp);
 
-            Console.WriteLine();
-        }
+        #region Public methods (from interface)
 
-        public void DrawFlashcardsForLearn(int subCourseId, int userId)
+        public LearnConfiguration DrawFlashcardsForLearn(int subCourseId, int userId)
         {
-            // Wyszukanie ogólnie słówek do nauki - lista FlashcardForLearn
             var flashcardsForLearn = GetFlashcardsForLearn(subCourseId, userId);
             FlashcardsForLearnListTest = flashcardsForLearn;
-
-            // Utworzenie fiszek do nauki - wszystkich (typu FlashcardForPresentation/Selection/Input/Blocks)
             var initialFlashcardsForLearn = InitialDrawFlashcards(flashcardsForLearn);
-
-            // Utworzenie dwóch list z już trenowanymi fiszkami i te z nigdy
-            var alreadyTrainedFlashcards = ExcludeNeverTrainedFlashcards(initialFlashcardsForLearn, out List<object> neverTrainedFlashcards); // Dwie listy 
-
-            // Utworzenie finalnej listy fiszek przygotowanych bezpośrednio do nauki
+            var alreadyTrainedFlashcards = ExcludeNeverTrainedFlashcards(initialFlashcardsForLearn, out List<object> neverTrainedFlashcards);
             var finalList = ArrangeFlashcardsForLearn(neverTrainedFlashcards, alreadyTrainedFlashcards);
 
-            Console.WriteLine();
+            var learnConfiguration = new LearnConfiguration
+            {
+                DrawnFlashcards = flashcardsForLearn,
+                FlashcardsForLearn = finalList,
+                LearnType = 0,
+                LessonName = ""
+            };
+
+            return learnConfiguration;
         }
 
-        public List<object> DrawFlashcardsForLearn(int subCourseId, int subLessonId, int userId)
+        public LearnConfiguration DrawFlashcardsForLearn(int subCourseId, int subLessonId, int userId)
         {
             var flashcardsForLearn = GetFlashcardsForLearn(subCourseId, userId, subLessonId);
             FlashcardsForLearnListTest = flashcardsForLearn;
@@ -75,24 +66,108 @@ namespace FlashCards.Services.Common.Implementations
             var alreadyTrainedFlashcards = ExcludeNeverTrainedFlashcards(initialFlashcardsForLearn, out List<object> neverTrainedFlashcards); // Dwie listy 
             var finalList = ArrangeFlashcardsForLearn(neverTrainedFlashcards, alreadyTrainedFlashcards);
 
-            return finalList;
+            var learnConfiguration = new LearnConfiguration
+            {
+                DrawnFlashcards = flashcardsForLearn,
+                FlashcardsForLearn = finalList,
+                LearnType = 0,
+                LessonName = ""
+            };
+
+            return learnConfiguration;
         }
 
-        public void DrawFlashcardsForRepetition(int subCourseId, int userId)
+        public RepetitionConfiguration DrawFlashcardsForRepetition(int subCourseId, int userId)
         {
             var flashcardsForLearn = GetFlashcardsForRepetition(subCourseId, userId);
             var flashcardsForRepetition = CreateFlashcardsForRepetition(flashcardsForLearn);
 
-            // return
+            var repetitionConfiguration = new RepetitionConfiguration
+            {
+                DrawnFlashcards = flashcardsForLearn,
+                FlashcardsForLearn = flashcardsForRepetition,
+                LearnType = 1,
+                LessonName = ""
+            };
+
+            return repetitionConfiguration;
         }
 
-        public void DrawFlashcardsForRepetition(int subCourseId, int userId, int subLessonId)
+        public RepetitionConfiguration DrawFlashcardsForRepetition(int subCourseId, int userId, int subLessonId)
         {
             var flashcardsForLearn = GetFlashcardsForRepetition(subCourseId, subLessonId, userId);
             var flashcardsForRepetition = CreateFlashcardsForRepetition(flashcardsForLearn);
 
-            // return
+            var repetitionConfiguration = new RepetitionConfiguration
+            {
+                DrawnFlashcards = flashcardsForLearn,
+                FlashcardsForLearn = flashcardsForRepetition,
+                LearnType = 1,
+                LessonName = ""
+            };
+
+            return repetitionConfiguration;
         }
+
+        public bool SaveLearnResult(List<FlashcardForLearn> flashcardsForLearn)
+        {
+            bool output = false;
+
+            var subFlashcardIdList = flashcardsForLearn.Select(x => x.FlashcardSubscriptionId).ToList();
+            var subFlashcards = _context.SubscribedFlashcards.Where(x => subFlashcardIdList.Contains(x.Id)).ToList();
+
+            foreach(var subFlashcard in subFlashcards)
+            {
+                var flashcardResult = flashcardsForLearn.Single(x => x.FlashcardSubscriptionId == subFlashcard.Id);
+
+                subFlashcard.TrainLevel = flashcardResult.TrainLevel;
+                subFlashcard.MarkedAsHard = subFlashcard.MarkedAsHard;
+                subFlashcard.MarkedAsIgnored = subFlashcard.MarkedAsIgnored;
+                subFlashcard.LastTrainingDate = DateTime.Now;
+            }
+
+            try
+            {
+                _context.SaveChanges();
+                output = true;
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError("Error during save learn result", ex);
+            }
+
+            return output;
+        }
+
+        public bool SaveRepetitionResult(List<FlashcardForLearn> flashcardsForLearn)
+        {
+            bool output = false;
+
+            var subFlashcardIdList = flashcardsForLearn.Select(x => x.FlashcardSubscriptionId).ToList();
+            var subFlashcards = _context.SubscribedFlashcards.Where(x => subFlashcardIdList.Contains(x.Id)).ToList();
+
+            foreach (var subFlashcard in subFlashcards)
+            {
+                var flashcardResult = flashcardsForLearn.Single(x => x.FlashcardSubscriptionId == subFlashcard.Id);
+                subFlashcard.LastRevisionDate = DateTime.Now;
+            }
+
+            try
+            {
+                _context.SaveChanges();
+                output = true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error during save learn result", ex);
+            }
+
+            return output;
+        }
+
+        #endregion
+
+        #region Private service methods
 
         private List<object> ArrangeFlashcardsForLearn(List<object> neverTrainedFlashcards, List<object> alreadyTrainedFlashcards)
         {
@@ -242,14 +317,6 @@ namespace FlashCards.Services.Common.Implementations
                 if (element.GetType() != typeof(FlashcardForLearnPresentation))
                     remainedFlashcards.Add(element);
 
-            // W następnym kroku przeliczyć ile jest wystąpień par typu FlashcardForLearnPresentation
-            // i podzielić lisę już trenowanych fiszek na tyle części do ilu można je wstawić pomiędzy tymi parami
-            // Potem zrobić podobną pętle jak wyżej i do każdego segmentu dorzucić te fiszki, potasować i dorzucić do zbioru
-            // Jeżeli coś pozostało z listy fiszek nauczonych to przerzucić to do następnego elementu na tamtej liście
-            // I tak do końca. Jeżeli pętla będzie na samym końcu i coś pozostanie ogólnie to wrzucić tam już wszystko wczesniej przetasowane
-
-            Console.WriteLine();
-
             // Lista z id fiszek, które zostały już nauczone 
             // i mogą zostać dodane do brakujących pozycji
             var flashcardIdsAlreadyTrained = new List<int>();
@@ -266,16 +333,12 @@ namespace FlashCards.Services.Common.Implementations
             }
             flashcardIdsAlreadyTrained = flashcardIdsAlreadyTrained.Distinct().ToList();
 
-
-            Console.WriteLine();
-
             // Lista z indeksami w finalnej liście, gdzie trzeba dorzucić fiszki
             // oraz lista z fiszkami jakie możemy dorzucić
             var indexAndAllowedFlashcardsDict = new Dictionary<int, List<FlashcardForLearnPresentation>>();
 
             // Lista indeksów do listy do których trzeba dorzucić fiszki
             var finalListIndexesForInsert = new List<int>();
-
 
             foreach (var listElement in finalListWithFlashcardsForLearn)
                 if (!listElement.Any(x => x.GetType() == typeof(FlashcardForLearnPresentation)))
@@ -339,7 +402,6 @@ namespace FlashCards.Services.Common.Implementations
 
                 flashcardstoAdd = flashcardstoAdd.Distinct().ToList();
 
-
                 int indexOfHalfList = (int)((flashcardstoAdd.Count() + 0.5) / 2);
                 // Dodać tu shuffle do flashcardsToAdd
                 var flashcardsToAddHalf = flashcardstoAdd.GetRange(0, indexOfHalfList);
@@ -355,20 +417,26 @@ namespace FlashCards.Services.Common.Implementations
                     remainedFlashcards.Remove(el);
             }
 
+            List<object> finalList = new List<object>();
 
-
-            Console.WriteLine();
-            var temp222 = new List<object>();
-
-            foreach (var element in finalListWithFlashcardsForLearn)
+            // Wypłaszczenie finalnej listy
+            foreach (var subList in finalListWithFlashcardsForLearn)
             {
-                if (element.GetType() == typeof(List<>))
-                    Console.WriteLine();
+                foreach(var element in subList)
+                {
+                    if(element.GetType() == typeof(List<object>))
+                    {
+                        foreach (var el in (element as List<object>))
+                            finalList.Add(el);
+                    }
+                    else
+                    {
+                        finalList.Add(element);
+                    }
+                }
             }
 
-            Console.WriteLine();
-
-            throw new NotImplementedException();
+            return finalList;
         }
 
         private List<FlashcardForLearn> GetFlashcardsForLearn(int subCourseId, int subLessonId, int userId)
@@ -460,13 +528,13 @@ namespace FlashCards.Services.Common.Implementations
                     {
                         FlashcardId = flashcard.Id,
                         FlashcardSubscriptionId = subscribedFlashcard.Id,
-                        Phrase = flashcard.Phrase,
-                        PhrasePronunciation = flashcard.PhrasePronunciation,
-                        PhraseSampleSentence = flashcard.PhraseSampleSentence,
-                        PhraseComment = flashcard.PhraseComment,
-                        TranslatedPhrase = flashcard.TranslatedPhrase,
-                        TranslatedPhraseSampleSentence = flashcard.TranslatedPhraseSampleSentence,
-                        TranslatedPhraseComment = flashcard.TranslatedPhraseComment,
+                        Phrase = flashcard.Phrase.Trim(),
+                        PhrasePronunciation = flashcard.PhrasePronunciation.Trim(),
+                        PhraseSampleSentence = flashcard.PhraseSampleSentence.Trim(),
+                        PhraseComment = flashcard.PhraseComment.Trim(),
+                        TranslatedPhrase = flashcard.TranslatedPhrase.Trim(),
+                        TranslatedPhraseSampleSentence = flashcard.TranslatedPhraseSampleSentence.Trim(),
+                        TranslatedPhraseComment = flashcard.TranslatedPhraseComment.Trim(),
                         LanguageLevel = flashcard.LanguageLevel.GetDescription(),
                         TrainLevel = subscribedFlashcard.TrainLevel,
                         MarkedAsHard = subscribedFlashcard.MarkedAsHard,
@@ -636,13 +704,6 @@ namespace FlashCards.Services.Common.Implementations
             return flashcardForLearnInputList;
         }
 
-        /// <summary>
-        /// Function excludes never trained flashcards (based on where is type FlashcardForLearnPresentation)
-        /// and other related to flashcard objects (based on FlashcardId)
-        /// </summary>
-        /// <param name="flashcards">List of flashcard objects from initial draw</param>
-        /// <param name="excludedFlashcards">List of never trained flashcard objects</param>
-        /// <returns>List of already trained flashcard objects (train level > 0)</returns>
         private List<object> ExcludeNeverTrainedFlashcards(List<object> flashcards, out List<object> excludedFlashcards)
         {
             List<object> flashcardsForLearnList = null;
@@ -689,7 +750,8 @@ namespace FlashCards.Services.Common.Implementations
 
         private FlashcardForLearnSelection CreateFlashcardForLearnSelection(FlashcardForLearn flashcardForLearn)
         {
-            var flashcardForSelection = new FlashcardForLearnSelection(flashcardForLearn);
+            var correctPhrase = flashcardForLearn.TranslatedPhrase;
+            //var flashcardForSelection = new FlashcardForLearnSelection(flashcardForLearn);
             var wordsForSelection = new List<string>();
 
             foreach (var flashcard in FlashcardsForLearnListTest)
@@ -709,73 +771,15 @@ namespace FlashCards.Services.Common.Implementations
             for (int i = 0; i < 5; i++)
                 wordsForSelection.Shuffle();
 
-            flashcardForSelection.FlashcardsForSelection = wordsForSelection;
+            //flashcardForSelection.FlashcardsForSelection = wordsForSelection;
+            var flashcardForSelection = new FlashcardForLearnSelection(flashcardForLearn, wordsForSelection, correctPhrase);
 
             return flashcardForSelection;
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        private List<object> SetupFlashcardsForLearn(List<object> flashcards)
+        private string GetLessonName(int lessonId)
         {
-            // Przemyśleć przypadek jeżeli nie ma nigdy nie trenowanych fiszek
-            // Przemyśleć przypadek jeżeli nie ma już trenowanych fiszek
-
-            List<object> flashcardToReturn = new List<object>();
-            var flashcardsForLearnAlreadyTrainedList = ExcludeNeverTrainedFlashcards(flashcards, out List<object> excludedFlashcardsList);
-            var excludedFlashcards = excludedFlashcardsList;
-            var amountOfFlashcardToInitialLearn = (int)flashcardsForLearnAlreadyTrainedList.Count / 2;
-
-            for (int i = 0; i <= 5; i++)
-                flashcardsForLearnAlreadyTrainedList.Shuffle();
-
-            if (amountOfFlashcardToInitialLearn > 5)
-            {
-                flashcardToReturn = flashcardsForLearnAlreadyTrainedList.GetRange(0, 5);
-                flashcardsForLearnAlreadyTrainedList.RemoveRange(0, 5);
-            }
-            else
-            {
-                flashcardToReturn = flashcardsForLearnAlreadyTrainedList.GetRange(0, amountOfFlashcardToInitialLearn);
-                flashcardsForLearnAlreadyTrainedList.RemoveRange(0, amountOfFlashcardToInitialLearn);
-            }
-
-            Console.WriteLine();
-
-            return flashcardToReturn;
+            return _context.Lessons.First(x => x.Id == lessonId).Name;
         }
 
         private List<FlashcardForLearn> LoadDesignData()
@@ -864,6 +868,6 @@ namespace FlashCards.Services.Common.Implementations
             return flashcardsForLearnList;
         }
 
-
+        #endregion
     }
 }

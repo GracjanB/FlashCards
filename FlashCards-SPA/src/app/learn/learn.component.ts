@@ -101,7 +101,7 @@ export class LearnComponent implements OnInit {
 
   quitLearningSession(): void {
     this.alertifyService.showConfirmAlert('Czy na pewno chcesz opuścić lekcję? Postęp nie zostanie zapisany', () => {
-      this.alertifyService.showMessageAlert('Opuszczenie lekcji');
+      this.router.navigate(['dashboard']);
     });
   }
 
