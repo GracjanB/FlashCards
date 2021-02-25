@@ -1,7 +1,6 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {AlertifyService} from '../core/_services/alertify.service';
 import {LessonShort} from '../core/_models/_dtos/fromServer/lessonShort';
-import {Flashcard} from '../core/_models/_dtos/fromServer/flashcard';
 import {CourseForCreate} from '../core/_models/_dtos/toServer/courseForCreate';
 import {CourseDetailed} from '../core/_models/_dtos/fromServer/courseDetailed';
 import {CourseService} from '../core/_services/course.service';

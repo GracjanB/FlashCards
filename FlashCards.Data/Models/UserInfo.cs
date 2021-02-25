@@ -25,6 +25,8 @@ namespace FlashCards.Data.Models
 
         public int NumberOfWordsInReviewSession { get; set; }
 
+        public int NumberOfWordsInHardWordsLearning { get; set; }
+
 
         public User User { get; set; }
 

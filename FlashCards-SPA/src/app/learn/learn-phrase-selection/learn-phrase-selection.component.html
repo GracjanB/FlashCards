@@ -1,7 +1,7 @@
-<div class="container d-flex" style="background-color: #e6e6e6; min-width: 900px;">
-  <div class="col-10 mt-3">
+<div class="container d-flex" style="background-color: #e6e6e6; min-width: 1100px;">
+  <div class="col-12 mt-3">
     <div class="row">
-      <div class="col-10">
+      <div class="col-12">
         <h1>{{ currentPhrase.phrase }}</h1>
         <hr>
         <div class="row">
@@ -15,12 +15,9 @@
           </div>
         </div>
       </div>
-      <div class="col">
-        <i class="fa fa-circle-o learning-level-icon mt-3"></i>
-      </div>
     </div>
     <hr>
-    <button class="btn btn-primary btn-success" *ngIf="canContinue" (click)="next()">Dalej</button>
+    <button class="btn btn-primary btn-success pull-right" *ngIf="canContinue" (click)="next()">Dalej</button>
     <div class="row d-flex justify-content-center mb-2">
       <button class="btn btn-outline-primary" (click)="showHint()">
         <i class="fa fa-refresh mr-2"></i>

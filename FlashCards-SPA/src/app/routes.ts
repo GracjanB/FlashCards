@@ -27,6 +27,7 @@ import { CourseCheckPanelComponent } from './admin/course-check-panel/course-che
 import { AdminCourseCheckResolver } from './core/_resolvers/admin-course-check.resolver';
 import { AdminAuthGuard } from './core/_guards/adminAuth.guard';
 import { AuthGuard } from './core/_guards/auth.guard';
+import {LearnCanDeactivateGuard} from './core/_guards/learnCanDeactivate.guard';
 
 export const appRoutes: Routes = [
   { path: '', component: HomeComponent },
@@ -51,12 +52,14 @@ export const appRoutes: Routes = [
       { path: 'account/profile/:id', component: AccountProfileComponent, resolve: { userDetailedWithCourses: AccountProfileResolver }},
       { path: 'account/edit/:id', component: AccountEditComponent, resolve: { userDetailed: AccountEditResolver }},
       { path: 'analytics', component: AnalyticsComponent },
-      { path: 'learn/course/:subCourseId', component: LearnComponent, resolve: { learnConfiguration: LearnCourseResolver }},
+      { path: 'learn/course/:subCourseId', component: LearnComponent, resolve: { learnConfiguration: LearnCourseResolver },
+        canDeactivate: [LearnCanDeactivateGuard]},
       { path: 'learn/course/:subCourseId/lesson/:subLessonId', component: LearnComponent,
-        resolve: { learnConfiguration: LearnLessonResolver }},
-      { path: 'repetition/course/:subCourseId', component: LearnComponent, resolve: { learnConfiguration: RepetitionCourseResolver } },
+        resolve: { learnConfiguration: LearnLessonResolver }, canDeactivate: [LearnCanDeactivateGuard]},
+      { path: 'repetition/course/:subCourseId', component: LearnComponent, resolve: { learnConfiguration: RepetitionCourseResolver },
+        canDeactivate: [LearnCanDeactivateGuard] },
       { path: 'repetition/course/:subCourseId/lesson/:subLessonId', component: LearnComponent,
-        resolve: { learnConfiguration: RepetitionLessonResolver } },
+        resolve: { learnConfiguration: RepetitionLessonResolver }, canDeactivate: [LearnCanDeactivateGuard] },
     ]
   },
   { path: 'login', component: LoginComponent },

@@ -38,6 +38,10 @@ namespace FlashCards.Data.ModelsConfiguration
                 .HasColumnType("SMALLINT")
                 .HasDefaultValue(10);
 
+            builder.Property(x => x.NumberOfWordsInHardWordsLearning)
+                .HasColumnType("SMALLINT")
+                .HasDefaultValue(10);
+
             builder.HasOne(x => x.User)
                 .WithOne(x => x.UserInfo);
 

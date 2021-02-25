@@ -80,6 +80,17 @@ namespace FlashCards.WebAPI.Controllers
             return Ok(repetitionConfiguration);
         }
 
+        [HttpGet("hardWords/lesson/{subLessonId}")]
+        public IActionResult GetFlashcardsForHardWordsLearning(int subLessonId)
+        {
+            var hardWordsLearningConfiguration = _learnService.DrawFlashcardsForHardWordsLearning(subLessonId);
+
+            if (hardWordsLearningConfiguration.DrawnFlashcards.Count() == 0)
+                return NotFound("Not found any hard flashcards");
+
+            return Ok(hardWordsLearningConfiguration);
+        }
+
         [HttpPost("learnResult")]
         public IActionResult PostLearnResult(List<FlashcardForLearn> flashcards)
         {

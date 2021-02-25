@@ -25,43 +25,36 @@
       </div>
     </div>
   </div>
-  <h1 class="mt-4">Lekcje</h1>
-  <hr>
-  <div class="card col-10 mx-auto mb-3" *ngIf="isSubscribed">
-    <div class="card-body">
-      <div class="row">
-        <div class="col-11">
-          <h1 class="mt-3">Poznane fiszki</h1>
-        </div>
-        <div class="col-1">
-          <div class="dropdown" dropdown [isAnimated]="true" [autoClose]="true">
-            <button class="btn btn-menu" type="button" dropdownToggle>
-              <i class="fa fa-ellipsis-v fa-lg"></i>
-            </button>
-            <div class="dropdown-menu dropdown-menu-right" *dropdownMenu>
-              <a class="dropdown-item">
-                <i class="fa fa-book mr-2"></i>Wyczyść postęp
-              </a>
-              <a class="dropdown-item" (click)="onUnsubscribeCourse()">
-                <i class="fa fa-book mr-2"></i>Zrezygnuj z kursu
-              </a>
+
+  <div class="row justify-content-center">
+    <div class="card col-lg-11 mx-auto mt-2">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-lg-10 mb-0">
+            <h1>Lekcje</h1>
+          </div>
+          <div class="col-lg-2 mb-0">
+            <div class="dropdown pull-right" dropdown [isAnimated]="true" [autoClose]="true">
+              <button class="btn btn-menu" type="button" dropdownToggle>
+                <i class="fa fa-ellipsis-v fa-lg"></i>
+              </button>
+              <div class="dropdown-menu dropdown-menu-right" *dropdownMenu>
+                <a class="dropdown-item">
+                  <i class="fa fa-book mr-2"></i>Wyczyść postęp
+                </a>
+                <a class="dropdown-item" (click)="onUnsubscribeCourse()">
+                  <i class="fa fa-book mr-2"></i>Zrezygnuj z kursu
+                </a>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <hr class="mt-0">
-      <div class="progress mb-4 mt-0">
-        <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="10"
-             [ngStyle]="{width: course.overallProgress+'%'}"
-             aria-valuemin="0" aria-valuemax="100"></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="col-10">
-    <div class="row">
-      <div *ngFor="let lesson of course.lessons" class="col-lg-3 col-md-4 col-sm-6">
-        <app-lesson-card [lesson]="lesson" (lessonSelected)="onLessonSelected($event)"></app-lesson-card>
+        <hr class="mt-0">
+        <div class="row">
+          <div *ngFor="let lesson of course.lessons" class="col-lg-3 col-md-4 col-sm-6">
+            <app-lesson-card [lesson]="lesson" (lessonSelected)="onLessonSelected($event)"></app-lesson-card>
+          </div>
+        </div>
       </div>
     </div>
   </div>

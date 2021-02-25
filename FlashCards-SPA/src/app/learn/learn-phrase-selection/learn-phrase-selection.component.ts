@@ -35,6 +35,7 @@ export class LearnPhraseSelectionComponent implements OnInit {
   }
 
   next(): void {
+    this.canContinue = false;
     this.showNext.emit();
   }
 

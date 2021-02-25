@@ -1,4 +1,4 @@
-<div class="container d-flex" style="background-color: #e6e6e6; min-width: 900px;">
+<div class="container d-flex" style="background-color: #e6e6e6; min-width: 1100px;">
   <div class="col-10 mt-3">
     <div class="row">
       <div class="col-10">
@@ -10,10 +10,7 @@
                [ngClass]="{'bg-light-green': phraseGuessedSoFar,
                            'bg-light-red': !phraseGuessedSoFar,
                            'bg-success': phraseGuessed && phraseGuessedSoFar}">
-        <button class="btn btn-primary btn-success" *ngIf="canContinue" (click)="next()">Dalej</button>
-      </div>
-      <div class="col">
-        <i class="fa fa-circle-o learning-level-icon mt-4"></i>
+        <button class="btn btn-primary btn-success pull-right mt-2" *ngIf="canContinue" (click)="next()">Dalej</button>
       </div>
     </div>
     <hr>

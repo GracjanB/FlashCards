@@ -1,12 +1,10 @@
 <div class="container">
-  <nav class="navbar d-flex justify-content-center" style="background-color: #3385ff; min-height: 45px;">
+  <nav class="navbar d-flex justify-content-center mx-auto p-0" style="background-color: #3385ff; min-height: 40px; max-width: 1100px;">
     <i class="fa fa-book justified-icon"></i>
-    <div class="vertical-divider"></div>
-    <i class="fa fa-pause-circle reactive-icon ml-4 mr-1" (click)="pauseLearningSession()"></i>
     <div class="vertical-divider"></div>
     <h1 class="learning-title" *ngIf="learnMode">Nowe słowa:</h1>
     <h1 class="learning-title" *ngIf="repetitionMode">Powtórka:</h1>
-    <h2 class="lesson-name-title">{{ lessonName | titlecase }}</h2>
+    <h2 class="lesson-name-title" style="max-width: 500px;">{{ lessonName | titlecase }}</h2>
     <div class="progress ml-5">
       <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 40%; min-width: 100px"
            aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>

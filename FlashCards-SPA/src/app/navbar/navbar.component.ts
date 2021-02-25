@@ -51,4 +51,12 @@ export class NavbarComponent implements OnInit{
   navigateToAdministratorPanel(): void {
     this.router.navigate(['/admin/panel']);
   }
+
+  brandNavigate(): void {
+    if (this.authService.userIsLoggedIn()) {
+      this.router.navigate(['dashboard']);
+    } else {
+      this.router.navigate(['']);
+    }
+  }
 }

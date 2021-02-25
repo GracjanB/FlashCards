@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-md navbar-dark navbar-static-top bg-dark">
-  <a class="navbar-brand" href="#">FlashCards</a>
+  <a class="navbar-brand" style="cursor:pointer;" (click)="brandNavigate()">MemBox</a>
   <button class="navbar-toggler d-lg-none" type="button" (click)="isCollapsed = !isCollapsed"
           [attr.aria-expanded]="!isCollapsed">
     <span class="navbar-toggler-icon"></span>
@@ -18,11 +18,6 @@
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" [routerLink]="['/analytics']" routerLinkActive="$router_link-active$">
-          Analytics
-        </a>
-      </li>
-      <li class="nav-item">
         <a class="nav-link" [routerLink]="['/course-generator']" routerLinkActive="$router_link-active$">
           Create course
         </a>
@@ -31,11 +26,6 @@
     <ul *ngIf="!userIsLoggedIn()" class="navbar-nav mr-auto">
       <li class="nav-item active">
         <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" [routerLink]="['/learn']" routerLinkActive="$router_link-active$">
-          Learn test
-        </a>
       </li>
     </ul>
     <div *ngIf="!userIsLoggedIn()" class="nav-item">

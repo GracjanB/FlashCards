@@ -4,6 +4,8 @@ import {CourseShort} from './courseShort';
 export class UserDetailedWithCourses extends User {
   createdCourses: CourseShort[];
   subscribedCourses: CourseShort[];
+  privateCourses: CourseShort[];
+  draftCourses: CourseShort[];
   numberOfCreatedCourses: number;
   numberOfSubscribedCourses: number;
   numberOfAlreadyLearntFlashcards: number;
@@ -19,6 +21,8 @@ export class UserDetailedWithCourses extends User {
               dateCreated: Date,
               createdCourses: CourseShort[],
               subscribedCourses: CourseShort[],
+              privateCourses: CourseShort[],
+              draftCourses: CourseShort[],
               numberOfCreatedCourses: number,
               numberOfSubscribedCourses: number,
               numberOfAlreadyLearntFlashcards: number) {
@@ -34,6 +38,8 @@ export class UserDetailedWithCourses extends User {
     this.dateCreated = dateCreated;
     this.createdCourses = createdCourses;
     this.subscribedCourses = subscribedCourses;
+    this.privateCourses = privateCourses;
+    this.draftCourses = draftCourses;
     this.numberOfCreatedCourses = numberOfCreatedCourses;
     this.numberOfSubscribedCourses = numberOfSubscribedCourses;
     this.numberOfAlreadyLearntFlashcards = numberOfAlreadyLearntFlashcards;

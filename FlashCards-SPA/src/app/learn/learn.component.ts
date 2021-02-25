@@ -39,6 +39,7 @@ export class LearnComponent implements OnInit {
   private endOfLearning: boolean;
   lessonName: string;
   learnSummary: LearnSummary;
+  learnInProgress = false;
 
   // New Block
   canContinue: Subject<any> = new Subject<any>();
@@ -60,6 +61,7 @@ export class LearnComponent implements OnInit {
       this.learnType = data.learnConfiguration.learnType;
       this.flashcardsToLearn = data.learnConfiguration.flashcards;
       this.lessonName = data.learnConfiguration.lessonName;
+      this.lessonName = 'Lekcja 1';
     });
     this.setLearnMode(this.learnType);
     this.learnSession = new LearnSession(this.drawnFlashcards, this.flashcardsToLearn);
@@ -72,6 +74,7 @@ export class LearnComponent implements OnInit {
     this.endOfLearning = false;
     this.learnSession.startLearning();
     this.learnStartComponentActive = false;
+    this.learnInProgress = true;
     this.changeActiveComponent(this.learnSession.getCurrentFlashcard());
   }
 

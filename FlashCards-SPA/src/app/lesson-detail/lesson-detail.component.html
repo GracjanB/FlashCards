@@ -4,41 +4,24 @@
     <div class="card-body">
       <div class="col-10 pull-left">
         <h1 class="card-title">{{ lessonDetailed.name }}</h1>
+        <div class="progress mb-4 mt-0" *ngIf="isSubscribed">
+          <div class="progress-bar progress-bar-striped" role="progressbar"
+               [ngStyle]="{width: countOverallLessonProgress()+'%'}"></div>
+        </div>
         <hr>
         <h3>{{ lessonDetailed.description }}</h3>
       </div>
       <div class="col-2 pull-right">
-        <h2 class="text-center mb-0">Autor</h2>
-        <h3 class="text-center"><a href="#">Użytkownik1</a> </h3>
-        <button type="button" class="btn btn-primary btn-success">Pokaż wszystkie</button>
-      </div>
-    </div>
-  </div>
-  <!-- Progress info card -->
-  <div class="row justify-content-center mt-4">
-    <div class="col-10">
-      <div class="card">
-        <div class="card-body">
-          <h2 style="font-weight: bold;" class="mb-0">Poziom 1</h2>
-          <hr class="mt-1">
-          <h1 class="card-title">{{ lessonDetailed.name }}</h1>
-          <div class="progress mb-4 mt-0">
-            <div class="progress-bar progress-bar-striped" role="progressbar"
-                 [ngStyle]="{width: countOverallLessonProgress()+'%'}"></div>
-          </div>
-          <div class="pull-right" *ngIf="isSubscribed">
-            <button type="button" class="btn btn-primary btn-success">Rozpocznij nauke</button>
-          </div>
-        </div>
+        <button type="button" class="btn btn-primary btn-success" style="min-height: 100px;">Rozpocznij nauke</button>
       </div>
     </div>
   </div>
   <!-- Flashcards table -->
-  <div class="row justify-content-center mt-2">
+  <div class="row justify-content-center mt-2 mb-4">
     <div class="col-10">
       <div class="card">
         <div class="card-header">
-          <h2 style="font-weight: bold;" class="mt-0 mb-0">Fiszki - {{ lessonDetailed.flashcards.length }}</h2>
+          <h2 style="font-weight: bold;" class="mt-0 mb-0">Spis słów/wyrażeń - {{ lessonDetailed.flashcards.length }}</h2>
         </div>
         <h1 class="text-center mt-2" *ngIf="lessonDetailed.flashcards.length == 0">Nie utworzono żadnych fiszek</h1>
         <table class="table table-hover" *ngIf="lessonDetailed.flashcards.length > 0">

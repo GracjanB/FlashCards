@@ -109,6 +109,47 @@ namespace FlashCards.Services.Common.Implementations
             return repetitionConfiguration;
         }
 
+        public HardWordsLearnConfiguration DrawFlashcardsForHardWordsLearning(int subLessonId)
+        {
+            var flashcardsForLearn = GetHardFlashcards(subLessonId);
+            FlashcardsForLearnListTest = flashcardsForLearn;
+            var flashcardsToReturn = new List<object>();
+            var flashcardsForLearnSplitList = flashcardsForLearn.Split((int)flashcardsForLearn.Count() / 2);
+            var lessonId = _context.SubscribedLessons.Single(x => x.Id == subLessonId).LessonId;
+            var lessonName = _context.Lessons.Single(x => x.Id == lessonId).Name;
+
+            foreach(var flashcardsPair in flashcardsForLearnSplitList)
+            {
+                var flashcardsPresentation = new List<object>();
+                var flashcardsLearn = new List<object>();
+
+                foreach(var flashcard in flashcardsPair)
+                {
+                    flashcardsPresentation.Add(new FlashcardForLearnPresentation(flashcard));
+
+                    for (int i = 0; i < 4; i++)
+                        flashcardsLearn.Add(CreateFlashcardForLearnSelection(flashcard));
+
+                    for (int i = 0; i < 4; i++)
+                        flashcardsLearn.Add(new FlashcardForLearnInput(flashcard));
+                }
+
+                for (int i = 0; i < 50; i++)
+                    flashcardsLearn.Shuffle();
+
+                flashcardsToReturn.AddRange(flashcardsPresentation);
+                flashcardsToReturn.AddRange(flashcardsLearn);
+            }
+
+            return new HardWordsLearnConfiguration
+            {
+                DrawnFlashcards = flashcardsForLearn,
+                FlashcardsForLearn = flashcardsToReturn,
+                LearnType = 2,
+                LessonName = lessonName
+            };
+        }
+
         public bool SaveLearnResult(List<FlashcardForLearn> flashcardsForLearn)
         {
             bool output = false;
@@ -489,13 +530,14 @@ namespace FlashCards.Services.Common.Implementations
         private List<FlashcardForLearn> GetFlashcardsForLearn(int subCourseId, int userId)
         {
             var remainedFlashcardsForLearn = _userRepository.GetDetail(userId).UserInfo.NumberOfWordsInLearningSession;
+            var accountId = _userRepository.GetUserAccountId(userId);
             var subFlashcardsIds = new List<int>();
 
             var subLessons = new List<Data.Models.SubscribedLesson>();
 
             subLessons = _context.SubscribedLessons
                 .Include(x => x.SubscribedFlashcards)
-                .Where(x => x.SubscribedCourseId == subCourseId)
+                .Where(x => x.SubscribedCourseId == subCourseId && x.SubscribedCourse.AccountId == accountId)
                 .OrderBy(x => x.LastTrainingDate)
                 .ToList();
 
@@ -512,7 +554,7 @@ namespace FlashCards.Services.Common.Implementations
                     {
                         if (flashcard.TrainLevel < 10 && !flashcard.MarkedAsIgnored)
                         {
-                            subFlashcardsIds.Add(flashcard.Id);
+                            subFlashcardsIds.Add(flashcard.FlashcardId);
                             remainedFlashcardsForLearn--;
                         }
                     }
@@ -520,9 +562,9 @@ namespace FlashCards.Services.Common.Implementations
                 }
             }
 
-            var flashcardToLearn = _context.SubscribedFlashcards
+            var flashcardToLearn = _context.SubscribedFlashcards.Where(x => x.SubscribedLesson.SubscribedCourseId == subCourseId)
                 .Join(_context.Flashcards.Where(x => subFlashcardsIds.Contains(x.Id)),
-                    subscribedFlashcard => subscribedFlashcard.Id,
+                    subscribedFlashcard => subscribedFlashcard.FlashcardId,
                     flashcard => flashcard.Id,
                     (subscribedFlashcard, flashcard) => new FlashcardForLearn
                     {
@@ -542,6 +584,39 @@ namespace FlashCards.Services.Common.Implementations
                     }).ToList();
 
             return flashcardToLearn;
+        }
+
+        private List<FlashcardForLearn> GetHardFlashcards(int subLessonId)
+        {
+            var flashcardIds = new List<int>();
+            var subLesson = _context.SubscribedLessons.Include(x => x.SubscribedFlashcards).Single(x => x.Id == subLessonId);
+
+            foreach(var subFlashcard in subLesson.SubscribedFlashcards)
+                if (subFlashcard.MarkedAsHard && !subFlashcard.MarkedAsIgnored)
+                    flashcardIds.Add(subFlashcard.FlashcardId);
+
+            var flashcardsForLearn = _context.SubscribedFlashcards.Where(x => x.SubscribedLessonId == subLessonId)
+                .Join(_context.Flashcards.Where(x => flashcardIds.Contains(x.Id)),
+                subscribedFlashcard => subscribedFlashcard.FlashcardId,
+                flashcard => flashcard.Id,
+                (subscribedFlashcard, flashcard) => new FlashcardForLearn
+                {
+                    FlashcardId = flashcard.Id,
+                    FlashcardSubscriptionId = subscribedFlashcard.Id,
+                    Phrase = flashcard.Phrase.Trim(),
+                    PhrasePronunciation = flashcard.PhrasePronunciation.Trim(),
+                    PhraseSampleSentence = flashcard.PhraseSampleSentence.Trim(),
+                    PhraseComment = flashcard.PhraseComment.Trim(),
+                    TranslatedPhrase = flashcard.TranslatedPhrase.Trim(),
+                    TranslatedPhraseSampleSentence = flashcard.TranslatedPhraseSampleSentence.Trim(),
+                    TranslatedPhraseComment = flashcard.TranslatedPhraseComment.Trim(),
+                    LanguageLevel = flashcard.LanguageLevel.GetDescription(),
+                    TrainLevel = subscribedFlashcard.TrainLevel,
+                    MarkedAsHard = subscribedFlashcard.MarkedAsHard,
+                    LastTrainingDate = subscribedFlashcard.LastTrainingDate
+                }).ToList();
+
+            return flashcardsForLearn;
         }
 
         private List<FlashcardForLearn> GetFlashcardsForRepetition(int subCourseId, int userId)
