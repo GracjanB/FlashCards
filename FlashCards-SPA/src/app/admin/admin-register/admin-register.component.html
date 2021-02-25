@@ -1,0 +1,75 @@
+<div class="row mt-3 justify-content-center">
+  <div class="col-10">
+    <div class="row">
+      <div class="col-12">
+        <h1 class="course-title">Nowy administrator</h1>
+      </div>
+    </div>
+    <hr class="mt-0">
+    <div class="row">
+      <!-- Register Form -->
+      <form [formGroup]="administratorForm" (ngSubmit)="registerAdministrator()">
+        <!-- Email -->
+        <div class="form-group">
+          <label for="email">Email address</label>
+          <input id="email" class="form-control" type="email" formControlName="email"
+                 [ngClass]="{'is-invalid': administratorForm.get('email').errors && administratorForm.get('email').touched}">
+          <div class="invalid-feedback"
+               *ngIf="administratorForm.get('email').touched && administratorForm.get('email').hasError('required')">
+            Email is required
+          </div>
+        </div>
+        <!-- Display Name -->
+        <div class="form-group">
+          <label for="displayName">Display Name</label>
+          <input id="displayName" class="form-control" type="text" formControlName="displayName"
+                 [ngClass]="{'is-invalid': administratorForm.get('displayName').errors && administratorForm.get('email').touched}">
+          <div class="invalid-feedback" *ngIf="administratorForm.get('displayName').touched &&
+                  administratorForm.get('displayName').hasError('required')">
+            Display name is required
+          </div>
+        </div>
+        <!-- Password -->
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input id="password" class="form-control" type="password" formControlName="password"
+                 [ngClass]="{'is-invalid': administratorForm.get('password').errors &&
+                  administratorForm.get('password').touched}">
+          <div class="invalid-feedback" *ngIf="administratorForm.get('password').touched &&
+                  administratorForm.get('password').hasError('required')">
+            Password is required
+          </div>
+          <div class="invalid-feedback" *ngIf="administratorForm.get('password').touched &&
+                  administratorForm.get('password').hasError('minlength')">
+            Password must be at least 4 characters
+          </div>
+          <div class="invalid-feedback" *ngIf="administratorForm.get('password').touched &&
+                  administratorForm.get('password').hasError('maxlength')">
+            Password cannot exceed 8 characters
+          </div>
+        </div>
+        <!-- Confirm Password -->
+        <div class="form-group">
+          <label for="confirmPassword">Confirm Password</label>
+          <input id="confirmPassword" class="form-control" type="password" formControlName="confirmPassword"
+                 [ngClass]="{'is-invalid': administratorForm.get('confirmPassword').errors &&
+                  administratorForm.get('confirmPassword').touched}">
+          <div class="invalid-feedback" *ngIf="administratorForm.get('confirmPassword').touched &&
+                  administratorForm.get('confirmPassword').hasError('required')">
+            Password confirmation is required
+          </div>
+          <div class="invalid-feedback" *ngIf="administratorForm.get('confirmPassword').touched &&
+                  administratorForm.get('confirmPassword').hasError('mismatch')">
+            Password doesn't match
+          </div>
+        </div>
+        <!-- Submit Button -->
+        <div class="col-md-12 text-center">
+          <button type="submit" class="btn btn-block mybtn btn-primary tx-tfm" [disabled]="!administratorForm.valid">
+            Register
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

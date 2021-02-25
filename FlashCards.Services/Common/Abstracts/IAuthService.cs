@@ -12,5 +12,7 @@ namespace FlashCards.Services.Abstracts
         void CreateNewPassword(string newPassword, ref User user);
 
         bool VerifyPassword(string password, byte[] passwordHash, byte[] passwordSalt);
+
+        bool RegisterAdministrator(User user, string password);
     }
 }

@@ -1,15 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AlertifyService} from '../core/_services/alertify.service';
 import {FlashcardLearnForSelection} from '../core/_models/flashcardLearnForSelection';
 import {FlashcardLearnForPresentation} from '../core/_models/flashcardLearnForPresentation';
 import {FlashcardLearnForBlocks} from '../core/_models/flashcardLearnForBlocks';
 import {FlashcardLearnForInput} from '../core/_models/flashcardLearnForInput';
-import {cssScannerError} from 'codelyzer/angular/styles/cssLexer';
-import {Subject, throwError} from 'rxjs';
+import {Subject} from 'rxjs';
 import {FlashcardForLearn} from '../core/_models/_dtos/fromServer/flashcardForLearn';
 import {LearningSessionServiceService} from '../core/_services/learningSession.service';
 import {ActivatedRoute, Router} from '@angular/router';
-import {FlashcardShort} from '../core/_models/_dtos/fromServer/flashcardShort';
 import {LearnTypeEnum} from '../core/_models/enums/learnTypeEnum';
 import {LearnSession} from '../core/_others/learnSession';
 import {LearnService} from '../core/_services/learn.service';
@@ -33,6 +31,7 @@ export class LearnComponent implements OnInit {
   drawnFlashcards: Array<FlashcardForLearn>;
   repetitionMode: boolean;
   learnMode: boolean;
+  hardWordsMode: boolean;
   learnType: LearnTypeEnum;
   private flashcardsToLearn: Array<any>;
   private learnSession: LearnSession;
@@ -52,7 +51,8 @@ export class LearnComponent implements OnInit {
               private learningService: LearningSessionServiceService,
               private route: ActivatedRoute,
               private learnService: LearnService,
-              private router: Router) { }
+              private router: Router) {
+  }
 
   ngOnInit(): void {
     this.loadDesignData();
@@ -64,7 +64,7 @@ export class LearnComponent implements OnInit {
       this.lessonName = 'Lekcja 1';
     });
     this.setLearnMode(this.learnType);
-    this.learnSession = new LearnSession(this.drawnFlashcards, this.flashcardsToLearn);
+    this.learnSession = new LearnSession(this.drawnFlashcards, this.flashcardsToLearn, this.learnType);
     this.toggleActiveComponent(4); // Learn-start component
   }
 
@@ -92,7 +92,22 @@ export class LearnComponent implements OnInit {
     if (this.endOfLearning) {
       this.learnSummary = this.learnSession.getLearnSummary();
       this.alertifyService.showSuccessAlert('Koniec lekcji');
-      this.toggleActiveComponent(5); // Activates summary component
+      if (this.learnType === LearnTypeEnum.Learn) {
+        this.toggleActiveComponent(5); // Activates summary component
+      } else {
+        if (this.learnType === LearnTypeEnum.HardWords) {
+          this.router.navigate(['dashboard']);
+        } else if (this.learnType === LearnTypeEnum.Repetition) {
+          this.learnService.sendRepetitionResult(this.learnSummary.flashcardsAfterLearn).subscribe(result => {
+            if (!result) {
+              this.alertifyService.showErrorAlert('Wystąpił błąd podczas zapisu');
+            }
+            this.router.navigate(['dashboard']);
+          }, error => {
+            this.alertifyService.showErrorAlert('Wystąpił błąd podczas zapisu');
+          });
+        }
+      }
     } else {
       this.changeActiveComponent(this.learnSession.getCurrentFlashcard());
     }
@@ -117,14 +132,21 @@ export class LearnComponent implements OnInit {
   }
 
   private setLearnMode(learnType: LearnTypeEnum): void {
-    switch (learnType){
+    switch (learnType) {
       case LearnTypeEnum.Learn:
         this.repetitionMode = false;
+        this.hardWordsMode = false;
         this.learnMode = true;
         break;
       case LearnTypeEnum.Repetition:
         this.learnMode = false;
+        this.hardWordsMode = false;
         this.repetitionMode = true;
+        break;
+      case LearnTypeEnum.HardWords:
+        this.learnMode = false;
+        this.repetitionMode = false;
+        this.hardWordsMode = true;
         break;
     }
   }
@@ -193,6 +215,18 @@ export class LearnComponent implements OnInit {
     //   console.log('Argument Error: Wrong type of flashcard - ' + typeof(flashcard));
     //   throwError('Wrong type of flashcard');
     // }
+  }
+
+  getNavbarColor(): string {
+    if (this.learnMode) {
+      return '#2ebf55';
+    }
+    if (this.repetitionMode) {
+      return '#3385ff';
+    }
+    if (this.hardWordsMode) {
+      return '#c4c92c';
+    }
   }
 
   // END BLOCK NEW FUNCTIONS
@@ -269,7 +303,6 @@ export class LearnComponent implements OnInit {
   }
 
 
-
   private loadDesignData(): void {
     const flashcardsForSelection = new Array<string>();
     flashcardsForSelection.push('nowy');
@@ -290,7 +323,7 @@ export class LearnComponent implements OnInit {
       'Test category',
       4,
       false,
-        new Date());
+      new Date());
     this.currentFlashcardForSelection.flashcardsForSelection = flashcardsForSelection;
     const flashcardForLearnTest = new FlashcardForLearn();
     flashcardForLearnTest.initialize(0,

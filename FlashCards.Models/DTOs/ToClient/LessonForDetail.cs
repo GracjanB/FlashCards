@@ -6,6 +6,10 @@ namespace FlashCards.Models.DTOs.ToClient
     {
         public int Id { get; set; }
 
+        public int SubLessonId { get; set; }
+
+        public int SubCourseId { get; set; }
+
         public string Name { get; set; }
 
         public string Description { get; set; }

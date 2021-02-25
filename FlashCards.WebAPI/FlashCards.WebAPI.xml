@@ -11,7 +11,7 @@
             <remarks>
             Sample request:
             
-                POST /api/auth/login
+                POST /api/auth/register
                     {
                         "email": "sample@sample.com",
                         "password": "samplepassword",
@@ -27,6 +27,29 @@
             <returns>Status</returns>
             <response code="200">If registration was successful</response>
             <response code="400">When incoming data was invalid. Returns model state information</response>
+            <response code="500">When occured error during registration</response>
+            POST: api/auth/register
+        </member>
+        <member name="M:FlashCards.WebAPI.Controllers.AuthController.RegisterAdministrator(FlashCards.Models.DTOs.ToServer.UserForRegister)">
+            <summary>
+            Creates new administrator account
+            </summary>
+            <remarks>
+            Sample request:
+            
+                POST /api/auth/register/admin
+                    {
+                        "email": "sample@sample.com",
+                        "password": "samplepassword",
+                        "displayName": "sampleName",
+                    }
+                    
+            </remarks>
+            <param name="userForRegister"></param>
+            <returns>Status</returns>
+            <response code="200">If registration was successful</response>
+            <response code="400">When incoming data was invalid. Returns model state information</response>
+            <response code="401">Only super administrator can register administrators</response>
             <response code="500">When occured error during registration</response>
             POST: api/auth/register
         </member>

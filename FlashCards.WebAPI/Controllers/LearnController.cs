@@ -1,5 +1,6 @@
 ﻿using FlashCards.Models.DTOs.ToClient.Learn;
 using FlashCards.Services.Common.Abstracts;
+using FlashCards.Services.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -83,12 +84,22 @@ namespace FlashCards.WebAPI.Controllers
         [HttpGet("hardWords/lesson/{subLessonId}")]
         public IActionResult GetFlashcardsForHardWordsLearning(int subLessonId)
         {
-            var hardWordsLearningConfiguration = _learnService.DrawFlashcardsForHardWordsLearning(subLessonId);
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
-            if (hardWordsLearningConfiguration.DrawnFlashcards.Count() == 0)
-                return NotFound("Not found any hard flashcards");
+            try
+            {
+                var hardWordsLearningConfiguration = _learnService.DrawFlashcardsForHardWordsLearning(subLessonId, userId);
 
-            return Ok(hardWordsLearningConfiguration);
+                if (hardWordsLearningConfiguration.DrawnFlashcards.Count() == 0)
+                    return NotFound("Not found any hard flashcards");
+
+                return Ok(hardWordsLearningConfiguration);
+
+            }
+            catch(InsufficientAmountOfHardFlashcardsException)
+            {
+                return BadRequest("Insufficient hard flashcards to learn. Minimum is 4");
+            }
         }
 
         [HttpPost("learnResult")]

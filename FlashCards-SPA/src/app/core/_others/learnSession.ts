@@ -1,10 +1,7 @@
 import {FlashcardForLearn} from '../_models/_dtos/fromServer/flashcardForLearn';
 import {FlashcardLearnForPresentation} from '../_models/flashcardLearnForPresentation';
-import {FlashcardLearnForSelection} from '../_models/flashcardLearnForSelection';
-import {FlashcardLearnForInput} from '../_models/flashcardLearnForInput';
-import {FlashcardLearnForBlocks} from '../_models/flashcardLearnForBlocks';
-import {error} from '@angular/compiler/src/util';
 import {LearnSummary} from '../_models/learnSummary';
+import {LearnTypeEnum} from '../_models/enums/learnTypeEnum';
 
 export class LearnSession {
   private readonly drawnFlashcards: Array<FlashcardForLearn>;
@@ -14,19 +11,23 @@ export class LearnSession {
   private currentFlashcard: any;
   private numberOfMoves: number;
   private currentIndex: number;
+  private learnType: LearnTypeEnum;
   public canContinue: boolean;
 
-  constructor(drawnFlashcards: FlashcardForLearn[], flashcards: any[]) {
+  constructor(drawnFlashcards: FlashcardForLearn[], flashcards: any[], learnType: LearnTypeEnum) {
     this.drawnFlashcards = new Array<FlashcardForLearn>();
     this.drawnFlashcardsBeforeLearn = new Array<FlashcardForLearn>();
     for (const drawnFlashcard of drawnFlashcards) {
       this.drawnFlashcards.push(drawnFlashcard);
-      this.drawnFlashcardsBeforeLearn.push(Object.assign(FlashcardForLearn, drawnFlashcard));
+      const flashcardBeforeLearn = new FlashcardForLearn();
+      flashcardBeforeLearn.initializeWithFlashcard(drawnFlashcard);
+      this.drawnFlashcardsBeforeLearn.push(flashcardBeforeLearn);
     }
     this.flashcards = new Array<any>();
     for (const flashcard of flashcards) {
       this.flashcards.push(flashcard);
     }
+    this.learnType = learnType;
   }
 
   startLearning(): void {
@@ -48,9 +49,11 @@ export class LearnSession {
     if (result) {
       const flashcard1 = this.drawnFlashcards.find(x => x.flashcardId === this.currentFlashcard.flashcardId);
       const flashcardIndex = this.drawnFlashcards.indexOf(flashcard1);
-      const calculatedPoints = this.calculatePoints(this.currentFlashcard);
-      this.drawnFlashcards[flashcardIndex].trainLevel += calculatedPoints;
-      // flashcard1.trainLevel = flashcard1.trainLevel + this.calculatePoints(this.currentFlashcard);
+
+      if (this.learnType === LearnTypeEnum.Learn) {
+        const calculatedPoints = this.calculatePoints(this.currentFlashcard);
+        this.drawnFlashcards[flashcardIndex].trainLevel += calculatedPoints;
+      }
     }
     else {
       const flashcard = this.drawnFlashcards.find(x => x.flashcardId === this.currentFlashcard.flashcardId);

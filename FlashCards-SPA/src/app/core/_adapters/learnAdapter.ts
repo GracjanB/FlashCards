@@ -40,6 +40,9 @@ export class LearnAdapter {
     if (element.learnType === 1) {
       learnConfiguration.learnType = LearnTypeEnum.Repetition;
     }
+    if (element.learnType === 2) {
+      learnConfiguration.learnType = LearnTypeEnum.HardWords;
+    }
     learnConfiguration.lessonName = element.lessonName;
     return learnConfiguration;
   }

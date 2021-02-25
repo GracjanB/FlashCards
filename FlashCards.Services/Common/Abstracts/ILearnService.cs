@@ -13,7 +13,7 @@ namespace FlashCards.Services.Common.Abstracts
 
         RepetitionConfiguration DrawFlashcardsForRepetition(int subCourseId, int userId, int subLessonId);
 
-        HardWordsLearnConfiguration DrawFlashcardsForHardWordsLearning(int subLessonId);
+        HardWordsLearnConfiguration DrawFlashcardsForHardWordsLearning(int subLessonId, int userId);
 
         bool SaveLearnResult(List<FlashcardForLearn> flashcardsForLearn);
 

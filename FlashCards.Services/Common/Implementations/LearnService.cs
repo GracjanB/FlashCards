@@ -2,6 +2,7 @@
 using FlashCards.Helpers.Extensions;
 using FlashCards.Models.DTOs.ToClient.Learn;
 using FlashCards.Services.Common.Abstracts;
+using FlashCards.Services.Exceptions;
 using FlashCards.Services.Repositories.Abstracts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -60,7 +61,7 @@ namespace FlashCards.Services.Common.Implementations
 
         public LearnConfiguration DrawFlashcardsForLearn(int subCourseId, int subLessonId, int userId)
         {
-            var flashcardsForLearn = GetFlashcardsForLearn(subCourseId, userId, subLessonId);
+            var flashcardsForLearn = GetFlashcardsForLearn(subCourseId, subLessonId, userId);
             FlashcardsForLearnListTest = flashcardsForLearn;
             var initialFlashcardsForLearn = InitialDrawFlashcards(flashcardsForLearn);
             var alreadyTrainedFlashcards = ExcludeNeverTrainedFlashcards(initialFlashcardsForLearn, out List<object> neverTrainedFlashcards); // Dwie listy 
@@ -109,9 +110,13 @@ namespace FlashCards.Services.Common.Implementations
             return repetitionConfiguration;
         }
 
-        public HardWordsLearnConfiguration DrawFlashcardsForHardWordsLearning(int subLessonId)
+        public HardWordsLearnConfiguration DrawFlashcardsForHardWordsLearning(int subLessonId, int userId)
         {
-            var flashcardsForLearn = GetHardFlashcards(subLessonId);
+            var flashcardsForLearn = GetHardFlashcards(subLessonId, userId);
+
+            if (flashcardsForLearn.Count < 4)
+                throw new InsufficientAmountOfHardFlashcardsException();
+
             FlashcardsForLearnListTest = flashcardsForLearn;
             var flashcardsToReturn = new List<object>();
             var flashcardsForLearnSplitList = flashcardsForLearn.Split((int)flashcardsForLearn.Count() / 2);
@@ -483,10 +488,11 @@ namespace FlashCards.Services.Common.Implementations
         private List<FlashcardForLearn> GetFlashcardsForLearn(int subCourseId, int subLessonId, int userId)
         {
             var remainedFlashcardsForLearn = _userRepository.GetDetail(userId).UserInfo.NumberOfWordsInLearningSession;
+            var accountId = _userRepository.GetUserAccountId(userId);
             var subFlashcardsIds = new List<int>();
 
             var flashcardsEntity = _context.SubscribedFlashcards
-                .Where(x => x.SubscribedLessonId == subLessonId && x.SubscribedLesson.SubscribedCourseId == subCourseId && !x.MarkedAsIgnored)
+                .Where(x => x.SubscribedLessonId == subLessonId && !x.MarkedAsIgnored && x.SubscribedLesson.SubscribedCourse.AccountId == accountId)
                 .OrderBy(x => x.LastTrainingDate)
                 .ToList();
 
@@ -496,28 +502,28 @@ namespace FlashCards.Services.Common.Implementations
                 {
                     if (flashcard.TrainLevel < 10 && !flashcard.MarkedAsIgnored)
                     {
-                        subFlashcardsIds.Add(flashcard.Id);
+                        subFlashcardsIds.Add(flashcard.FlashcardId);
                         remainedFlashcardsForLearn--;
                     }
                 }
                 else break;
             }
 
-            var flashcardsToLearn = _context.SubscribedFlashcards
+            var flashcardsToLearn = _context.SubscribedFlashcards.Where(x => x.SubscribedLesson.SubscribedCourse.AccountId == accountId && subFlashcardsIds.Contains(x.FlashcardId))
                 .Join(_context.Flashcards.Where(x => subFlashcardsIds.Contains(x.Id)),
-                        subscribedFlashcard => subscribedFlashcard.Id,
+                        subscribedFlashcard => subscribedFlashcard.FlashcardId,
                         flashcard => flashcard.Id,
                         (subscribedFlashcard, flashcard) => new FlashcardForLearn
                         {
                             FlashcardId = flashcard.Id,
                             FlashcardSubscriptionId = subscribedFlashcard.Id,
-                            Phrase = flashcard.Phrase,
-                            PhrasePronunciation = flashcard.PhrasePronunciation,
-                            PhraseSampleSentence = flashcard.PhraseSampleSentence,
-                            PhraseComment = flashcard.PhraseComment,
-                            TranslatedPhrase = flashcard.TranslatedPhrase,
-                            TranslatedPhraseSampleSentence = flashcard.TranslatedPhraseSampleSentence,
-                            TranslatedPhraseComment = flashcard.TranslatedPhraseComment,
+                            Phrase = flashcard.Phrase.Trim(),
+                            PhrasePronunciation = flashcard.PhrasePronunciation.Trim(),
+                            PhraseSampleSentence = flashcard.PhraseSampleSentence.Trim(),
+                            PhraseComment = flashcard.PhraseComment.Trim(),
+                            TranslatedPhrase = flashcard.TranslatedPhrase.Trim(),
+                            TranslatedPhraseSampleSentence = flashcard.TranslatedPhraseSampleSentence.Trim(),
+                            TranslatedPhraseComment = flashcard.TranslatedPhraseComment.Trim(),
                             LanguageLevel = flashcard.LanguageLevel.GetDescription(),
                             TrainLevel = subscribedFlashcard.TrainLevel,
                             MarkedAsHard = subscribedFlashcard.MarkedAsHard,
@@ -562,7 +568,7 @@ namespace FlashCards.Services.Common.Implementations
                 }
             }
 
-            var flashcardToLearn = _context.SubscribedFlashcards.Where(x => x.SubscribedLesson.SubscribedCourseId == subCourseId)
+            var flashcardToLearn = _context.SubscribedFlashcards.Where(x => x.SubscribedLesson.SubscribedCourseId == subCourseId && x.SubscribedLesson.SubscribedCourse.AccountId == accountId)
                 .Join(_context.Flashcards.Where(x => subFlashcardsIds.Contains(x.Id)),
                     subscribedFlashcard => subscribedFlashcard.FlashcardId,
                     flashcard => flashcard.Id,
@@ -586,16 +592,17 @@ namespace FlashCards.Services.Common.Implementations
             return flashcardToLearn;
         }
 
-        private List<FlashcardForLearn> GetHardFlashcards(int subLessonId)
+        private List<FlashcardForLearn> GetHardFlashcards(int subLessonId, int userId)
         {
             var flashcardIds = new List<int>();
-            var subLesson = _context.SubscribedLessons.Include(x => x.SubscribedFlashcards).Single(x => x.Id == subLessonId);
+            var accountId = _userRepository.GetUserAccountId(userId);
+            var subLesson = _context.SubscribedLessons.Include(x => x.SubscribedFlashcards).Single(x => x.Id == subLessonId && x.SubscribedCourse.AccountId == accountId);
 
             foreach(var subFlashcard in subLesson.SubscribedFlashcards)
-                if (subFlashcard.MarkedAsHard && !subFlashcard.MarkedAsIgnored)
+                if (subFlashcard.MarkedAsHard)
                     flashcardIds.Add(subFlashcard.FlashcardId);
 
-            var flashcardsForLearn = _context.SubscribedFlashcards.Where(x => x.SubscribedLessonId == subLessonId)
+            var flashcardsForLearn = _context.SubscribedFlashcards.Where(x => x.SubscribedLessonId == subLessonId && x.SubscribedLesson.SubscribedCourse.AccountId == accountId)
                 .Join(_context.Flashcards.Where(x => flashcardIds.Contains(x.Id)),
                 subscribedFlashcard => subscribedFlashcard.FlashcardId,
                 flashcard => flashcard.Id,
@@ -660,13 +667,13 @@ namespace FlashCards.Services.Common.Implementations
                     {
                         FlashcardId = flashcard.Id,
                         FlashcardSubscriptionId = subscribedFlashcard.Id,
-                        Phrase = flashcard.Phrase,
-                        PhrasePronunciation = flashcard.PhrasePronunciation,
-                        PhraseSampleSentence = flashcard.PhraseSampleSentence,
-                        PhraseComment = flashcard.PhraseComment,
-                        TranslatedPhrase = flashcard.TranslatedPhrase,
-                        TranslatedPhraseSampleSentence = flashcard.TranslatedPhraseSampleSentence,
-                        TranslatedPhraseComment = flashcard.TranslatedPhraseComment,
+                        Phrase = flashcard.Phrase.Trim(),
+                        PhrasePronunciation = flashcard.PhrasePronunciation.Trim(),
+                        PhraseSampleSentence = flashcard.PhraseSampleSentence.Trim(),
+                        PhraseComment = flashcard.PhraseComment.Trim(),
+                        TranslatedPhrase = flashcard.TranslatedPhrase.Trim(),
+                        TranslatedPhraseSampleSentence = flashcard.TranslatedPhraseSampleSentence.Trim(),
+                        TranslatedPhraseComment = flashcard.TranslatedPhraseComment.Trim(),
                         LanguageLevel = flashcard.LanguageLevel.GetDescription(),
                         TrainLevel = subscribedFlashcard.TrainLevel,
                         MarkedAsHard = subscribedFlashcard.MarkedAsHard,
@@ -705,13 +712,13 @@ namespace FlashCards.Services.Common.Implementations
                         {
                             FlashcardId = flashcard.Id,
                             FlashcardSubscriptionId = subscribedFlashcard.Id,
-                            Phrase = flashcard.Phrase,
-                            PhrasePronunciation = flashcard.PhrasePronunciation,
-                            PhraseSampleSentence = flashcard.PhraseSampleSentence,
-                            PhraseComment = flashcard.PhraseComment,
-                            TranslatedPhrase = flashcard.TranslatedPhrase,
-                            TranslatedPhraseSampleSentence = flashcard.TranslatedPhraseSampleSentence,
-                            TranslatedPhraseComment = flashcard.TranslatedPhraseComment,
+                            Phrase = flashcard.Phrase.Trim(),
+                            PhrasePronunciation = flashcard.PhrasePronunciation.Trim(),
+                            PhraseSampleSentence = flashcard.PhraseSampleSentence.Trim(),
+                            PhraseComment = flashcard.PhraseComment.Trim(),
+                            TranslatedPhrase = flashcard.TranslatedPhrase.Trim(),
+                            TranslatedPhraseSampleSentence = flashcard.TranslatedPhraseSampleSentence.Trim(),
+                            TranslatedPhraseComment = flashcard.TranslatedPhraseComment.Trim(),
                             LanguageLevel = flashcard.LanguageLevel.GetDescription(),
                             TrainLevel = subscribedFlashcard.TrainLevel,
                             MarkedAsHard = subscribedFlashcard.MarkedAsHard,

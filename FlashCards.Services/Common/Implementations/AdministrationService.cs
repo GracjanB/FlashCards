@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using FlashCards.Data.Models;
 using FlashCards.Models.DTOs.ToClient;
+using FlashCards.Models.DTOs.ToServer;
 using FlashCards.Services.Common.Abstracts;
 using FlashCards.Services.Exceptions;
 using FlashCards.Services.Repositories.Abstracts;
@@ -53,7 +55,5 @@ namespace FlashCards.Services.Common.Implementations
             }
             else throw new CourseNotExistsException();
         }
-
-
     }
 }

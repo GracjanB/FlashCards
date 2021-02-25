@@ -28,6 +28,8 @@ export class LessonAdapter {
 
     return new Lesson(
       lesson.id,
+      lesson.subLessonId,
+      lesson.subCourseId,
       lesson.name,
       lesson.description,
       lesson.category,

@@ -72,6 +72,8 @@ import { CourseForCheckCardComponent } from './course-for-check-card/course-for-
 import { CourseCheckPanelComponent } from './admin/course-check-panel/course-check-panel.component';
 import { LessonForCheckCardComponent } from './lesson-for-check-card/lesson-for-check-card.component';
 import { FlashcardForCheckComponent } from './flashcard-for-check/flashcard-for-check.component';
+import { AdminRegisterComponent } from './admin/admin-register/admin-register.component';
+import {HardWordsLearnResolver} from './core/_resolvers/hardWordsLearn.resolver';
 
 @NgModule({
   declarations: [
@@ -106,7 +108,8 @@ import { FlashcardForCheckComponent } from './flashcard-for-check/flashcard-for-
     CourseForCheckCardComponent,
     CourseCheckPanelComponent,
     LessonForCheckCardComponent,
-    FlashcardForCheckComponent
+    FlashcardForCheckComponent,
+    AdminRegisterComponent
   ],
     imports: [
         BrowserModule,
@@ -150,7 +153,8 @@ import { FlashcardForCheckComponent } from './flashcard-for-check/flashcard-for-
     RepetitionLessonResolver,
     LearnAdapter,
     AdministrationService,
-    AdminPanelResolver
+    AdminPanelResolver,
+    HardWordsLearnResolver
   ],
   bootstrap: [AppComponent]
 })

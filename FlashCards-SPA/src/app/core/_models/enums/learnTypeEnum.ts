@@ -1,4 +1,5 @@
 export enum LearnTypeEnum {
   Learn,
-  Repetition
+  Repetition,
+  HardWords = 2
 }

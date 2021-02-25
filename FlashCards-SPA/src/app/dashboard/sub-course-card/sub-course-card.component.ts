@@ -33,4 +33,8 @@ export class SubCourseCardComponent implements OnInit {
   onUnsubscribeCourse(): void {
     this.unsubscribeCourse.emit(this.course.subscriptionId);
   }
+
+  navigateToDetails(): void {
+    this.router.navigate(['/courses/' + this.course.courseId]);
+  }
 }

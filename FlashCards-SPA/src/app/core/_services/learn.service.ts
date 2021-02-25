@@ -69,6 +69,18 @@ export class LearnService {
     }));
   }
 
+  getHardWordsForLearn(subLessonId: number): Observable<LearnConfiguration> {
+    const url = this.baseUrl + 'hardWords/lesson/' + subLessonId;
+    return this.httpClient.get(url, {
+      headers: new HttpHeaders({
+        Authorization: 'Bearer ' + localStorage.getItem('token')
+      }),
+      observe: 'response'
+    }).pipe(map(response => {
+      return this.learnAdapter.adaptLearnConfiguration(response.body);
+    }));
+  }
+
   sendLearningResult(flashcards: Array<FlashcardForLearn>): Observable<any> {
     const url = this.baseUrl + 'learnResult';
     return this.httpClient.post(url, flashcards, {
@@ -76,6 +88,18 @@ export class LearnService {
         Authorization: 'Bearer ' + localStorage.getItem('token')
       })
     });
+  }
+
+  sendRepetitionResult(flashcards: Array<FlashcardForLearn>): Observable<boolean> {
+    const url = this.baseUrl + 'repetitionResult';
+    return this.httpClient.post(url, flashcards, {
+      headers: new HttpHeaders({
+        Authorization: 'Bearer ' + localStorage.getItem('token')
+      }),
+      observe: 'response'
+    }).pipe(map(response => {
+      return response.ok;
+    }));
   }
 
   loadDesignData(): LearnConfiguration {

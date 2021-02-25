@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
 import {UserForLogin} from '../_models/_dtos/userForLogin';
 import {map} from 'rxjs/operators';
@@ -9,6 +9,7 @@ import {UserInfo} from '../_models/_dtos/userInfo';
 import {User} from '../_models/_dtos/fromServer/user';
 import {UserDetailed} from '../_models/_dtos/fromServer/userDetailed';
 import {UserRoleEnum} from '../_models/enums/userRoleEnum';
+import {Observable} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -37,6 +38,18 @@ export class AuthService {
 
   register(model: UserForRegister) {
     return this.httpClient.post(this.baseUrl + 'auth/register', model);
+  }
+
+  registerAdministrator(model: UserForRegister): Observable<boolean> {
+    const url = this.baseUrl + 'auth/register/admin';
+    return this.httpClient.post(url, model, {
+      headers: new HttpHeaders({
+        Authorization: 'Bearer ' + localStorage.getItem('token')
+      }),
+      observe: 'response'
+    }).pipe(map(response => {
+      return response.ok;
+    }));
   }
 
   userIsLoggedIn(): boolean {

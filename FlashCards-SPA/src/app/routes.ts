@@ -28,6 +28,7 @@ import { AdminCourseCheckResolver } from './core/_resolvers/admin-course-check.r
 import { AdminAuthGuard } from './core/_guards/adminAuth.guard';
 import { AuthGuard } from './core/_guards/auth.guard';
 import {LearnCanDeactivateGuard} from './core/_guards/learnCanDeactivate.guard';
+import {HardWordsLearnResolver} from './core/_resolvers/hardWordsLearn.resolver';
 
 export const appRoutes: Routes = [
   { path: '', component: HomeComponent },
@@ -60,6 +61,8 @@ export const appRoutes: Routes = [
         canDeactivate: [LearnCanDeactivateGuard] },
       { path: 'repetition/course/:subCourseId/lesson/:subLessonId', component: LearnComponent,
         resolve: { learnConfiguration: RepetitionLessonResolver }, canDeactivate: [LearnCanDeactivateGuard] },
+      { path: 'hardWords/lesson/:subLessonId', component: LearnComponent,
+        resolve: { learnConfiguration: HardWordsLearnResolver }, canDeactivate: [LearnCanDeactivateGuard] },
     ]
   },
   { path: 'login', component: LoginComponent },

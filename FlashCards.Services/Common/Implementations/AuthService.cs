@@ -10,6 +10,7 @@ using FlashCards.Models.DTOs.ToClient;
 using FlashCards.Services.Abstracts;
 using FlashCards.Services.Repositories.Abstracts;
 using AutoMapper;
+using Microsoft.Extensions.Logging;
 
 namespace FlashCards.Services.Implementations
 {
@@ -18,8 +19,9 @@ namespace FlashCards.Services.Implementations
         private readonly IUserRepository _userRepository;
         private readonly IConfiguration _config;
         private readonly IMapper _mapper;
+        private readonly ILogger<AuthService> _logger;
 
-        public AuthService(IUserRepository userRepository, IConfiguration config, IMapper mapper)
+        public AuthService(IUserRepository userRepository, IConfiguration config, IMapper mapper, ILogger<AuthService> logger)
         {
             _config = config ??
                 throw new ArgumentNullException(nameof(config));
@@ -29,6 +31,9 @@ namespace FlashCards.Services.Implementations
 
             _userRepository = userRepository ??
                 throw new ArgumentNullException(nameof(userRepository));
+
+            _logger = logger ??
+                throw new ArgumentNullException(nameof(logger));
         }
 
         public TokenDTO Login(string email, string password)
@@ -53,9 +58,36 @@ namespace FlashCards.Services.Implementations
             user.Role = Data.Enums.UserRoleEnum.User;
             user.PasswordHash = passwordhash;
             user.PasswordSalt = passwordSalt;
-            _userRepository.Create(user);
 
-            return true;
+            try
+            {
+                _userRepository.Create(user);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error during register new user", ex);
+                return false;
+            }
+        }
+
+        public bool RegisterAdministrator(User user, string password)
+        {
+            CreatePasswordHash(password, out byte[] passwordhash, out byte[] passwordSalt);
+            user.Role = Data.Enums.UserRoleEnum.Administrator;
+            user.PasswordHash = passwordhash;
+            user.PasswordSalt = passwordSalt;
+
+            try
+            {
+                _userRepository.Create(user);
+                return true;
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError("Error during register new administrator", ex);
+                return false;
+            }
         }
 
         public bool VerifyPassword(string password, byte[] passwordHash, byte[] passwordSalt)
@@ -112,5 +144,7 @@ namespace FlashCards.Services.Implementations
 
             return token;
         }
+
+        
     }
 }
