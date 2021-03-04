@@ -17,11 +17,11 @@
               <hr class="mt-0">
               <div class="row">
                 <div class="col-4">
-                  <button class="btn btn-primary btn-block" type="button">Wyświetl kursy oczekujące</button>
+                  <button class="btn btn-primary btn-block" type="button" (click)="toggleActiveComponent(0)">Wyświetl kursy oczekujące</button>
                 </div>
                 <div class="col-4">
                   <button class="btn btn-primary btn-block" type="button"
-                          *ngIf="isAdministrator() || isSuperAdministrator()">Utwórz administratora</button>
+                          *ngIf="isAdministrator() || isSuperAdministrator()" (click)="toggleActiveComponent(1)">Utwórz administratora</button>
                 </div>
               </div>
             </div>
@@ -31,7 +31,7 @@
     </div>
   </div>
 
-  <div class="row mt-3 justify-content-center">
+  <div class="row mt-3 justify-content-center" *ngIf="coursesToCheckComponentActive">
     <div class="col-10">
       <div class="row">
         <div class="col-4">
@@ -61,5 +61,5 @@
       </div>
     </div>
   </div>
-
+  <app-admin-register *ngIf="registerAdminComponentActive"></app-admin-register>
 </div>

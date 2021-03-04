@@ -49,8 +49,8 @@ export class LearnPhraseInputComponent implements OnInit, OnDestroy {
   }
 
   onInputTextChanged(inputPhrase: string): void {
-    this.phraseGuessedSoFar = this.currentPhrase.translatedPhrase.startsWith(inputPhrase);
-    this.phraseGuessed = inputPhrase === this.currentPhrase.translatedPhrase;
+    this.phraseGuessedSoFar = this.currentPhrase.phrase.startsWith(inputPhrase);
+    this.phraseGuessed = inputPhrase === this.currentPhrase.phrase;
     if (this.phraseGuessed) {
       this.guessResult.emit(true);
     }

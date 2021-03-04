@@ -40,7 +40,7 @@ export class AdminRegisterComponent implements OnInit {
     const adminFormValues = this.administratorForm.value;
     delete adminFormValues.confirmPassword;
     const userForRegister = new UserForRegister(adminFormValues);
-
+    console.log(userForRegister);
     this.authService.registerAdministrator(userForRegister).subscribe(next => {
       this.alertifyService.showSuccessAlert('Administrator został zarejestrowany pomyślnie');
     }, error => {

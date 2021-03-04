@@ -3,6 +3,7 @@ import {AuthService} from '../../core/_services/auth.service';
 import {CourseForCheck} from '../../core/_models/_dtos/fromServer/courseForCheck';
 import {AlertifyService} from '../../core/_services/alertify.service';
 import {ActivatedRoute, Router} from '@angular/router';
+import {ArgumentOutOfRangeError} from 'rxjs';
 
 @Component({
   selector: 'app-admin-panel',
@@ -11,6 +12,8 @@ import {ActivatedRoute, Router} from '@angular/router';
 })
 export class AdminPanelComponent implements OnInit {
   coursesForCheck: Array<CourseForCheck>;
+  coursesToCheckComponentActive: boolean;
+  registerAdminComponentActive: boolean;
 
   constructor(private authService: AuthService,
               private alertifyService: AlertifyService,
@@ -21,6 +24,7 @@ export class AdminPanelComponent implements OnInit {
     this.route.data.subscribe(data => {
       this.coursesForCheck = data.coursesForCheck;
     });
+    this.toggleActiveComponent(0);
   }
 
   isAdministrator(): boolean {
@@ -33,5 +37,21 @@ export class AdminPanelComponent implements OnInit {
 
   navigateToCourseCheck(courseId: number): void {
     this.router.navigate(['admin/courseCheck/' + courseId]);
+  }
+
+  toggleActiveComponent(option: number): void {
+    switch (option) {
+      case 0:
+        this.registerAdminComponentActive = false;
+        this.coursesToCheckComponentActive = true;
+        break;
+      case 1:
+        this.coursesToCheckComponentActive = false;
+        this.registerAdminComponentActive = true;
+        break;
+      default:
+        console.log('Wrong value for toggle parameter. Actual value: ' + option);
+        throw new ArgumentOutOfRangeError();
+    }
   }
 }
