@@ -19,6 +19,8 @@ namespace FlashCards.Data.Models
 
         public CourseTypeEnum CourseType { get; set; }
 
+        public CourseStatusEnum Status { get; set; }
+
 
         public int AccountCreatedId { get; set; }
 

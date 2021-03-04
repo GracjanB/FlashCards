@@ -40,12 +40,17 @@ namespace FlashCards.Data.Migrations
 
                     b.Property<string>("Description")
                         .HasColumnType("NTEXT")
+                        .IsFixedLength(true)
                         .HasMaxLength(4000);
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("NVARCHAR")
-                        .HasMaxLength(128);
+                        .HasColumnType("nchar(64)")
+                        .IsFixedLength(true)
+                        .HasMaxLength(64);
+
+                    b.Property<byte>("Status")
+                        .HasColumnType("TINYINT");
 
                     b.HasKey("Id");
 
@@ -93,6 +98,7 @@ namespace FlashCards.Data.Migrations
 
                     b.Property<string>("Description")
                         .HasColumnType("NTEXT")
+                        .IsFixedLength(true)
                         .HasMaxLength(4000);
 
                     b.Property<byte>("Rating")
@@ -113,7 +119,8 @@ namespace FlashCards.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Category")
-                        .HasColumnType("NVARCHAR")
+                        .HasColumnType("nchar(64)")
+                        .IsFixedLength(true)
                         .HasMaxLength(64);
 
                     b.Property<DateTime>("DateCreated")
@@ -132,31 +139,39 @@ namespace FlashCards.Data.Migrations
 
                     b.Property<string>("Phrase")
                         .IsRequired()
-                        .HasColumnType("NVARCHAR")
+                        .HasColumnType("nchar(64)")
+                        .IsFixedLength(true)
                         .HasMaxLength(64);
 
                     b.Property<string>("PhraseComment")
-                        .HasColumnType("NVARCHAR")
+                        .HasColumnType("nchar(128)")
+                        .IsFixedLength(true)
                         .HasMaxLength(128);
 
                     b.Property<string>("PhrasePronunciation")
-                        .HasColumnType("NVARCHAR")
+                        .HasColumnType("nchar(64)")
+                        .IsFixedLength(true)
                         .HasMaxLength(64);
 
                     b.Property<string>("PhraseSampleSentence")
-                        .HasColumnType("NVARCHAR")
+                        .HasColumnType("nchar(128)")
+                        .IsFixedLength(true)
                         .HasMaxLength(128);
 
                     b.Property<string>("TranslatedPhrase")
                         .IsRequired()
-                        .HasColumnType("NVARCHAR")
+                        .HasColumnType("nchar(64)")
+                        .IsFixedLength(true)
                         .HasMaxLength(64);
 
                     b.Property<string>("TranslatedPhraseComment")
-                        .HasColumnType("NVARCHAR(128)");
+                        .HasColumnType("nchar(128)")
+                        .IsFixedLength(true)
+                        .HasMaxLength(128);
 
                     b.Property<string>("TranslatedPhraseSampleSentence")
-                        .HasColumnType("NVARCHAR")
+                        .HasColumnType("nchar(128)")
+                        .IsFixedLength(true)
                         .HasMaxLength(128);
 
                     b.HasKey("Id");
@@ -175,7 +190,8 @@ namespace FlashCards.Data.Migrations
 
                     b.Property<string>("Category")
                         .IsRequired()
-                        .HasColumnType("NVARCHAR")
+                        .HasColumnType("nchar(64)")
+                        .IsFixedLength(true)
                         .HasMaxLength(64);
 
                     b.Property<int>("CourseId")
@@ -188,12 +204,15 @@ namespace FlashCards.Data.Migrations
                         .HasColumnType("DATETIME2");
 
                     b.Property<string>("Description")
-                        .HasColumnType("NTEXT")
+                        .HasColumnType("nchar(1024)")
+                        .IsFixedLength(true)
                         .HasMaxLength(1024);
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("NVARCHAR(64)");
+                        .HasColumnType("nchar(64)")
+                        .IsFixedLength(true)
+                        .HasMaxLength(64);
 
                     b.HasKey("Id");
 
@@ -306,7 +325,9 @@ namespace FlashCards.Data.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("NVARCHAR(128)");
+                        .HasColumnType("nchar(128)")
+                        .IsFixedLength(true)
+                        .HasMaxLength(128);
 
                     b.Property<byte[]>("PasswordHash")
                         .IsRequired()
@@ -315,6 +336,9 @@ namespace FlashCards.Data.Migrations
                     b.Property<byte[]>("PasswordSalt")
                         .IsRequired()
                         .HasColumnType("BINARY(128)");
+
+                    b.Property<byte>("Role")
+                        .HasColumnType("TINYINT");
 
                     b.Property<int>("UserInfoId")
                         .HasColumnType("int");
@@ -335,22 +359,37 @@ namespace FlashCards.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("City")
-                        .HasColumnType("NVARCHAR(64)");
+                        .HasColumnType("nchar(64)")
+                        .IsFixedLength(true)
+                        .HasMaxLength(64);
 
                     b.Property<string>("Country")
-                        .HasColumnType("NVARCHAR(64)");
+                        .HasColumnType("nchar(64)")
+                        .IsFixedLength(true)
+                        .HasMaxLength(64);
 
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("DisplayName")
-                        .HasColumnType("NVARCHAR(32)");
+                        .HasColumnType("nchar(32)")
+                        .IsFixedLength(true)
+                        .HasMaxLength(32);
 
                     b.Property<string>("FirstName")
-                        .HasColumnType("NVARCHAR(64)");
+                        .HasColumnType("nchar(64)")
+                        .IsFixedLength(true)
+                        .HasMaxLength(64);
 
                     b.Property<string>("LastName")
-                        .HasColumnType("NVARCHAR(64)");
+                        .HasColumnType("nchar(64)")
+                        .IsFixedLength(true)
+                        .HasMaxLength(64);
+
+                    b.Property<short>("NumberOfWordsInHardWordsLearning")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("SMALLINT")
+                        .HasDefaultValue((short)10);
 
                     b.Property<short>("NumberOfWordsInLearningSession")
                         .ValueGeneratedOnAdd()

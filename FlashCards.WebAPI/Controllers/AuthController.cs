@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Security.Claims;
 using AutoMapper;
 using FlashCards.Data.Models;
 using FlashCards.Models.DTOs.ToServer;
 using FlashCards.Services.Abstracts;
 using FlashCards.Services.Repositories.Abstracts;
 using FlashCards.Services.UnitOfWork.Abstracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -17,8 +19,9 @@ namespace FlashCards.WebAPI.Controllers
         private readonly IAuthService _authService;
         private readonly IMapper _mapper;
         private readonly ILogger<AuthController> _logger;
+        private readonly IUserRepository _userRepository;
 
-        public AuthController(IAuthService authService, IMapper mapper, ILogger<AuthController> logger)
+        public AuthController(IAuthService authService, IMapper mapper, ILogger<AuthController> logger, IUserRepository userRepository)
         {
             _authService = authService ??
                 throw new ArgumentNullException(nameof(authService));
@@ -28,6 +31,9 @@ namespace FlashCards.WebAPI.Controllers
 
             _logger = logger ??
                 throw new ArgumentNullException(nameof(logger));
+
+            _userRepository = userRepository ??
+                throw new ArgumentNullException(nameof(userRepository));
         }
 
         /// <summary>
@@ -36,7 +42,7 @@ namespace FlashCards.WebAPI.Controllers
         /// <remarks>
         /// Sample request:
         /// 
-        ///     POST /api/auth/login
+        ///     POST /api/auth/register
         ///         {
         ///             "email": "sample@sample.com",
         ///             "password": "samplepassword",
@@ -75,6 +81,52 @@ namespace FlashCards.WebAPI.Controllers
                 
             _logger.LogError("Error occured during register new user");
             throw new Exception("Error occured during register new user");
+        }
+
+        /// <summary>
+        /// Creates new administrator account
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     POST /api/auth/register/admin
+        ///         {
+        ///             "email": "sample@sample.com",
+        ///             "password": "samplepassword",
+        ///             "displayName": "sampleName",
+        ///         }
+        ///         
+        /// </remarks>
+        /// <param name="userForRegister"></param>
+        /// <returns>Status</returns>
+        /// <response code="200">If registration was successful</response>
+        /// <response code="400">When incoming data was invalid. Returns model state information</response>
+        /// <response code="401">Only super administrator can register administrators</response>
+        /// <response code="500">When occured error during registration</response>
+        /// POST: api/auth/register
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        [HttpPost("register/admin")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        [ProducesResponseType(500)]
+        [Produces("application/json")]
+        public IActionResult RegisterAdministrator(UserForRegister userForRegister)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if (!_userRepository.IsAdministrator(int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value)))
+                return Unauthorized();
+
+            var user = _mapper.Map<User>(userForRegister);
+            user.UserInfo = _mapper.Map<UserInfo>(userForRegister);
+
+            if (_authService.RegisterAdministrator(user, userForRegister.Password))
+                return Ok();
+
+            _logger.LogError("Error occured during register new administrator");
+            throw new Exception("Error occured during register new administrator");
         }
 
         /// <summary>

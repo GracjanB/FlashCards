@@ -5,6 +5,7 @@ using FlashCards.Models.DTOs.ToClient;
 using FlashCards.Models.DTOs.ToServer;
 using FlashCards.Models.Exceptions;
 using FlashCards.Services.Common.Abstracts;
+using FlashCards.Services.Exceptions;
 using FlashCards.Services.Repositories.Abstracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -26,15 +27,18 @@ namespace FlashCards.WebAPI.Controllers
         private readonly ISubscriptionsService _subscriptionsService;
         private readonly IMapper _mapper;
         private readonly ILogger<CoursesController> _logger;
+        private readonly IAdministrationService _administrationService;
 
         public CoursesController(ICourseRepository courseRepository, IUserRepository userRepository, 
-            ISubscriptionsService subscriptionsService, IMapper mapper, ILogger<CoursesController> logger)
+            ISubscriptionsService subscriptionsService, IMapper mapper, ILogger<CoursesController> logger,
+            IAdministrationService administrationService)
         {
             _courseRepository = courseRepository;
             _userRepository = userRepository;
             _subscriptionsService = subscriptionsService;
             _mapper = mapper;
             _logger = logger;
+            _administrationService = administrationService;
         }
 
         /// <summary>
@@ -162,6 +166,65 @@ namespace FlashCards.WebAPI.Controllers
                 courseForDetailDto.IsSubscribing = false;
                 return Ok(courseForDetailDto);
             }
+        }
+
+        [HttpGet("admin/forCheck")]
+        [Produces("application/json")]
+        public IActionResult GetCoursesForCheck()
+        {
+            if (_userRepository.IsAdministrator(int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value)))
+            {
+                var courses = _administrationService.GetCoursesForCheck();
+
+                return Ok(courses);
+            }
+            else return Unauthorized();
+        }
+
+        [HttpGet("{id}/admin/forCheck")]
+        [Produces("application/json")]
+        public IActionResult GetCourseForCheck(int id)
+        {
+            if (_userRepository.IsAdministrator(int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value)))
+            {
+                try
+                {
+                    var courseToReturn = _administrationService.GetCourseForCheck(id);
+                    return Ok(courseToReturn);
+                }
+                catch(CourseNotExistsException ex)
+                {
+                    _logger.LogError("Course not found.", ex);
+                    return NotFound();
+                }
+            }
+            else return Unauthorized();
+        }
+
+        [HttpPatch("{id}/admin/accept")]
+        public IActionResult AcceptCourse(int id)
+        {
+            if (_userRepository.IsAdministrator(int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value)))
+            {
+                if (_administrationService.AcceptCourse(id))
+                    return Ok();
+                else 
+                    return StatusCode(500);
+            }
+            else return Unauthorized();
+        }
+
+        [HttpPatch("{id}/admin/block")]
+        public IActionResult BlockCourse(int id)
+        {
+            if (_userRepository.IsAdministrator(int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value)))
+            {
+                if (_administrationService.BlockCourse(id))
+                    return Ok();
+                else
+                    return StatusCode(500);
+            }
+            else return Unauthorized();
         }
 
         /// <summary>

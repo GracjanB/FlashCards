@@ -21,8 +21,7 @@
           <div class="row">
             <div class="col-3">
               <img src="assets/UserDefaultLogo.jpg" class="card-img mb-2" alt="User Photo">
-              <button class="btn btn-primary btn-block" (click)="changePhoto()">Nowe zdjęcie</button>
-              <button class="btn btn-primary btn-block" (click)="navigateToAccountProfile()">Zobacz profil</button>
+              <button class="btn btn-primary btn-block ml-2" (click)="navigateToAccountProfile()">Zobacz profil</button>
             </div>
             <div class="col-9">
               <!-- Profile Tab -->
@@ -94,7 +93,7 @@
                 <form [formGroup]="learningForm" (ngSubmit)="submitAccountForm()">
                   <!-- Number of flashcards in learning session -->
                   <div class="form-group">
-                    <label for="flashcardsInLearningSession">Ilość fiszek w każdej sesji nauki</label>
+                    <label for="flashcardsInLearningSession">Ilość słów w każdej sesji nauki</label>
                     <input id="flashcardsInLearningSession" class="form-control" min="5" max="30" [disabled]="isBusy"
                            formControlName="flashcardsInLearningSession" placeholder="Ilość słów w sesji nauki" type="number"
                            [ngClass]="{'is-invalid': learningForm.get('flashcardsInLearningSession').errors &&
@@ -102,17 +101,17 @@
                     <div class="invalid-feedback"
                          *ngIf="learningForm.get('flashcardsInLearningSession').touched &&
                             learningForm.get('flashcardsInLearningSession').hasError('max')">
-                      Maksymalna ilość fiszek w lekcji to 30
+                      Maksymalna ilość słów w lekcji to 30
                     </div>
                     <div class="invalid-feedback"
                          *ngIf="learningForm.get('flashcardsInLearningSession').touched &&
                             learningForm.get('flashcardsInLearningSession').hasError('min')">
-                      Minimalna ilość fiszek w lekcji to 5
+                      Minimalna ilość słów w lekcji to 5
                     </div>
                   </div>
                   <!-- Number of flashcards in revision session -->
                   <div class="form-group">
-                    <label for="flashcardsInRevisionSession">Ilość fiszek w każdej sesji powtórki</label>
+                    <label for="flashcardsInRevisionSession">Ilość słów w każdej sesji powtórki</label>
                     <input id="flashcardsInRevisionSession" class="form-control" min="5" max="50" [disabled]="isBusy"
                            formControlName="flashcardsInRevisionSession" placeholder="Ilość słów w sesji powtórkowej" type="number"
                            [ngClass]="{'is-invalid': learningForm.get('flashcardsInRevisionSession').errors &&
@@ -120,12 +119,12 @@
                     <div class="invalid-feedback"
                          *ngIf="learningForm.get('flashcardsInRevisionSession').touched &&
                             learningForm.get('flashcardsInRevisionSession').hasError('max')">
-                      Maksymalna ilość fiszek w powtórce to 50
+                      Maksymalna ilość słów w powtórce to 50
                     </div>
                     <div class="invalid-feedback"
                          *ngIf="learningForm.get('flashcardsInRevisionSession').touched &&
                             learningForm.get('flashcardsInRevisionSession').hasError('min')">
-                      Minimalna ilość fiszek w lekcji to 5
+                      Minimalna ilość słów w lekcji to 5
                     </div>
                   </div>
                   <!-- Submit button -->

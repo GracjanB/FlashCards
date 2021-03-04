@@ -1,6 +1,6 @@
 <div class="container mt-2">
   <div class="row justify-content-lg-start mb-3">
-    <div class="card col-9 d-lg-flex ml-5">
+    <div class="card col-lg-12 d-lg-flex">
       <h1 class="text-center dashboard-header mt-3 mb-3">Ostatnio przerabiane</h1>
     </div>
   </div>
@@ -15,38 +15,10 @@
           <h2 class="card-title text-center display-name">{{ currentUser.displayName }}</h2>
         </div>
         <ul class="list-group list-group-flush">
-          <li class="list-group-item">
-            <div class="text-center">
-              <h3 class="list-header">Poznane słowa</h3>
-              <p class="list-content">576</p>
-            </div>
-          </li>
-          <li class="list-group-item">
-            <div class="text-center">
-              <h3 class="list-header">Subskrybowane kursy</h3>
-              <p class="list-content">12</p>
-            </div>
-          </li>
-          <li class="list-group-item">
-            <div class="text-center">
-              <h3 class="list-header">Utworzone kursy</h3>
-              <p class="list-content">4</p>
-            </div>
-          </li>
           <li class="list-group-item text-center">
             <a class="card-link user-link" [routerLink]="['/account/profile/'+currentUser.id]">Pokaż profil</a>
           </li>
         </ul>
-      </div>
-
-      <div class="card mt-5">
-        <div class="text-center">
-          <img class="card-img my-card-img" src="assets/AnalyticsTool.png" alt="Flashcard Tool Logo">
-        </div>
-        <div class="card-body">
-          <h2 class="text-center">Zobacz statystyki ze swoich lekcji!</h2>
-          <button class="btn btn-primary btn-block text-center" (click)="navigateToAnalytics()">Sprawdź</button>
-        </div>
       </div>
 
       <div class="card mt-5">
@@ -63,27 +35,24 @@
     </div>
 
     <!-- Courses List -->
-    <div class="row" *ngIf="subscribedCourses.length > 0">
-      <div class="col col-lg-9">
-        <div *ngFor="let subscribedCourseShort of subscribedCourses" class="row ml-2 mb-3">
-          <app-sub-course-card [course]="subscribedCourseShort"
-                               (unsubscribeCourse)="unsubscribeCourse($event)"></app-sub-course-card>
-        </div>
-        <div class="row d-flex justify-content-center mt-4">
-          <pagination [boundaryLinks]="true"
-                      [totalItems]="pagination.totalItems"
-                      [itemsPerPage]="pagination.itemsPerPage"
-                      [(ngModel)]="pagination.currentPage"
-                      (pageChanged)="pageChanged($event)"
-                      previousText="&lsaquo;" nextText="&rsaquo;"
-                      firstText="&laquo;" lastText="&raquo;"></pagination>
-        </div>
+    <div class="col col-lg-9" *ngIf="subscribedCourses.length > 0">
+      <div *ngFor="let subscribedCourseShort of subscribedCourses" class="row ml-2 mb-3">
+        <app-sub-course-card [course]="subscribedCourseShort"
+                             (unsubscribeCourse)="unsubscribeCourse($event)"></app-sub-course-card>
+      </div>
+      <div class="row d-flex justify-content-center mt-4">
+        <pagination [boundaryLinks]="true"
+                    [totalItems]="pagination.totalItems"
+                    [itemsPerPage]="pagination.itemsPerPage"
+                    [(ngModel)]="pagination.currentPage"
+                    (pageChanged)="pageChanged($event)"
+                    previousText="&lsaquo;" nextText="&rsaquo;"
+                    firstText="&laquo;" lastText="&raquo;"></pagination>
       </div>
     </div>
-    <div class="row" *ngIf="subscribedCourses.length == 0">
-      <div class="col col-lg-9">
-        <h1>Nie subskrybujesz jeszcze żadnego kursu</h1>
-      </div>
+    <div class="col col-lg-9" *ngIf="subscribedCourses.length == 0">
+      <h1>Nie subskrybujesz jeszcze żadnego kursu</h1>
     </div>
+
   </div>
 </div>

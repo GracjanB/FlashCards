@@ -29,3 +29,13 @@
 .ignore-marked {
   color: firebrick;
 }
+
+.scale-hover {
+  cursor: pointer;
+}
+
+.scale-hover:hover {
+  transform: scale(1.05, 1.1);
+  transition-duration: 200ms;
+  transition-timing-function: ease-out;
+}

@@ -14,3 +14,13 @@
 .dropdown-item {
   cursor: pointer;
 }
+
+.course-name {
+  cursor: pointer;
+}
+
+.course-name:hover {
+  transform: scale(1.01, 1.01);
+  transition-duration: 200ms;
+  transition-timing-function: ease-out;
+}

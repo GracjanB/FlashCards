@@ -12,7 +12,8 @@ namespace FlashCards.Data.ModelsConfiguration
             builder.HasKey(x => x.Id);
 
             builder.Property(x => x.Email)
-                .HasColumnType("NVARCHAR(128)")
+                .HasMaxLength(128)
+                .IsFixedLength()
                 .IsRequired();
 
             builder.Property(x => x.PasswordHash)
@@ -21,6 +22,10 @@ namespace FlashCards.Data.ModelsConfiguration
 
             builder.Property(x => x.PasswordSalt)
                 .HasColumnType("BINARY(128)")
+                .IsRequired();
+
+            builder.Property(x => x.Role)
+                .HasColumnType("TINYINT")
                 .IsRequired();
         }
     }

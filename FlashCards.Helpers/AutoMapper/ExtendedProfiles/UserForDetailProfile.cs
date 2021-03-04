@@ -33,6 +33,9 @@ namespace FlashCards.Helpers.AutoMapper.ExtendedProfiles
                 .ForMember(dest => dest.AccountId, options =>
                     options.MapFrom(src =>
                         src.UserInfoId))
+                .ForMember(dest => dest.Role, options =>
+                    options.MapFrom(src =>
+                        src.Role))
                 .ForMember(dest => dest.NumberOfWordsInLearningSession, options =>
                     options.MapFrom(src =>
                         src.UserInfo.NumberOfWordsInLearningSession))

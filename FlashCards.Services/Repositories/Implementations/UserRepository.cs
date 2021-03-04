@@ -48,9 +48,16 @@ namespace FlashCards.Services.Repositories.Implementations
             {
                 var subscribedCourseIds = userFromRepo.UserInfo.SubscribedCourses.Select(x => x.CourseId).ToList();
                 var subscribedCourses = _context.Courses.Where(x => subscribedCourseIds.Contains(x.Id)).ToList();
+                var privateCourses = _context.Courses.Where(x => x.AccountCreatedId == userFromRepo.UserInfoId && x.CourseType == Data.Enums.CourseTypeEnum.Private);
+                var draftCourses = _context.Courses.Where(x => x.AccountCreatedId == userFromRepo.UserInfoId && x.CourseType == Data.Enums.CourseTypeEnum.Draft);
                 var userToReturn = _mapper.Map<UserForDetailCourses>(userFromRepo);
                 userToReturn.SubscribedCourses = _mapper.Map<IEnumerable<CourseForList>>(subscribedCourses);
                 userToReturn.CreatedCourses = _mapper.Map<IEnumerable<CourseForList>>(userFromRepo.UserInfo.CreatedCourses);
+                userToReturn.PrivateCourses = _mapper.Map<IEnumerable<CourseForList>>(privateCourses);
+                userToReturn.DraftCourses = _mapper.Map<IEnumerable<CourseForList>>(draftCourses);
+                userToReturn.NumberOfAlreadyLearntFlashcards = _context.SubscribedFlashcards.Where(x => x.SubscribedLesson.SubscribedCourse.AccountId == userFromRepo.UserInfoId && x.TrainLevel >= 10).Count();
+                userToReturn.NumberOfCreatedCourses = _context.Courses.Where(x => x.AccountCreatedId == userFromRepo.UserInfoId).Count();
+                userToReturn.NumberOfSubscribedCourses = _context.SubscribedCourses.Where(x => x.IsSubscribed && x.AccountId == userFromRepo.UserInfoId).Count();
 
                 return userToReturn;
             }
@@ -107,6 +114,11 @@ namespace FlashCards.Services.Repositories.Implementations
             return user != null ? user.UserInfoId : 0;
         }
 
-        
+        public bool IsAdministrator(int id)
+        {
+            var user = _context.Users.Include(x => x.UserInfo).FirstOrDefault(x => x.Id == id);
+
+            return user != null && (user.Role == Data.Enums.UserRoleEnum.Administrator || user.Role == Data.Enums.UserRoleEnum.SuperAdministrator);
+        }
     }
 }

@@ -10,6 +10,10 @@ namespace FlashCards.Models.DTOs.ToClient
 
         public IEnumerable<CourseForList> SubscribedCourses { get; set; }
 
+        public IEnumerable<CourseForList> PrivateCourses { get; set; }
+
+        public IEnumerable<CourseForList> DraftCourses { get; set; }
+
         public int NumberOfCreatedCourses { get; set; }
 
         public int NumberOfSubscribedCourses { get; set; }

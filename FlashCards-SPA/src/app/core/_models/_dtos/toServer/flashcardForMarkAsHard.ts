@@ -1,13 +1,13 @@
 export class FlashcardForMarkAsHard {
   subscribedFlashcardId: number;
   accountId: number;
-  markAsHard: boolean;
+  markedAsHard: boolean;
 
   constructor(subscribedFlashcardId: number,
               accountId: number,
-              markAsHard: boolean) {
+              markedAsHard: boolean) {
     this.subscribedFlashcardId = subscribedFlashcardId;
     this.accountId = accountId;
-    this.markAsHard = markAsHard;
+    this.markedAsHard = markedAsHard;
   }
 }

@@ -4,54 +4,40 @@
     <div class="card-body">
       <div class="col-10 pull-left">
         <h1 class="card-title">{{ lessonDetailed.name }}</h1>
+        <div class="progress mb-4 mt-0" *ngIf="isSubscribed">
+          <div class="progress-bar progress-bar-striped" role="progressbar"
+               [ngStyle]="{width: countOverallLessonProgress()+'%'}"></div>
+        </div>
         <hr>
         <h3>{{ lessonDetailed.description }}</h3>
       </div>
       <div class="col-2 pull-right">
-        <h2 class="text-center mb-0">Autor</h2>
-        <h3 class="text-center"><a href="#">Użytkownik1</a> </h3>
-        <button type="button" class="btn btn-primary btn-success">Pokaż wszystkie</button>
-      </div>
-    </div>
-  </div>
-  <!-- Progress info card -->
-  <div class="row justify-content-center mt-4">
-    <div class="col-10">
-      <div class="card">
-        <div class="card-body">
-          <h2 style="font-weight: bold;" class="mb-0">Poziom 1</h2>
-          <hr class="mt-1">
-          <h1 class="card-title">{{ lessonDetailed.name }}</h1>
-          <div class="progress mb-4 mt-0">
-            <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="10"
-                 [ngStyle]="{width: lessonDetailed.overallProgress+'%'}"
-                 aria-valuemin="0" aria-valuemax="100"></div>
-          </div>
-          <div class="pull-right" *ngIf="isSubscribed">
-            <button type="button" class="btn btn-primary btn-success">Rozpocznij nauke</button>
-          </div>
-        </div>
+        <button type="button" class="btn btn-primary" style="background-color: #2ebf55; border: #2ebf55; min-width: 150px;"
+                (click)="startLearning()">Rozpocznij nauke</button>
+        <button type="button" class="btn btn-primary mt-1" style="background-color: #c4c92c; border: #c4c92c; min-width: 150px;"
+                (click)="learnHardWords()">Trudne słowa</button>
+        <button type="button" class="btn btn-primary mt-1" style="background-color: #3385ff; border: #3385ff; min-width: 150px;"
+                (click)="startRepetition()">Powtórka</button>
       </div>
     </div>
   </div>
   <!-- Flashcards table -->
-  <div class="row justify-content-center mt-2">
+  <div class="row justify-content-center mt-2 mb-4">
     <div class="col-10">
       <div class="card">
         <div class="card-header">
-          <h2 style="font-weight: bold;" class="mt-0 mb-0">Fiszki - {{ lessonDetailed.flashcards.length }}</h2>
+          <h2 style="font-weight: bold;" class="mt-0 mb-0">Spis słów/wyrażeń - {{ lessonDetailed.flashcards.length }}</h2>
         </div>
         <h1 class="text-center mt-2" *ngIf="lessonDetailed.flashcards.length == 0">Nie utworzono żadnych fiszek</h1>
         <table class="table table-hover" *ngIf="lessonDetailed.flashcards.length > 0">
-          <tbody>
-            <tr *ngFor="let flashcard of lessonDetailed.flashcards">
+          <tbody >
+            <tr *ngFor="let flashcard of lessonDetailed.flashcards" class="scale-hover">
               <td><h3 class="mt-0 mb-0 ml-3">{{ flashcard.phrase }}</h3></td>
               <td><h3 class="mt-0 mb-0">{{ flashcard.translatedPhrase }}</h3></td>
               <td>
-                <div class="progress">
-                  <div class="progress-bar progress-bar-striped" role="progressbar" style="min-width: 40px;"
-                       aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"
-                       [ngStyle]="{width: flashcard.progress+'%'}"></div>
+                <div class="progress" style="min-width: 100px;">
+                  <div class="progress-bar progress-bar-striped" role="progressbar"
+                       [ngStyle]="{width: (flashcard.progress * 10) +'%'}"></div>
                 </div>
               </td>
               <td *ngIf="flashcard.isSubscribed">

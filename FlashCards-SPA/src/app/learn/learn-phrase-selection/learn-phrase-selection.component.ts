@@ -35,11 +35,12 @@ export class LearnPhraseSelectionComponent implements OnInit {
   }
 
   next(): void {
+    this.canContinue = false;
     this.showNext.emit();
   }
 
   onSelectedPhrase(selectedPhrase: string): void {
-    const output = selectedPhrase === this.currentPhrase.translatedPhrase;
+    const output = selectedPhrase === this.currentPhrase.correctPhrase;
     this.guessResult.emit(output);
   }
 

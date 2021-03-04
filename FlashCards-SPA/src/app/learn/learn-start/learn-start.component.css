@@ -23,3 +23,11 @@
 .ignore-marked {
   color: firebrick;
 }
+
+.button-start {
+  min-height: 50px;
+  min-width: 200px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  margin-right: 15px;
+}

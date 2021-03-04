@@ -1,33 +1,26 @@
-<div class="container d-flex" style="background-color: #e6e6e6; min-width: 900px;">
+<div class="container d-flex" style="background-color: #e6e6e6; min-width: 1100px;">
   <div class="col-10">
-    <div class="row d-inline-block">
-      <i class="fa fa-volume-up reactive-icon mt-3 speaker-icon"></i>
-    </div>
     <div class="row mt-4">
       <div class="col-1">
         Angielski
       </div>
-      <div class="col-10 pl-5">
+      <div class="col-11 pl-5">
         <div class="row">
           <h1>{{ currentPhrase.phrase }}</h1>
         </div>
-        <div>
-          <button class="btn btn-outline-primary pull-right"
-                  (click)="flashcardMoreInfoCollapsed = !flashcardMoreInfoCollapsed">
-            <i class="fa fa-arrow-down"></i>
-            Pokaż więcej
-          </button>
-        </div>
         <div class="row">
           <h4>{{ currentPhrase.phrasePronunciation }}</h4>
+        </div>
+        <div class="row">
+          <a (click)="flashcardMoreInfoCollapsed = !flashcardMoreInfoCollapsed" style="cursor: pointer" class="reactive-show-more">
+            <i class="fa fa-arrow-down"></i>
+            Pokaż więcej
+          </a>
         </div>
         <div [collapse]="flashcardMoreInfoCollapsed" [isAnimated]="true">
           <h2>{{ currentPhrase.phraseSampleSentence }}</h2>
           <h3>{{ currentPhrase.phraseComment }}</h3>
         </div>
-      </div>
-      <div class="col-1">
-        <i class="fa fa-circle-o learning-level-icon"></i>
       </div>
     </div>
     <hr>
@@ -35,25 +28,27 @@
       <div class="col-1">
         Polski
       </div>
-      <div class="col-10 pl-5">
+      <div class="col-8 pl-5">
         <div class="row">
           <h1>{{ currentPhrase.translatedPhrase }}</h1>
         </div>
-        <div>
-          <button class="btn btn-outline-primary pull-right"
-                  (click)="translatedFlashcardMoreInfoCollapsed = !translatedFlashcardMoreInfoCollapsed">
+        <div class="row">
+          <a (click)="translatedFlashcardMoreInfoCollapsed = !translatedFlashcardMoreInfoCollapsed" style="cursor: pointer" class="reactive-show-more">
             <i class="fa fa-arrow-down"></i>
             Pokaż więcej
-          </button>
+          </a>
         </div>
         <div [collapse]="translatedFlashcardMoreInfoCollapsed" [isAnimated]="true">
           <h2>{{ currentPhrase.translatedPhraseSampleSentence }}</h2>
           <h3>{{ currentPhrase.translatedPhraseComment }}</h3>
         </div>
       </div>
-      <div class="col-1 d-inline">
-        <i class="fa fa-ban reactive-icon mr-2" data-toggle="tooltip" data-placement="top" title="Ignoruj to słowo"></i>
-        <i class="fa fa-star reactive-icon mt-4" data-toggle="tooltip" data-placement="top" title="Trudne słowo"></i>
+      <div class="col-3 d-inline">
+        <i class="fa fa-star reactive-icon mr-3 pull-right" data-toggle="tooltip" data-placement="top"
+           title="Trudne słowo" [ngClass]="{'hard-word-marked': currentPhrase.markedAsHard,
+                                            'hard-word-not-marked': !currentPhrase.markedAsHard}"></i>
+        <i class="fa fa-ban reactive-icon mr-4 ignore-not-marked pull-right" data-toggle="tooltip" data-placement="top"
+           title="Ignoruj to słowo"></i>
       </div>
     </div>
     <div class="row d-flex justify-content-end">

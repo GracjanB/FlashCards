@@ -11,41 +11,42 @@ namespace FlashCards.Data.ModelsConfiguration
             builder.HasKey(x => x.Id);
 
             builder.Property(x => x.Phrase)
-                .HasColumnType("NVARCHAR")
                 .HasMaxLength(64)
+                .IsFixedLength()
                 .IsRequired();
 
             builder.Property(x => x.PhrasePronunciation)
-                .HasColumnType("NVARCHAR")
-                .HasMaxLength(64);
+                .HasMaxLength(64)
+                .IsFixedLength();
 
             builder.Property(x => x.PhraseSampleSentence)
-                .HasColumnType("NVARCHAR")
-                .HasMaxLength(128);
+                .HasMaxLength(128)
+                .IsFixedLength();
 
             builder.Property(x => x.PhraseComment)
-                .HasColumnType("NVARCHAR")
-                .HasMaxLength(128);
+                .HasMaxLength(128)
+                .IsFixedLength();
 
             builder.Property(x => x.TranslatedPhrase)
-                .HasColumnType("NVARCHAR")
                 .HasMaxLength(64)
+                .IsFixedLength()
                 .IsRequired();
 
             builder.Property(x => x.TranslatedPhraseSampleSentence)
-                .HasColumnType("NVARCHAR")
-                .HasMaxLength(128);
+                .HasMaxLength(128)
+                .IsFixedLength();
 
             builder.Property(x => x.TranslatedPhraseComment)
-                .HasColumnType("NVARCHAR(128)");
+                .HasMaxLength(128)
+                .IsFixedLength();
 
             builder.Property(x => x.LanguageLevel)
                 .HasColumnType("TINYINT")
                 .HasDefaultValue(Enums.LanguageLevelEnum.NotSpecified);
 
             builder.Property(x => x.Category)
-                .HasColumnType("NVARCHAR")
-                .HasMaxLength(64);
+                .HasMaxLength(64)
+                .IsFixedLength();
 
             builder.Property(x => x.DateCreated)
                 .HasColumnType("DATETIME2")

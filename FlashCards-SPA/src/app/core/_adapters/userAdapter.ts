@@ -19,11 +19,20 @@ export class UserAdapter {
     for (const course of createdCoursesFromResponse) {
       createdCourses.push(this.courseAdapter.adaptCourse(course));
     }
-
     const subscribedCoursesFromResponse = userForDetail.subscribedCourses as [];
     const subscribedCourses: CourseShort[] = [];
     for (const course of subscribedCoursesFromResponse) {
       subscribedCourses.push(this.courseAdapter.adaptCourse(course));
+    }
+    const privateCoursesFromResponse = userForDetail.privateCourses as [];
+    const privateCourses: CourseShort[] = [];
+    for (const privateCourse of privateCoursesFromResponse) {
+      privateCourses.push(this.courseAdapter.adaptCourse(privateCourse));
+    }
+    const draftCoursesFromResponse = userForDetail.draftCourses as [];
+    const draftCourses: CourseShort[] = [];
+    for (const draftCourse of draftCoursesFromResponse) {
+      draftCourses.push(this.courseAdapter.adaptCourse(draftCourse));
     }
 
     return new UserDetailedWithCourses(userForDetail.id,
@@ -37,6 +46,8 @@ export class UserAdapter {
       userForDetail.dateCreated,
       createdCourses,
       subscribedCourses,
+      privateCourses,
+      draftCourses,
       userForDetail.numberOfCreatedCourses,
       userForDetail.numberOfSubscribedCourses,
       userForDetail.numberOfAlreadyLearntFlashcards);

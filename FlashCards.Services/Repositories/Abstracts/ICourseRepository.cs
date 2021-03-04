@@ -15,6 +15,12 @@ namespace FlashCards.Services.Repositories.Abstracts
 
         Task<Course> GetDetail(int id);
 
+        Task<Course> GetDetailedForCheck(int id);
+
+        Task<List<Course>> GetDetailedCoursesForCheck();
+
+        Task<Course> GetDetailedCourseForCheck(int courseId);
+
         Task<PagedList<Course>> GetCourses(CourseParams courseParams);
 
         Task<bool> Create(int accountId, Course course);
@@ -24,5 +30,8 @@ namespace FlashCards.Services.Repositories.Abstracts
         Task<bool> CanEdit(int courseId, int accountId);
 
         bool Exists(int id);
+
+        bool ChangeCourseStatus(int id, Data.Enums.CourseStatusEnum status);
+
     }
 }

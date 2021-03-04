@@ -27,7 +27,6 @@ export class LearnPhraseInputComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-
     this.subscriptions = this.onCanContinue.subscribe(next => {
       this.canContinue = true;
     }, error =>  {
@@ -41,12 +40,17 @@ export class LearnPhraseInputComponent implements OnInit, OnDestroy {
   }
 
   next(): void {
+    this.hintCollapsed = true;
+    this.phraseGuessed = false;
+    this.phraseGuessedSoFar = false;
+    this.phraseInput.nativeElement.value = '';
+    this.canContinue = false;
     this.showNext.emit();
   }
 
   onInputTextChanged(inputPhrase: string): void {
-    this.phraseGuessedSoFar = this.currentPhrase.translatedPhrase.startsWith(inputPhrase);
-    this.phraseGuessed = inputPhrase === this.currentPhrase.translatedPhrase;
+    this.phraseGuessedSoFar = this.currentPhrase.phrase.startsWith(inputPhrase);
+    this.phraseGuessed = inputPhrase === this.currentPhrase.phrase;
     if (this.phraseGuessed) {
       this.guessResult.emit(true);
     }

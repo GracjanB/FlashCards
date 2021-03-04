@@ -19,7 +19,7 @@ export class SubCourseCardComponent implements OnInit {
   }
 
   playRepetition() {
-    this.alertifyService.showMessageAlert('Will be soon');
+    this.router.navigate(['repetition/course/' + this.course.subscriptionId]);
   }
 
   playHardFlashcards() {
@@ -27,10 +27,14 @@ export class SubCourseCardComponent implements OnInit {
   }
 
   playNextFlashcards() {
-    this.alertifyService.showMessageAlert('Will be soon');
+    this.router.navigate(['learn/course/' + this.course.subscriptionId]);
   }
 
   onUnsubscribeCourse(): void {
     this.unsubscribeCourse.emit(this.course.subscriptionId);
+  }
+
+  navigateToDetails(): void {
+    this.router.navigate(['/courses/' + this.course.courseId]);
   }
 }

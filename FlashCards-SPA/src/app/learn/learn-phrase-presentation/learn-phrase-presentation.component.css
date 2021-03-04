@@ -1,10 +1,10 @@
 .reactive-icon {
-  transform: scale(3.0, 3.0);
+  transform: scale(2.0, 2.0);
   cursor: pointer;
 }
 
 .reactive-icon:hover {
-  transform: scale(3.5, 3.5);
+  transform: scale(2.5, 2.5);
   transition-duration: 200ms;
   transition-timing-function: ease-out;
 }
@@ -23,5 +23,27 @@
 
 .word-not-guessed-bg {
   background-color: limegreen;
+}
+
+.reactive-show-more:hover {
+  transform: scale(1.2, 1.2);
+  transition-duration: 200ms;
+  transition-timing-function: ease-out;
+}
+
+.hard-word-not-marked {
+  color: gray;
+}
+
+.hard-word-marked {
+  color: #dede40;
+}
+
+.ignore-not-marked {
+  color: gray;
+}
+
+.ignore-marked {
+  color: firebrick;
 }
 

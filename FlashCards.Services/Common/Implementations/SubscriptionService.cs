@@ -130,6 +130,8 @@ namespace FlashCards.Services.Common.Implementations
                 output = new LessonForDetail
                 {
                     Id = lesson.Id,
+                    SubLessonId = subscribedLesson.Id,
+                    SubCourseId = subscribedLesson.SubscribedCourseId,
                     Name = lesson.Name,
                     Description = lesson.Description,
                     Category = lesson.Category,
@@ -252,6 +254,7 @@ namespace FlashCards.Services.Common.Implementations
                 }
 
                 subscribedCourse.Lessons = subscribedLessons;
+                Console.WriteLine();
                 _context.SubscribedCourses.Add(subscribedCourse);
             }
 

@@ -8,6 +8,7 @@ using FlashCards.Services.Repositories.Abstracts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
@@ -33,6 +34,12 @@ namespace FlashCards.Services.Repositories.Implementations
                 course.DateCreated = DateTime.Now;
                 course.DateModified = DateTime.Now;
                 course.AccountCreatedId = accountId;
+
+                if (course.CourseType == CourseTypeEnum.Draft || course.CourseType == CourseTypeEnum.Private)
+                    course.Status = CourseStatusEnum.NotAccepted;
+                else if (course.CourseType == CourseTypeEnum.Public)
+                    course.Status = CourseStatusEnum.Pending;
+
                 _context.Courses.Add(course);
                 await _context.SaveChangesAsync();
             }
@@ -78,7 +85,7 @@ namespace FlashCards.Services.Repositories.Implementations
                 .Include(x => x.AccountCreated)
                 .Include(x => x.CourseInfo)
                 .Include(x => x.Opinions)
-                .Where(x => x.CourseType == (CourseTypeEnum)courseParams.CourseType)
+                .Where(x => x.CourseType == (CourseTypeEnum)courseParams.CourseType && x.Status == CourseStatusEnum.Accepted)
                 .AsQueryable();
 
             if (!string.IsNullOrEmpty(courseParams.SearchedTitle) && !string.IsNullOrWhiteSpace(courseParams.SearchedTitle))
@@ -100,6 +107,34 @@ namespace FlashCards.Services.Repositories.Implementations
                                  .FirstOrDefaultAsync(x => x.Id == id);
         }
 
+        public async Task<Course> GetDetailedForCheck(int id)
+        {
+            return await _context.Courses
+                                .Include(x => x.Lessons)
+                                .ThenInclude(x => x.Flashcards)
+                                .Include(x => x.AccountCreated)
+                                .FirstOrDefaultAsync(x => x.Id == id);
+        }
+
+        public async Task<List<Course>> GetDetailedCoursesForCheck()
+        {
+            return await _context.Courses
+                                .Include(x => x.Lessons)
+                                .ThenInclude(x => x.Flashcards)
+                                .Include(x => x.AccountCreated)
+                                .Where(x => x.Status == CourseStatusEnum.Pending && x.CourseType == CourseTypeEnum.Public)
+                                .ToListAsync();
+        }
+
+        public async Task<Course> GetDetailedCourseForCheck(int courseId)
+        {
+            return await _context.Courses
+                .Include(x => x.Lessons)
+                .ThenInclude(x => x.Flashcards)
+                .Include(x => x.AccountCreated)
+                .FirstOrDefaultAsync(x => x.Id == courseId);
+        }
+
         public async Task<bool> CanEdit(int courseId, int accountId)
         {
             return await _context.Courses.AnyAsync(x => x.Id == courseId && x.AccountCreatedId == accountId);
@@ -108,6 +143,29 @@ namespace FlashCards.Services.Repositories.Implementations
         public bool Exists(int id)
         {
             return _context.Courses.Any(x => x.Id == id);
+        }
+
+        public bool ChangeCourseStatus(int id, CourseStatusEnum status)
+        {
+            var course = _context.Courses.FirstOrDefault(x => x.Id == id);
+
+            if (course != null)
+            {
+                course.Status = status;
+
+                try
+                {
+                    _context.SaveChanges();
+                    return true;
+                }
+                catch(Exception ex)
+                {
+                    _logger.LogError("Problem with save course", ex);
+                    return false;
+                }
+
+            }
+            else return false;
         }
     }
 }

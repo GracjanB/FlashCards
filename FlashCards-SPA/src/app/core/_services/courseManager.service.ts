@@ -13,7 +13,7 @@ import {CourseForClearProgress} from '../_models/_dtos/toServer/courseForClearPr
   providedIn: 'root'
 })
 export class CourseManagerService {
-  private readonly baseUrl = environment.apiUrl + '/subscribedCourseManager';
+  private readonly baseUrl = environment.apiUrl + 'subscribedCourseManager';
 
   constructor(private httpClient: HttpClient) {
   }

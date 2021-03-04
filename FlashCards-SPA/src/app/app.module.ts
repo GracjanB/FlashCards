@@ -60,6 +60,20 @@ import {AccountEditResolver} from './core/_resolvers/account-edit.resolver';
 import {CourseManagerService} from './core/_services/courseManager.service';
 import { LearnStartComponent } from './learn/learn-start/learn-start.component';
 import { LearnSummaryComponent } from './learn/learn-summary/learn-summary.component';
+import {LearnCourseResolver} from './core/_resolvers/learn-course.resolver';
+import {LearnLessonResolver} from './core/_resolvers/learn-lesson.resolver';
+import {RepetitionCourseResolver} from './core/_resolvers/repetition-course.resolver';
+import {RepetitionLessonResolver} from './core/_resolvers/repetition-lesson.resolver';
+import {LearnAdapter} from './core/_adapters/learnAdapter';
+import { AdminPanelComponent } from './admin/admin-panel/admin-panel.component';
+import {AdministrationService} from './core/_services/administration.service';
+import {AdminPanelResolver} from './core/_resolvers/admin-panel.resolver';
+import { CourseForCheckCardComponent } from './course-for-check-card/course-for-check-card.component';
+import { CourseCheckPanelComponent } from './admin/course-check-panel/course-check-panel.component';
+import { LessonForCheckCardComponent } from './lesson-for-check-card/lesson-for-check-card.component';
+import { FlashcardForCheckComponent } from './flashcard-for-check/flashcard-for-check.component';
+import { AdminRegisterComponent } from './admin/admin-register/admin-register.component';
+import {HardWordsLearnResolver} from './core/_resolvers/hardWordsLearn.resolver';
 
 @NgModule({
   declarations: [
@@ -89,7 +103,13 @@ import { LearnSummaryComponent } from './learn/learn-summary/learn-summary.compo
     LearnPhraseBlocksComponent,
     LearnPhraseInputComponent,
     LearnStartComponent,
-    LearnSummaryComponent
+    LearnSummaryComponent,
+    AdminPanelComponent,
+    CourseForCheckCardComponent,
+    CourseCheckPanelComponent,
+    LessonForCheckCardComponent,
+    FlashcardForCheckComponent,
+    AdminRegisterComponent
   ],
     imports: [
         BrowserModule,
@@ -126,7 +146,15 @@ import { LearnSummaryComponent } from './learn/learn-summary/learn-summary.compo
     UserService,
     AccountProfileResolver,
     AccountEditResolver,
-    CourseManagerService
+    CourseManagerService,
+    LearnCourseResolver,
+    LearnLessonResolver,
+    RepetitionCourseResolver,
+    RepetitionLessonResolver,
+    LearnAdapter,
+    AdministrationService,
+    AdminPanelResolver,
+    HardWordsLearnResolver
   ],
   bootstrap: [AppComponent]
 })

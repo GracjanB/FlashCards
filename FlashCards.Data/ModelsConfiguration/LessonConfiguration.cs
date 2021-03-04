@@ -11,16 +11,17 @@ namespace FlashCards.Data.ModelsConfiguration
             builder.HasKey(x => x.Id);
 
             builder.Property(x => x.Name)
-                .HasColumnType("NVARCHAR(64)")
+                .HasMaxLength(64)
+                .IsFixedLength()
                 .IsRequired();
 
             builder.Property(x => x.Description)
-                .HasColumnType("NTEXT")
-                .HasMaxLength(1024);
+                .HasMaxLength(1024)
+                .IsFixedLength();
 
             builder.Property(x => x.Category)
-                .HasColumnType("NVARCHAR")
                 .HasMaxLength(64)
+                .IsFixedLength()
                 .IsRequired();
 
             builder.Property(x => x.DateCreated)

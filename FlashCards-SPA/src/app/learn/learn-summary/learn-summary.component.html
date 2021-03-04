@@ -1,1 +1,68 @@
-<p>learn-summary works!</p>
+<div class="container d-flex" style="background-color: #e6e6e6; min-width: 900px;">
+  <div class="col-10">
+    <h1 class="mt-2">Powtórka albo nauka nowych słówek</h1>
+    <div class="row justify-content-center mt-2">
+      <div class="col">
+        <div class="card">
+          <div class="card-header">
+            <h2 style="font-weight: bold;" class="mt-0 mb-0">Przed nauką</h2>
+          </div>
+          <div class="card-body">
+            <table class="table table-hover">
+              <tbody>
+              <tr *ngFor="let flashcard of learnSummary.flashcardsBeforeLearn">
+                <td><h3 class="mt-0 mb-0 ml-3">{{ flashcard.phrase }}</h3></td>
+                <td><h3 class="mt-0 mb-0">{{ flashcard.translatedPhrase }}</h3></td>
+                <td>
+                  <div class="progress">
+                    <div class="progress-bar progress-bar-striped" role="progressbar" style="min-width: 40px;"
+                         aria-valuenow="10" aria-valuemin="0" aria-valuemax="10"
+                         [ngStyle]="{width: flashcard.trainLevel+'%'}"></div>
+                  </div>
+                </td>
+                <td>
+                  <i class="fa fa-star star-default mr-4"
+                     [ngClass]="{'star-marked': flashcard.markedAsHard,
+                               'star-not-marked': !flashcard.markedAsHard}"></i>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card">
+          <div class="card-header">
+            <h2 style="font-weight: bold;" class="mt-0 mb-0">Po nauce</h2>
+          </div>
+          <div class="card-body">
+            <table class="table table-hover">
+              <tbody>
+              <tr *ngFor="let flashcard of learnSummary.flashcardsAfterLearn">
+                <td><h3 class="mt-0 mb-0 ml-3">{{ flashcard.phrase }}</h3></td>
+                <td><h3 class="mt-0 mb-0">{{ flashcard.translatedPhrase }}</h3></td>
+                <td>
+                  <div class="progress">
+                    <div class="progress-bar progress-bar-striped" role="progressbar" style="min-width: 40px;"
+                         aria-valuenow="10" aria-valuemin="0" aria-valuemax="10"
+                         [ngStyle]="{width: flashcard.trainLevel+'%'}"></div>
+                  </div>
+                </td>
+                <td>
+                  <i class="fa fa-star star-default mr-4"
+                     [ngClass]="{'star-marked': flashcard.markedAsHard,
+                               'star-not-marked': !flashcard.markedAsHard}"></i>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row justify-content-end mt-2 mb-2 mr-5">
+      <button class="btn btn-primary btn-success" type="button" (click)="confirmEndOfLearning()">Zakończ</button>
+    </div>
+  </div>
+</div>

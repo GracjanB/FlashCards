@@ -2,6 +2,7 @@
 
 namespace FlashCards.Models.DTOs.ToClient.Learn
 {
+    [Serializable]
     public class FlashcardForLearn
     {
         public int FlashcardId { get; set; }
